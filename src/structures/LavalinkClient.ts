@@ -25,6 +25,9 @@ export default class LavalinkClient extends LavalinkManager {
 					autoPlayFunction,
 				},
 			},
+			advancedOptions: {
+				enableDebugEvents: true, // enable the DEBUG EVENT LISTENER
+			}
 		});
 		this.client = client;
 	}

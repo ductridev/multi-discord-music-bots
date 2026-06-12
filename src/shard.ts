@@ -37,10 +37,10 @@ import { type ClientOptions, GatewayIntentBits } from 'discord.js';
 import Lavamusic from './structures/Lavamusic';
 import { BotConfig } from '@prisma/client';
 
-const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping } = GatewayIntentBits;
+const { MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping } = GatewayIntentBits;
 
 const clientOptions: ClientOptions = {
-	intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping],
+	intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMessageTyping],
 	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
 };
 

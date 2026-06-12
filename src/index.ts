@@ -13,6 +13,13 @@ import Logger from './structures/Logger';
 
 const logger = new Logger('Main');
 
+process.on('unhandledRejection', reason => {
+	logger.error('[UNHANDLED REJECTION]', reason);
+});
+process.on('uncaughtException', err => {
+	logger.error('[UNCAUGHT EXCEPTION]', err);
+});
+
 const prisma = new PrismaClient();
 
 export const activeBots: Lavamusic[] = [];

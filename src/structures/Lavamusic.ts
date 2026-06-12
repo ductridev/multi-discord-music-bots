@@ -98,6 +98,15 @@ export default class Lavamusic extends Client {
     this.manager = new LavalinkClient(this);
     this.lavaSrcConfigService = new LavaSrcConfigService(this.manager);
     this.youTubeConfigService = new YouTubeConfigService(this.manager);
+    const nm = this.manager.nodeManager;
+    nm.on("connect",      n => console.log("[NM] connect", n.id));
+    nm.on("disconnect",   (n,p) => console.log("[NM] disconnect", n.id, p));
+    nm.on("reconnectinprogress", n => console.log("[NM] pending", n.id, n.reconnectionState));
+    nm.on("reconnecting", n => console.log("[NM] reconnecting", n.id, "att=", n.reconnectionAttemptCount));
+    nm.on("error",        (n,e) => console.log("[NM] error", n.id, e?.message));
+    nm.on("destroy",      (n,r) => console.log("[NM] destroy", n.id, r));
+    this.manager.on("debug", (ev,p) =>
+        p?.functionLayer?.includes("LavalinkNode") && console.log("[DBG]", ev, p.state, p.message));
     this.liveLyricsService = new LiveLyricsService(this);
     await this.loadCommands();
     this.logger.info("Successfully loaded commands!");
@@ -105,7 +114,27 @@ export default class Lavamusic extends Client {
     await this.loadEvents();
     this.logger.info("Successfully loaded events!");
     loadPlugins(this);
-    await this.login(this.childEnv.token);
+
+    this.on('debug', m => this.logger.info(`[DJS] ${m}`));
+    this.on('error', e => this.logger.error(`[DJS-ERR]`, e));
+    this.on('shardError', e => this.logger.error(`[SHARD-ERR]`, e));
+    this.on('shardDisconnect', (e, id) =>
+      this.logger.warn(`[SHARD-DISC] shard=${id} code=${e.code} reason=${e.reason}`)
+    );
+    this.on('shardReady', id => this.logger.success(`[SHARD-READY] shard=${id}`));
+    this.on('shardReconnecting', id => this.logger.warn(`[SHARD-RECONNECT] shard=${id}`));
+    this.on('shardResume', (id, replayed) =>
+      this.logger.info(`[SHARD-RESUME] shard=${id} replayed=${replayed}`)
+    );
+
+    try {
+      this.logger.info(`Logging in as ${this.childEnv.name}...`);
+      await this.login(this.childEnv.token);
+      this.logger.success(`Login OK for ${this.childEnv.name}`);
+    } catch (e) {
+      this.logger.error(`Login FAILED for ${this.childEnv.name}:`, e);
+      throw e;
+    }
     registerBot(this);
 
     this.on(Events.InteractionCreate, async (interaction: Interaction) => {
