@@ -284,7 +284,7 @@ export default class LavaConfig extends Command {
             .setTitle(ctx.locale('cmd.lavaconfig.messages.view_title', { nodeId }))
             .setDescription(`\`\`\`json\n${configJson.length > 4000 ? configJson.substring(0, 4000) + '...' : configJson}\n\`\`\``);
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async handleListNodes(client: Lavamusic, ctx: Context): Promise<void> {
@@ -312,7 +312,7 @@ export default class LavaConfig extends Command {
                 });
         }
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async updateAndRespond(
@@ -339,7 +339,7 @@ export default class LavaConfig extends Command {
                 value: `\`\`\`json\n${configJson.length > 1000 ? configJson.substring(0, 1000) + '...' : configJson}\n\`\`\``,
             });
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async sendError(ctx: Context, message: string): Promise<void> {
@@ -352,6 +352,6 @@ export default class LavaConfig extends Command {
             .setColor(this.client.color.red)
             .setDescription(message);
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 }

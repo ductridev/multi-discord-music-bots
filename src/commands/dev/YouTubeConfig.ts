@@ -178,7 +178,7 @@ export default class YouTubeConfig extends Command {
                 value: ctx.locale('cmd.youtubeconfig.fields.oauth_warning'),
             });
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async handlePoToken(client: Lavamusic, ctx: Context, nodeId: string, parsedArgs: Record<string, string>): Promise<void> {
@@ -228,7 +228,7 @@ export default class YouTubeConfig extends Command {
                 value: ctx.locale('cmd.youtubeconfig.fields.generator_link'),
             });
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async handleView(client: Lavamusic, ctx: Context, nodeId: string): Promise<void> {
@@ -253,7 +253,7 @@ export default class YouTubeConfig extends Command {
                 value: ctx.locale('cmd.youtubeconfig.fields.api_note'),
             });
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async handleRefreshToken(client: Lavamusic, ctx: Context, nodeId: string, parsedArgs: Record<string, string>): Promise<void> {
@@ -285,7 +285,7 @@ export default class YouTubeConfig extends Command {
                 value: this.maskToken(tokenResponse.access_token, 50),
             });
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     private async handleListNodes(client: Lavamusic, ctx: Context): Promise<void> {
@@ -313,7 +313,7 @@ export default class YouTubeConfig extends Command {
                 });
         }
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 
     /**
@@ -343,6 +343,6 @@ export default class YouTubeConfig extends Command {
             .setColor(this.client.color.red)
             .setDescription(message);
 
-        await ctx.editMessage({ embeds: [embed] });
+        await ctx.editMessage({ content: '', embeds: [embed] });
     }
 }
