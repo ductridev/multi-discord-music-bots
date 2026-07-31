@@ -5,6 +5,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import Logger from "../structures/Logger.js";
+import ServerData from "../database/server.js";
 import { writeFile, readdir, unlink, mkdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { existsSync } from "node:fs";
@@ -227,6 +228,8 @@ export class DatabaseBackupService {
 					});
 				}
 			});
+
+			ServerData.clearLanguageCache();
 
 			this.logger.info(
 				`[Database Backup] Successfully restored from ${backupFile}`,

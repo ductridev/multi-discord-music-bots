@@ -101,6 +101,12 @@ export default class ServerData {
 		return language;
 	}
 
+	/** Drops every cached guild language. Required after any bulk write that
+	 *  bypasses updateLanguage, e.g. a backup restore. */
+	public static clearLanguageCache(): void {
+		ServerData.languageCache.clear();
+	}
+
 	public async getSetup(guildId: string): Promise<Setup | null> {
 		return await this.prisma.setup.findUnique({ where: { guildId } });
 	}
