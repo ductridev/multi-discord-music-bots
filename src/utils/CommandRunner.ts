@@ -13,17 +13,21 @@ export type ReplyFn = (payload: InteractionReplyOptions & { content?: string }) 
  * A deferred interaction that never receives a reply shows "<Bot> is thinking…"
  * until Discord swaps it for "The application did not respond". That happens
  * whenever the command produces no output through this interaction — most often
- * a delegated command, whose visible output is a channel message from the
- * chosen bot, not a reply from the receiver. Deleting the placeholder leaves
- * only the real message behind.
+ * a delegated command, whose visible output is a channel message from the chosen
+ * bot rather than a reply from the receiver.
  *
- * Safe to call unconditionally: it no-ops for message-backed contexts and for
- * any interaction that has already been replied to.
+ * `ack: true` replaces the placeholder with a checkmark, confirming the command
+ * was received. `ack: false` deletes the response instead, for the dev-only gate
+ * — acknowledging there would both confirm a hidden owner command exists and
+ * imply it ran.
+ *
+ * Safe to call unconditionally: a no-op for message-backed contexts and for any
+ * interaction already replied to.
  */
-async function clearUnusedDefer(ctx: Context): Promise<void> {
+async function resolveUnusedDefer(ctx: Context, ack: boolean): Promise<void> {
 	const interaction = ctx.interaction;
 	if (!interaction?.deferred || interaction.replied) return;
-	await interaction.deleteReply().catch(() => null);
+	await (ack ? interaction.editReply({ content: '✅' }) : interaction.deleteReply()).catch(() => null);
 }
 
 /**
@@ -51,8 +55,9 @@ export async function runCommandFor(
 	if (!guard.passed) {
 		if (guard.reply) await reply(guard.reply).catch(() => null);
 		// A silent rejection (the dev-only gate) still owes the interaction a
-		// resolution, or the placeholder spins forever.
-		else await clearUnusedDefer(ctx);
+		// resolution, or the placeholder spins forever. Discard rather than ack,
+		// so a non-owner learns nothing about the command.
+		else await resolveUnusedDefer(ctx, false);
 		return;
 	}
 
@@ -111,7 +116,7 @@ export async function runCommandFor(
 
 		// Last resort, and deliberately outside the audit-log try so an audit
 		// failure cannot skip it: if the command produced no reply of its own,
-		// the interaction is still showing a loading placeholder. Clear it.
-		await clearUnusedDefer(ctx);
+		// the interaction is still showing a loading placeholder. Ack it.
+		await resolveUnusedDefer(ctx, true);
 	}
 }
