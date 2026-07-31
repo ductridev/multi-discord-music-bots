@@ -51,7 +51,7 @@ export default class InteractionCreate extends Event {
 
 		// Assigned inside the try below; kept in scope so the catch can still
 		// localize its error message if something throws before locale loads.
-		let locale = 'Vietnamese';
+		let locale = this.client.env.DEFAULT_LANGUAGE || 'Vietnamese';
 
 		try {
 			const reply = async (payload: any) => {

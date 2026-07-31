@@ -21,6 +21,21 @@ import { runCommandFor } from '../../utils/CommandRunner';
 const prisma = new PrismaClient();
 
 /**
+ * Last time each user was told prefix commands are going away, keyed
+ * `guildId:userId`.
+ *
+ * The notice doubles the message volume of every prefix command, which on a busy
+ * guild is real channel rate-limit pressure. Keyed per user rather than per
+ * guild because the notice exists to retrain each individual — a guild-wide
+ * throttle would let one person's command suppress everyone else's only warning.
+ *
+ * Unbounded by design: one small entry per user who still uses prefix commands,
+ * on a code path that is deleted when the intent revocation completes.
+ */
+const prefixNoticeSentAt = new Map<string, number>();
+const PREFIX_NOTICE_INTERVAL = 6 * 60 * 60 * 1000;
+
+/**
  * Parse a string into args, respecting quoted strings (both double and single quotes)
  * This ensures that values like node:"BuNgo Node" are kept as a single arg
  * @param input - The string to parse
@@ -658,15 +673,22 @@ export default class MessageCreate extends Event {
 				await (logs as TextChannel).send({ embeds: [embed], flags: 4096 });
 			}
 
-			// Warn users that prefix commands are deprecated
-			await message.channel
-				.send({
-					content: T(locale, 'event.message.prefix_deprecated', {
-						command: command.name,
-						bot: this.client.user!.username,
-					}),
-				})
-				.catch(() => null);
+			// Warn users that prefix commands are deprecated, at most once per user
+			// per PREFIX_NOTICE_INTERVAL.
+			const noticeKey = `${message.guildId}:${message.author.id}`;
+			const lastNotice = prefixNoticeSentAt.get(noticeKey) ?? 0;
+			const now = Date.now();
+			if (now - lastNotice > PREFIX_NOTICE_INTERVAL) {
+				prefixNoticeSentAt.set(noticeKey, now);
+				await message.channel
+					.send({
+						content: T(locale, 'event.message.prefix_deprecated', {
+							command: command.name,
+							bot: this.client.user!.username,
+						}),
+					})
+					.catch(() => null);
+			}
 		}
 	}
 }

@@ -49,7 +49,7 @@ export async function runCommandFor(
 	reply: ReplyFn,
 	onGuardsPassed?: () => Promise<void>,
 ): Promise<void> {
-	const locale = ctx.guildLocale ?? 'Vietnamese';
+	const locale = ctx.guildLocale ?? chosen.env.DEFAULT_LANGUAGE ?? 'Vietnamese';
 
 	const guard = await runGuards(chosen, ctx, command, busy);
 	if (!guard.passed) {
