@@ -105,7 +105,7 @@ export default class InteractionCreate extends Event {
 					// cannot honestly own its own messages. Handle it here instead
 					// of half-swapping identity and letting the wrong bot speak.
 					this.client.logger.warn(
-						`Cannot delegate ${command.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
+						`Cannot delegate ${command.name} to ${chosen.childEnv.name}: guild, channel or member not cached. Handling locally.`,
 					);
 					chosen = this.client;
 					isSelf = true;

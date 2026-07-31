@@ -90,7 +90,10 @@ export async function runCommandFor(
 				const embed = new EmbedBuilder()
 					.setAuthor({
 						name: ctx.isInteraction ? 'Slash - Command Logs' : 'Mention - Command Logs',
-						iconURL: chosen.user?.avatarURL({ size: 2048 })!,
+						// A bot with no custom avatar returns null here, and EmbedBuilder
+						// rejects null — which would cost the audit log for that bot
+						// entirely. undefined just omits the icon.
+						iconURL: chosen.user?.avatarURL({ size: 2048 }) ?? undefined,
 					})
 					.setColor(chosen.config.color.blue)
 					.addFields(

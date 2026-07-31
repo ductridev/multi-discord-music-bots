@@ -59,13 +59,20 @@ function isDisallowedIntents(error: unknown): boolean {
 }
 
 export async function shardStart(bot: BotConfig) {
+	let failed: Lavamusic | undefined;
+
 	try {
-		const client = new Lavamusic(clientOptionsFor(bot), bot);
-		await client.start();
+		failed = new Lavamusic(clientOptionsFor(bot), bot);
+		await failed.start();
 		return;
 	} catch (error) {
 		if (!(bot.messageContentIntent && isDisallowedIntents(error))) throw error;
 	}
+
+	// The rejected client still holds its REST agent, its sweeper intervals and
+	// everything the Lavamusic constructor registered. Tear it down before a
+	// second client logs in with the same token.
+	await failed?.destroy().catch(() => null);
 
 	// Discord has revoked MessageContent for this application. Coming up without
 	// it beats staying offline: slash commands and @mention commands both work

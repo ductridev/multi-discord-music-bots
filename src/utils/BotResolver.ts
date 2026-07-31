@@ -31,8 +31,11 @@ export function buildBotMeta(bots: Lavamusic[], guild: Guild): {
 	const activeBotIds = new Set<string>();
 
 	for (const [, voiceState] of guild.voiceStates.cache) {
-		const memberId = voiceState.member?.user.id;
-		if (voiceState.channelId && memberId && botIds.has(memberId)) {
+		// voiceState.id is the user id straight off Discord's voice-state payload.
+		// voiceState.member would depend on the GuildMember cache, and a miss there
+		// would make an occupied bot look idle and get handed a second command.
+		const memberId = voiceState.id;
+		if (voiceState.channelId && botIds.has(memberId)) {
 			const occupants = vcToBot.get(voiceState.channelId) ?? [];
 			occupants.push(memberId);
 			vcToBot.set(voiceState.channelId, occupants);

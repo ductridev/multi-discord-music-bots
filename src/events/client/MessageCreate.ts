@@ -143,24 +143,26 @@ export default class MessageCreate extends Event {
 			if (!isSelf) {
 				const chosenChannel = chosen.channels.cache.get(message.channelId);
 				const chosenGuild = chosen.guilds.cache.get(guildId);
-				if (chosenChannel?.isTextBased() && chosenGuild) {
-					// Swap all three together, before runGuards — it resolves the
+				// Commands read ctx.member directly, so it must come from the chosen
+				// bot's cache too — otherwise guards validate one view of the user's
+				// voice state while execution reads another. resolve() does not
+				// fetch, so a member cache miss disqualifies the delegation just
+				// like a missing guild or channel.
+				const chosenMember = chosenGuild?.members.resolve(message.author.id);
+				if (chosenChannel?.isTextBased() && chosenGuild && chosenMember) {
+					// Swap all four together, before runGuards — it resolves the
 					// chosen bot's own member from ctx.guild and member caches are
 					// per-client.
 					mentionCtx.client = chosen;
 					mentionCtx.channel = chosenChannel;
 					mentionCtx.guild = chosenGuild;
-					// Commands read ctx.member directly, so it must come from the
-					// chosen bot's cache too — otherwise guards validate one view
-					// of the user's voice state while execution reads another.
-					mentionCtx.member =
-						chosenGuild.members.resolve(message.author.id) ?? mentionCtx.member;
+					mentionCtx.member = chosenMember;
 				} else {
 					// The chosen bot cannot honestly own its own messages here, so
 					// handle it locally rather than validating one bot and running
 					// another. Mirrors the slash path's null-delegation fallback.
 					this.client.logger.warn(
-						`Cannot delegate ${mentionCommand.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
+						`Cannot delegate ${mentionCommand.name} to ${chosen.childEnv.name}: guild, channel or member not cached. Handling locally.`,
 					);
 					chosen = this.client;
 					isSelf = true;

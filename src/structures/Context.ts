@@ -74,17 +74,21 @@ export default class Context {
 	): Context | null {
 		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
 		const channel = chosenBot.channels.cache.get(interaction.channelId);
-		if (!guild || !channel?.isTextBased()) return null;
+		// Commands read ctx.member directly, so it must come from the chosen
+		// bot's cache too — otherwise guards validate one view of the user's
+		// voice state while execution reads another. resolve() does not fetch,
+		// so a cache miss is as disqualifying as a missing guild or channel:
+		// keeping the receiver's member here is exactly the mismatch this swap
+		// exists to prevent.
+		const member = guild?.members.resolve(interaction.user.id);
+		if (!guild || !channel?.isTextBased() || !member) return null;
 
 		const ctx = new Context(interaction, args);
 		ctx.sendMode = 'channel';
 		ctx.client = chosenBot;
 		ctx.guild = guild;
 		ctx.channel = channel as TextBasedChannel;
-		// Commands read ctx.member directly, so it must come from the chosen
-		// bot's cache too — otherwise guards validate one view of the user's
-		// voice state while execution reads another.
-		ctx.member = guild.members.resolve(interaction.user.id) ?? ctx.member;
+		ctx.member = member;
 
 		return ctx;
 	}
