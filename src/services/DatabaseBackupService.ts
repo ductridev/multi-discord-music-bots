@@ -230,6 +230,7 @@ export class DatabaseBackupService {
 			});
 
 			ServerData.clearLanguageCache();
+			ServerData.clearSetupCache();
 
 			this.logger.info(
 				`[Database Backup] Successfully restored from ${backupFile}`,

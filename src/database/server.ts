@@ -8,6 +8,7 @@ export default class ServerData {
 	private childEnv: BotConfig = {} as BotConfig;
 	public logger: Logger;
 	private static languageCache = new Map<string, string>();
+	private static setupCache = new Map<string, Setup | null>();
 
 	constructor(bot: BotConfig) {
 		this.prisma = new PrismaClient();
@@ -107,20 +108,33 @@ export default class ServerData {
 		ServerData.languageCache.clear();
 	}
 
+	/** Drops every cached setup row. Required after any bulk write that
+	 *  bypasses setSetup/deleteSetup, e.g. a backup restore. */
+	public static clearSetupCache(): void {
+		ServerData.setupCache.clear();
+	}
+
 	public async getSetup(guildId: string): Promise<Setup | null> {
-		return await this.prisma.setup.findUnique({ where: { guildId } });
+		const cached = ServerData.setupCache.get(guildId);
+		if (cached !== undefined) return cached;
+
+		const setup = await this.prisma.setup.findUnique({ where: { guildId } });
+		ServerData.setupCache.set(guildId, setup);
+		return setup;
 	}
 
 	public async setSetup(guildId: string, textId: string, messageId: string): Promise<void> {
-		await this.prisma.setup.upsert({
+		const setup = await this.prisma.setup.upsert({
 			where: { guildId },
 			update: { textId, messageId },
 			create: { guildId, textId, messageId },
 		});
+		ServerData.setupCache.set(guildId, setup);
 	}
 
 	public async deleteSetup(guildId: string): Promise<void> {
 		await this.prisma.setup.delete({ where: { guildId } });
+		ServerData.setupCache.delete(guildId);
 	}
 
 	public async set_247(guildId: string, botClientId: string, textId: string, voiceId: string): Promise<void> {

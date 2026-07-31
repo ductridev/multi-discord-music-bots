@@ -54,17 +54,23 @@ export default class MessageCreate extends Event {
 		const mentionPrefix = new RegExp(`^<@!?${this.client.user?.id}>\\s*`);
 		const mentionMatch = message.content.match(mentionPrefix);
 
-		// Once MessageContent is disabled, content is empty on everything except
-		// mentions and DMs. Bail before spending any database calls.
-		if (!(message.content.trim() || mentionMatch)) return;
-
 		const guildId = message.guildId;
 		const userVCId = message.member?.voice?.channelId ?? null;
 
+		// getSetup is cache-backed (ServerData.setupCache), so this runs ahead
+		// of the empty-content bail below without reintroducing a per-message
+		// database call. A setup-channel message must be consumed regardless
+		// of content — SetupSystem.run always ends in message.delete(), and
+		// that channel's whole purpose is staying clean of stray posts.
 		const setup = await this.client.db.getSetup(guildId);
 		if (setup && setup.textId === message.channelId) {
 			return this.client.emit('setupSystem', message);
 		}
+
+		// Once MessageContent is disabled, content is empty on everything except
+		// mentions and DMs. Bail before spending any database calls.
+		if (!(message.content.trim() || mentionMatch)) return;
+
 		const locale = await this.client.db.getLanguage(guildId);
 		const botClientId = this.client.childEnv.id;
 
@@ -124,23 +130,32 @@ export default class MessageCreate extends Event {
 
 			const { botMeta, vcToBot } = buildBotMeta(mentionBots, message.guild);
 			const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
-			const chosen = resolved.bot ?? this.client;
-			const isSelf = chosen.user!.id === this.client.user!.id;
+			let chosen = resolved.bot ?? this.client;
+			let isSelf = chosen.user!.id === this.client.user!.id;
 
 			const mentionCtx = new Context(message, mentionArgs);
 			mentionCtx.setArgs(mentionArgs);
 			mentionCtx.guildLocale = locale;
 
-			// Swap the context onto the chosen bot's caches before guards run —
-			// runGuards resolves the chosen bot's own member from ctx.guild, and
-			// member caches are per-client.
 			if (!isSelf) {
 				const chosenChannel = chosen.channels.cache.get(message.channelId);
-				if (chosenChannel?.isTextBased()) {
+				const chosenGuild = chosen.guilds.cache.get(guildId);
+				if (chosenChannel?.isTextBased() && chosenGuild) {
+					// Swap all three together, before runGuards — it resolves the
+					// chosen bot's own member from ctx.guild and member caches are
+					// per-client.
 					mentionCtx.client = chosen;
 					mentionCtx.channel = chosenChannel;
-					const chosenGuild = chosen.guilds.cache.get(guildId);
-					if (chosenGuild) mentionCtx.guild = chosenGuild;
+					mentionCtx.guild = chosenGuild;
+				} else {
+					// The chosen bot cannot honestly own its own messages here, so
+					// handle it locally rather than validating one bot and running
+					// another. Mirrors the slash path's null-delegation fallback.
+					this.client.logger.warn(
+						`Cannot delegate ${mentionCommand.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
+					);
+					chosen = this.client;
+					isSelf = true;
 				}
 			}
 
