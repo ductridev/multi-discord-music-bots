@@ -682,7 +682,9 @@ no_free_bots and maintenance, plus a new delegated_to_bot notice."
 
 ### Task 5: `CommandGuards` — the shared check pipeline
 
-Mirrors the prefix path's checks in the same order, but operates on a `Context` and validates the **chosen** bot rather than the receiver.
+Carries over the prefix path's checks, but operates on a `Context` and validates the **chosen** bot rather than the receiver.
+
+**Ordering is not a literal replay of the prefix path**, and the difference is deliberate. `MessageCreate.ts` runs its maintenance check late — nested inside `command.player.voice` and after the permission and vote gates. Here maintenance comes first, so a user learns the bot is down before being asked to vote. The `command.player?.voice` scoping is preserved, so *which* commands maintenance blocks is unchanged. The property genuinely preserved from the prefix path is the one that matters: the busy check runs last, after every specific error.
 
 **Files:**
 - Create: `src/utils/CommandGuards.ts`
@@ -693,7 +695,9 @@ Mirrors the prefix path's checks in the same order, but operates on a `Context` 
 
 - [ ] **Step 1: Write the guard module**
 
-Create `src/utils/CommandGuards.ts`. `client` is the **chosen** bot throughout. The busy check is last so users see permission and voice errors first, matching the prefix path's ordering.
+Create `src/utils/CommandGuards.ts`. `client` is the **chosen** bot throughout. The busy check is last so users see permission and voice errors first, matching the prefix path.
+
+Check 2 is a **channel-level** permission test (`ViewChannel` and `SendMessages` via `channel.permissionsFor(clientMember)`), separate from the guild-level test that follows it. `MessageCreate.ts:225-226` has the channel-level `ViewChannel` check and an earlier draft of this plan dropped it. It matters more here than in the prefix path: a prefix command was necessarily received in a channel the bot could see, whereas a delegated command sends through the *chosen* bot into a channel only the *receiver* was known to have access to. When `permissionsFor` returns null the check does not fail — an indeterminate result must not block DM-context or uncached-channel cases.
 
 ```typescript
 import {
