@@ -780,11 +780,11 @@
 			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
 			"periodic_message_vote_only": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Oyun büyümemize yardımcı olur! ❤️\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
 			"periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"voice_channel_full": "<#{channel}> kanalı dolu! Başka bir kanal dene ya da kullanıcı sınırını yükselt 😅",
 			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın.",
 			"no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"maintenance": "Bot bakımda! Biraz sonra tekrar dene 🔧",
+			"delegated_to_bot": "**{bot}** bunu üstlenecek — şu an boş ve kanalına giriyor 🎶"
 		},
 		"message": {
 			"prefix_mention": "Merhaba, bu sunucu için ön ekim `{prefix}`. Daha fazla bilgi mi istiyorsunuz? `{prefix}help` yapın\nGüvende kalın, harika kalın!",
@@ -812,7 +812,7 @@
 			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
 			"no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
 			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın.",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ Prefix komutları kalkıyor — Discord mesaj erişimini geri alıyor. Slash komutu `/{command}` kullan ya da botu etiketle: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Bu butonu kullanmak için bir ses kanalına bağlı olmalısınız.",

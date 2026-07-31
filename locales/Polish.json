@@ -676,11 +676,11 @@
 			"vote_message": "Czekaj! Musisz zagłosować na top.gg, aby użyć tej komendy. Dzięki.",
 			"periodic_message_vote_only": "🎵 Podoba Ci się muzyka? Zagłosuj na nas na Top.gg! Twój głos pomaga nam rosnąć! ❤️\nNiestabilny dźwięk? Użyj `bregion`, aby przełączyć się na bliższy region",
 			"periodic_message_with_bots": "🎵 Podoba Ci się muzyka? Zagłosuj na nas na Top.gg! Chcesz muzykę w wielu pokojach? Dodaj więcej botów! 🎶\nNiestabilny dźwięk? Użyj `bregion`, aby przełączyć się na bliższy region",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"voice_channel_full": "Kanał <#{channel}> jest pełny! Spróbuj innego kanału lub zwiększ limit użytkowników 😅",
 			"no_bots_configured": "Nie dodano jeszcze żadnych botów muzycznych do tego serwera. Proszę najpierw zaprosić bota!",
 			"no_free_bots": "Żadne boty nie są obecnie dostępne. Możesz chcieć dodać więcej botów do tego serwera.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"maintenance": "Bot jest w trakcie konserwacji! Wróć później 🔧",
+			"delegated_to_bot": "**{bot}** się tym zajmie — jest wolny i już wchodzi na twój kanał 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hej, mój prefiks dla tego serwera to `{prefix}`. Chcesz uzyskać więcej informacji? Uzyj komendy `{prefix}help`\nBądź bezpieczeny i niesamowity!",
@@ -709,7 +709,7 @@
 			"vote_message": "Czekaj! Musisz zagłosować na top.gg, aby użyć tej komendy. Dzięki.",
 			"no_free_bots": "Żadne boty nie są obecnie dostępne. Możesz chcieć dodać więcej botów do tego serwera.",
 			"no_bots_configured": "Nie dodano jeszcze żadnych botów muzycznych do tego serwera. Proszę najpierw zaprosić bota!",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ Komendy z prefiksem znikają — Discord odbiera dostęp do wiadomości. Użyj komendy ukośnikowej `/{command}` albo oznacz bota: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Aby użyć tego przycisku, musisz być połączony z kanałem głosowym.",

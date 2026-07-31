@@ -770,7 +770,7 @@
 			"no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
 			"no_free_bots": "目前没有可用的机器人。您可能需要向此服务器添加更多机器人。",
 			"maintenance": "机器人正在维护中。请稍后再试。",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"delegated_to_bot": "**{bot}** 会处理这个请求 — 它现在空闲，马上进入你的频道 🎶"
 		},
 		"message": {
 			"prefix_mention": "嘿，我这个服务器的前缀是 `{prefix}`。想要了解更多信息？请执行 `{prefix}help`\n注意安全，保持出色！",
@@ -801,7 +801,7 @@
 			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
 			"vote_button": "为我投票！",
 			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ 前缀命令即将停用 — Discord 正在收回消息读取权限。请改用斜杠命令 `/{command}` 或提及机器人：`@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "你不在语音频道里才能用这个按钮！🎵",

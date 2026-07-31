@@ -743,11 +743,11 @@
 			"vote_message": "Attendez ! Vous devez voter sur top.gg pour utiliser cette commande. Merci.",
 			"periodic_message_vote_only": "🎵 Vous aimez la musique ? Votez pour nous sur Top.gg ! Votre vote nous aide à grandir ! ❤️\nAudio instable ? Utilisez `bregion` pour changer de région plus proche de vous",
 			"periodic_message_with_bots": "🎵 Vous aimez la musique ? Votez pour nous sur Top.gg ! Envie de musique dans plusieurs salons ? Ajoutez plus de bots ! 🎶\nAudio instable ? Utilisez `bregion` pour changer de région plus proche de vous",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"voice_channel_full": "Le salon <#{channel}> est plein ! Essaie un autre salon ou augmente la limite d'utilisateurs 😅",
 			"no_bots_configured": "Aucun bot musical n'a encore été ajouté à ce serveur. Veuillez d'abord inviter un bot !",
 			"no_free_bots": "Aucun bot n'est disponible pour le moment. Vous voudrez peut-être ajouter plus de bots à ce serveur.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"maintenance": "Le bot est en maintenance ! Reviens bientôt 🔧",
+			"delegated_to_bot": "**{bot}** va s'en occuper — il est libre et rejoint ton salon 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hé, mon préfixe pour ce serveur est `{prefix}`. Vous voulez plus d'infos ? alors faites `{prefix}help`\nRestez en sécurité, restez génial !",
@@ -776,7 +776,7 @@
 			"vote_message": "Attendez ! Vous devez voter sur top.gg pour utiliser cette commande. Merci.",
 			"no_free_bots": "Aucun bot n'est disponible pour le moment. Vous voudrez peut-être ajouter plus de bots à ce serveur.",
 			"no_bots_configured": "Aucun bot musical n'a encore été ajouté à ce serveur. Veuillez d'abord inviter un bot !",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ Les commandes avec préfixe vont disparaître — Discord retire l'accès aux messages. Utilise la commande slash `/{command}` ou mentionne le bot : `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Vous n'êtes pas connecté à un canal vocal pour utiliser ce bouton.",

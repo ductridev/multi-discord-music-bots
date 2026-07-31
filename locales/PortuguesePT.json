@@ -779,11 +779,11 @@
 			"vote_message": "Espere! Você precisa votar no top.gg para usar este comando. Obrigado.",
 			"periodic_message_vote_only": "🎵 Curtindo a música? Vote em nós no Top.gg! Seu voto nos ajuda a crescer! ❤️\nÁudio instável? Use `bregion` para mudar para uma região mais perto de você",
 			"periodic_message_with_bots": "🎵 Curtindo a música? Vote em nós no Top.gg! Quer música em várias salas? Adicione mais bots! 🎶\nÁudio instável? Use `bregion` para mudar para uma região mais perto de você",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"voice_channel_full": "O canal <#{channel}> está cheio! Tenta outro canal ou aumenta o limite de utilizadores 😅",
 			"no_bots_configured": "Nenhum bot de música foi adicionado a este servidor ainda. Por favor, convide um bot primeiro!",
 			"no_free_bots": "Nenhum bot está disponível no momento. Você pode querer adicionar mais bots a este servidor.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"maintenance": "O bot está em manutenção! Volta daqui a pouco 🔧",
+			"delegated_to_bot": "**{bot}** vai tratar disto — está livre e já entra no teu canal 🎶"
 		},
 		"message": {
 			"prefix_mention": "Olá, meu prefixo para este servidor é `{prefix}`. Quer mais informações? Então escreva `{prefix}help`\nFique seguro, fique incrível!",
@@ -812,7 +812,7 @@
 			"vote_message": "Espere! Você precisa votar no top.gg para usar este comando. Obrigado.",
 			"no_free_bots": "Nenhum bot está disponível no momento. Você pode querer adicionar mais bots a este servidor.",
 			"no_bots_configured": "Nenhum bot de música foi adicionado a este servidor ainda. Por favor, convide um bot primeiro!",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ Os comandos com prefixo vão desaparecer — o Discord está a retirar o acesso às mensagens. Usa o comando slash `/{command}` ou menciona o bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Não está conectado a um canal de voz para usar este botão.",

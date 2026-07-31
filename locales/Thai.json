@@ -776,11 +776,11 @@
       "vote_message": "รอหน่อย! คุณต้องโหวตใน top.gg ก่อนถึงจะใช้คำสั่งนี้ได้ ขอบคุณครับ",
       "periodic_message_vote_only": "🎵 ชอบเพลงไหม? โหวตให้เราบน Top.gg! โหวตของคุณช่วยให้เราเติบโต! ❤️\nเสียงไม่เสถียร? ใช้ `bregion` เพื่อเปลี่ยนไปยังภูมิภาคที่ใกล้คุณกว่า",
       "periodic_message_with_bots": "🎵 ชอบเพลงไหม? โหวตให้เราบน Top.gg! อยากฟังเพลงหลายห้อง? เพิ่มบอทเลย! 🎶\nเสียงไม่เสถียร? ใช้ `bregion` เพื่อเปลี่ยนไปยังภูมิภาคที่ใกล้คุณกว่า",
-      "voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+      "voice_channel_full": "ห้อง <#{channel}> เต็มแล้ว! ลองห้องอื่นหรือเพิ่มจำนวนคนที่เข้าได้ 😅",
       "no_bots_configured": "ยังไม่มีบอทเพลงถูกเพิ่มเข้าไปในเซิร์ฟเวอร์นี้ กรุณาเชิญบอทก่อน!",
       "no_free_bots": "ไม่มีบอทที่พร้อมใช้งานในขณะนี้ คุณอาจต้องการเพิ่มบอทเข้าไปในเซิร์ฟเวอร์นี้",
-      "maintenance": "The bot is under maintenance! Check back soon 🔧",
-      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+      "maintenance": "บอทกำลังปิดปรับปรุง! กลับมาอีกครั้งเร็ว ๆ นี้ 🔧",
+      "delegated_to_bot": "**{bot}** จะจัดการให้ — บอทนี้ว่างอยู่และกำลังเข้าห้องของคุณ 🎶"
     },
     "message": {
       "prefix_mention": "เฮ้, prefix ของบอทในเซิร์ฟเวอร์นี้คือ `{prefix}` ถ้าต้องการข้อมูลเพิ่มเติม ให้ใช้ `{prefix}help`\nขอให้สนุกนะ!",
@@ -808,7 +808,7 @@
       "vote_message": "รอหน่อย! คุณต้องโหวตบน top.gg ก่อนถึงจะใช้คำสั่งนี้ได้ ขอบคุณ",
       "no_free_bots": "ไม่มีบอทที่พร้อมใช้งานในขณะนี้ คุณอาจต้องการเพิ่มบอทเข้าไปในเซิร์ฟเวอร์นี้",
       "no_bots_configured": "ยังไม่มีบอทเพลงถูกเพิ่มเข้าไปในเซิร์ฟเวอร์นี้ กรุณาเชิญบอทก่อน!",
-      "prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+      "prefix_deprecated": "⚠️ คำสั่งแบบ prefix กำลังจะเลิกใช้ — Discord กำลังยกเลิกสิทธิ์อ่านข้อความ ใช้คำสั่งสแลช `/{command}` หรือแท็กบอท: `@{bot} {command}`"
     },
     "setupButton": {
       "no_voice_channel_button": "คุณต้องอยู่ในห้องเสียงเพื่อใช้ปุ่มนี้",

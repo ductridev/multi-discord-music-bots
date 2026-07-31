@@ -746,11 +746,11 @@
 			"vote_message": "Aspetta! Devi votare su top.gg per usare questo comando. Grazie.",
 			"periodic_message_vote_only": "🎵 Ti piace la musica? Votaci su Top.gg! Il tuo voto ci aiuta a crescere! ❤️\nAudio instabile? Usa `bregion` per passare a una regione più vicina a te",
 			"periodic_message_with_bots": "🎵 Ti piace la musica? Votaci su Top.gg! Vuoi musica in più stanze? Aggiungi più bot! 🎶\nAudio instabile? Usa `bregion` per passare a una regione più vicina a te",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"voice_channel_full": "Il canale <#{channel}> è pieno! Prova un altro canale o alza il limite di utenti 😅",
 			"no_bots_configured": "Nessun bot musicale è stato ancora aggiunto a questo server. Per favore, invita prima un bot!",
 			"no_free_bots": "Nessun bot è disponibile al momento. Potresti voler aggiungere più bot a questo server.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"maintenance": "Il bot è in manutenzione! Torna presto 🔧",
+			"delegated_to_bot": "**{bot}** se ne occupa — è libero e sta entrando nel tuo canale 🎶"
 		},
 		"message": {
 			"prefix_mention": "Ciao, il mio prefisso per questo server è `{prefix}`. Vuoi maggiori informazioni? Allora usa `{prefix}help`\nStai al sicuro, resta fantastico!",
@@ -778,7 +778,7 @@
 			"vote_message": "Aspetta! Devi votare su top.gg per usare questo comando. Grazie.",
 			"no_free_bots": "Nessun bot è disponibile al momento. Potresti voler aggiungere più bot a questo server.",
 			"no_bots_configured": "Nessun bot musicale è stato ancora aggiunto a questo server. Per favore, invita prima un bot!",
-			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
+			"prefix_deprecated": "⚠️ I comandi con prefisso stanno per sparire — Discord sta revocando l'accesso ai messaggi. Usa il comando slash `/{command}` o menziona il bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Non sei connesso a un canale vocale per usare questo pulsante.",
