@@ -30,6 +30,7 @@ model BotConfig {
   activity     String? @default("Lavamusic")
   activityType Int?    @default(0)
   active       Boolean @default(true)
+  messageContentIntent Boolean @default(true)
 
   // New relation: one bot can have many prefixes in many guilds
   guildConfigs GuildBotConfig[] @relation("BotClientConfig")

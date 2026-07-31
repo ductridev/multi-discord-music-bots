@@ -39,12 +39,21 @@ import { BotConfig } from '@prisma/client';
 
 const { MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping } = GatewayIntentBits;
 
-const clientOptions: ClientOptions = {
-	intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMessageTyping],
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
-};
+function clientOptionsFor(bot: BotConfig): ClientOptions {
+	const intents = [Guilds, GuildMessages, GuildVoiceStates, GuildMessageTyping];
+
+	// Requesting an intent the application does not hold fails login outright
+	// with "Used disallowed intents", so this must be per bot. Mentions still
+	// deliver content without it.
+	if (bot.messageContentIntent) intents.push(MessageContent);
+
+	return {
+		intents,
+		allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+	};
+}
 
 export async function shardStart(bot: BotConfig) {
-	const client = new Lavamusic(clientOptions, bot);
+	const client = new Lavamusic(clientOptionsFor(bot), bot);
 	await client.start();
-};
+}
