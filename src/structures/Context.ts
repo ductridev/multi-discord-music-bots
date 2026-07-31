@@ -110,7 +110,12 @@ export default class Context {
 	): Promise<Message> {
 		if (this.sendsViaInteraction) {
 			if (typeof content === 'string' || isInteractionReplyOptions(content)) {
-				if (this.interaction?.replied || this.interaction?.deferred) {
+				if (this.interaction?.deferred && !this.interaction?.replied) {
+					// Resolve the outstanding defer rather than leaving a stuck
+					// "thinking" placeholder. editReply marks the interaction
+					// replied, so any later send falls through to followUp below.
+					this.msg = await this.interaction.editReply(content as any) as Message;
+				} else if (this.interaction?.replied || this.interaction?.deferred) {
 					this.msg = await this.interaction?.followUp(content) as Message;
 				} else {
 					if (typeof content === 'string') {

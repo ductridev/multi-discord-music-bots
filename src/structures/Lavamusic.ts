@@ -13,7 +13,6 @@ import {
   REST,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   Routes,
-  Locale
 } from "discord.js";
 import config from "../config";
 import ServerData from "../database/server";
@@ -176,7 +175,7 @@ export default class Lavamusic extends Client {
         if (command.slashCommand) {
           const data: RESTPostAPIChatInputApplicationCommandsJSONBody = {
             name: command.name,
-            description: T(Locale.Vietnamese, command.description.content),
+            description: T('Vietnamese', command.description.content),
             type: ApplicationCommandType.ChatInput,
             options: command.options || [],
             default_member_permissions:
@@ -234,7 +233,7 @@ export default class Lavamusic extends Client {
                   [language2]: description,
                 };
               }
-              option.description = T(Locale.Vietnamese, option.description);
+              option.description = T('Vietnamese', option.description);
             });
 
             data.options?.map((option) => {
@@ -267,7 +266,7 @@ export default class Lavamusic extends Client {
                     };
                   }
                   subOption.description = T(
-                    Locale.Vietnamese,
+                    'Vietnamese',
                     subOption.description
                   );
                 });

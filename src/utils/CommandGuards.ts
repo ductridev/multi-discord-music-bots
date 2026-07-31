@@ -283,8 +283,6 @@ export async function runGuards(
 			);
 		}
 	}
-	timestamps.set(userId, now);
-	setTimeout(() => timestamps.delete(userId), cooldownAmount);
 
 	// 9. Mention abuse.
 	if (ctx.args.some(arg => typeof arg === 'string' && (arg.includes('@everyone') || arg.includes('@here')))) {
@@ -295,6 +293,12 @@ export async function runGuards(
 	if (busy) {
 		return fail(T(locale, 'event.interaction.no_free_bots'));
 	}
+
+	// Stamp the cooldown only now that the command will actually proceed —
+	// a user rejected above (including for "all bots busy") must not burn a
+	// cooldown window on a command that never ran.
+	timestamps.set(userId, now);
+	setTimeout(() => timestamps.delete(userId), cooldownAmount);
 
 	return PASS;
 }
