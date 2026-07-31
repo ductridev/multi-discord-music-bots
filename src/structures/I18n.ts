@@ -30,8 +30,7 @@ export function initI18n(logger: Logger) {
 export { i18n };
 
 export function T(locale: string, text: string | i18n.TranslateOptions, ...params: any) {
-	i18n.setLocale(locale);
-	return i18n.__mf(text, ...params);
+	return i18n.__mf({ phrase: text as string, locale }, ...params);
 }
 
 export function localization(lan: keyof typeof Locale, name: any, desc: any) {

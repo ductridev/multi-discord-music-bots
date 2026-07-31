@@ -7,6 +7,7 @@ export default class ServerData {
 	private prisma: PrismaClient;
 	private childEnv: BotConfig = {} as BotConfig;
 	public logger: Logger;
+	private static languageCache = new Map<string, string>();
 
 	constructor(bot: BotConfig) {
 		this.prisma = new PrismaClient();
@@ -87,11 +88,17 @@ export default class ServerData {
 			where: { guildId },
 			data: { language },
 		});
+		ServerData.languageCache.set(guildId, language);
 	}
 
 	public async getLanguage(guildId: string): Promise<string> {
+		const cached = ServerData.languageCache.get(guildId);
+		if (cached !== undefined) return cached;
+
 		const guild = await this.get(guildId);
-		return guild?.language ?? env.DEFAULT_LANGUAGE;
+		const language = guild?.language ?? env.DEFAULT_LANGUAGE;
+		ServerData.languageCache.set(guildId, language);
+		return language;
 	}
 
 	public async getSetup(guildId: string): Promise<Setup | null> {
