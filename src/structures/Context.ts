@@ -55,7 +55,6 @@ export default class Context {
 		this.member = ctx.member;
 		this.args = args;
 		this.setArgs(args);
-		this.setUpLocale();
 	}
 
 	/**
@@ -82,13 +81,12 @@ export default class Context {
 		ctx.client = chosenBot;
 		ctx.guild = guild;
 		ctx.channel = channel as TextBasedChannel;
+		// Commands read ctx.member directly, so it must come from the chosen
+		// bot's cache too — otherwise guards validate one view of the user's
+		// voice state while execution reads another.
+		ctx.member = guild.members.resolve(interaction.user.id) ?? ctx.member;
 
 		return ctx;
-	}
-
-	private async setUpLocale(): Promise<void> {
-		const defaultLanguage = env.DEFAULT_LANGUAGE || 'Vietnamese';
-		this.guildLocale = this.guild ? await this.client.db.getLanguage(this.guild.id) : defaultLanguage;
 	}
 
 	/** True when args and options come from an interaction payload. */

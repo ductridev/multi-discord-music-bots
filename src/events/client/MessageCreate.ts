@@ -130,6 +130,9 @@ export default class MessageCreate extends Event {
 
 			const { botMeta, vcToBot } = buildBotMeta(mentionBots, message.guild);
 			const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
+			this.client.logger.debug(
+				`resolve @mention ${mentionCommand.name}: ${resolved.reason} -> ${resolved.bot?.childEnv.name ?? 'none'}`,
+			);
 			let chosen = resolved.bot ?? this.client;
 			let isSelf = chosen.user!.id === this.client.user!.id;
 
@@ -147,6 +150,11 @@ export default class MessageCreate extends Event {
 					mentionCtx.client = chosen;
 					mentionCtx.channel = chosenChannel;
 					mentionCtx.guild = chosenGuild;
+					// Commands read ctx.member directly, so it must come from the
+					// chosen bot's cache too — otherwise guards validate one view
+					// of the user's voice state while execution reads another.
+					mentionCtx.member =
+						chosenGuild.members.resolve(message.author.id) ?? mentionCtx.member;
 				} else {
 					// The chosen bot cannot honestly own its own messages here, so
 					// handle it locally rather than validating one bot and running
