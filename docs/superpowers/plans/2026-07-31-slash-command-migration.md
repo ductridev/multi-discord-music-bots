@@ -132,11 +132,13 @@ The core of delegation, and the only piece where a regression silently routes th
 **Interfaces:**
 - Consumes: `Lavamusic` from `src/structures/index`
 - Produces:
-  - `interface BotMeta { bot: Lavamusic; clientId: string; name: string; isInAnyVC: boolean }`
+  - `interface BotMeta { bot: Lavamusic; clientId: string; name: string; isInAnyVC: boolean; hasActivePlayer: boolean }`
   - `type ResolveReason = 'in_user_vc' | 'receiver_idle' | 'any_idle' | 'all_busy' | 'no_bots'`
   - `interface ResolveResult { bot: Lavamusic | null; valid: boolean; reason: ResolveReason }`
-  - `function buildBotMeta(bots: Lavamusic[], guild: Guild): { botMeta: BotMeta[]; vcToBot: Map<string, string> }`
-  - `function resolveBot(vcToBot: Map<string, string>, botMeta: BotMeta[], userVCId: string | null, receiver?: Lavamusic | null): ResolveResult`
+  - `function buildBotMeta(bots: Lavamusic[], guild: Guild): { botMeta: BotMeta[]; vcToBot: Map<string, string[]> }`
+  - `function resolveBot(vcToBot: Map<string, string[]>, botMeta: BotMeta[], userVCId: string | null, receiver?: Lavamusic | null): ResolveResult`
+
+**Approved deviation (2026-07-31, during execution).** `vcToBot` maps a channel to an *array* of occupants, and `BotMeta` carries `hasActivePlayer`. Two fleet bots can share a voice channel (24/7 stay mode, a manual join, a restored session); the original single-value map dropped one of them by cache iteration order, so rung 1 could hand the command to an idle co-occupant instead of the bot holding the queue. Rung 1 now prefers the occupant with an active player. `master:src/events/client/MessageCreate.ts:125-131` has the same defect — this supersedes "priority ladder, unchanged from today" on that one point. Invisible to Tasks 6 and 7, which pass `botMeta` and `vcToBot` through opaquely.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -493,16 +495,21 @@ Add this static method immediately after the constructor. It resolves the guild 
 		interaction: ChatInputCommandInteraction,
 		chosenBot: Lavamusic,
 		args: any[],
-	): Context {
+	): Context | null {
+		// Both must come from the CHOSEN bot's caches — objects from the
+		// receiver's cache are bound to the receiver's client, so sending
+		// through them makes the wrong bot speak. If either is missing we
+		// cannot build an honest delegated context: return null and let the
+		// caller handle the command itself rather than half-swapping identity.
+		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
+		const channel = chosenBot.channels.cache.get(interaction.channelId);
+		if (!guild || !channel?.isTextBased()) return null;
+
 		const ctx = new Context(interaction, args);
 		ctx.sendMode = 'channel';
 		ctx.client = chosenBot;
-
-		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
-		if (guild) ctx.guild = guild;
-
-		const channel = chosenBot.channels.cache.get(interaction.channelId);
-		if (channel?.isTextBased()) ctx.channel = channel as TextBasedChannel;
+		ctx.guild = guild;
+		ctx.channel = channel as TextBasedChannel;
 
 		return ctx;
 	}
@@ -1171,14 +1178,36 @@ export default class InteractionCreate extends Event {
 
 		// When nothing is free the receiving bot answers, so the guards still
 		// run and the user sees permission or voice problems before "all busy".
-		const chosen = resolved.bot ?? this.client;
+		let chosen = resolved.bot ?? this.client;
 		const busy = !resolved.valid;
-		const isSelf = chosen.user!.id === this.client.user!.id;
+		let isSelf = chosen.user!.id === this.client.user!.id;
 
 		const options = (interaction as ChatInputCommandInteraction).options.data as any[];
-		const ctx = isSelf
-			? new Context(interaction as ChatInputCommandInteraction, options)
-			: Context.delegated(interaction as ChatInputCommandInteraction, chosen, options);
+		let ctx: Context;
+
+		if (isSelf) {
+			ctx = new Context(interaction as ChatInputCommandInteraction, options);
+		} else {
+			const delegatedCtx = Context.delegated(
+				interaction as ChatInputCommandInteraction,
+				chosen,
+				options,
+			);
+			if (delegatedCtx) {
+				ctx = delegatedCtx;
+			} else {
+				// The chosen bot has not cached this guild or channel, so it
+				// cannot honestly own its own messages. Handle it here instead
+				// of half-swapping identity and letting the wrong bot speak.
+				this.client.logger.warn(
+					`Cannot delegate ${command.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
+				);
+				chosen = this.client;
+				isSelf = true;
+				ctx = new Context(interaction as ChatInputCommandInteraction, options);
+			}
+		}
+
 		ctx.setArgs(options);
 		ctx.guildLocale = locale;
 
