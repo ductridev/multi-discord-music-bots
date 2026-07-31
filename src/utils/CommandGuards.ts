@@ -70,11 +70,32 @@ export async function runGuards(
 					inline: true,
 				},
 			])
+			.setFooter({
+				text: 'BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️',
+				iconURL:
+					'https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg',
+			})
 			.setTimestamp();
 		return { passed: false, reply: { embeds: [embed] } };
 	}
 
-	// 2. Channel and client permissions.
+	// 2. Channel-level permissions. Guild-level role permissions are blind to
+	// per-channel overwrites, and under delegation the chosen bot may be denied
+	// in a channel the receiving bot can see perfectly well.
+	const channelPerms = ctx.channel && 'permissionsFor' in ctx.channel
+		? ctx.channel.permissionsFor(clientMember)
+		: null;
+	if (
+		channelPerms &&
+		!(
+			channelPerms.has(PermissionFlagsBits.ViewChannel) &&
+			channelPerms.has(PermissionFlagsBits.SendMessages)
+		)
+	) {
+		return fail(T(locale, 'event.interaction.no_send_message'));
+	}
+
+	// 3. Channel and client permissions.
 	if (
 		!(
 			clientMember.permissions.has(PermissionFlagsBits.ViewChannel) &&
