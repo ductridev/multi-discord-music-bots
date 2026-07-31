@@ -1,893 +1,897 @@
 {
-	"cmd": {
-		"247": {
-			"description": "Atur bot untuk tetap berada di voice channel",
-			"errors": {
-				"not_in_voice": "Anda perlu berada di voice channel untuk menggunakan command ini.",
-				"generic": "Terjadi kesalahan saat mencoba menjalankan command ini."
-			},
-			"messages": {
-				"disabled": "`✅` | Mode 24/7 telah `DINONAKTIFKAN`",
-				"enabled": "`✅` | Mode 24/7 telah `DIAKTIFKAN`. \n**Bot tidak akan meninggalkan voice channel meskipun tidak ada orang di voice channel.**"
-			}
-		},
-		"ping": {
-			"description": "Menampilkan ping bot.",
-			"content": "Mengukur ping...",
-			"bot_latency": "Latensi Bot",
-			"api_latency": "Latensi API",
-			"requested_by": "Direquest oleh {author}"
-		},
-		"lavalink": {
-			"description": "Menampilkan statistik Lavalink saat ini.",
-			"title": "Statistik Lavalink",
-			"content": "Player: {players}\nPlayer Aktif: {playingPlayers}\nUptime: {uptime}\nCore: {cores} Core\nMemory Usage: {used} / {reservable}\nSystem Load: {systemLoad}%\nLavalink Load: {lavalinkLoad}%",
-			"page_info": "Halaman {index} dari {total}"
-		},
-		"invite": {
-			"description": "Dapatkan link invite bot.",
-			"content": "Anda dapat menginvite saya dengan mengklik tombol di bawah. Ada bug atau error? Bergabunglah ke server support!"
-		},
-		"help": {
-			"description": "Menampilkan Help menu.",
-			"options": {
-				"command": "command yang ingin Anda dapatkan informasinya"
-			},
-			"content": "Halo! Aku adalah {bot}, bot musik yang dibuat dengan [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) dan Discord. Anda dapat menggunakan `{prefix}help <command>` untuk mendapatkan informasi lebih lanjut tentang command.",
-			"title": "Menu Bantuan",
-			"not_found": "command `{cmdName}` ini tidak ada.",
-			"help_cmd": "**Deskripsi:** {description}\n**Penggunaan:** {usage}\n**Contoh:** {examples}\n**Alias:** {aliases}\n**Kategori:** {category}\n**Cooldown:** {cooldown} detik\n**Izin:** {premUser}\n**Izin Bot:** {premBot}\n**Hanya Pengembang:** {dev}\n**command Slash:** {slash}\n**Argumen:** {args}\n**Player:** {player}\n**DJ:** {dj}\n**Izin DJ:** {djPerm}\n**Suara:** {voice}",
-			"footer": "Gunakan {prefix}help <command> untuk informasi lebih lanjut tentang command • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
-		},
-		"botinfo": {
-			"description": "Informasi tentang bot",
-			"content": "Informasi Bot:\n- **Sistem Operasi**: {osInfo}\n- **Uptime**: {osUptime}\n- **Nama Host**: {osHostname}\n- **Arsitektur CPU**: {cpuInfo}\n- **Penggunaan CPU**: {cpuUsed}%\n- **Penggunaan Memori**: {memUsed} / {memTotal}\n- **Versi Node**: {nodeVersion}\n- **Versi Discord**: {discordJsVersion}\n- **Terhubung ke** {guilds} guild, {channels} saluran, dan {users} pengguna\n- **Total command**: {commands}"
-		},
-		"about": {
-			"description": "Menampilkan informasi tentang bot",
-			"fields": {
-				"creator": "Kreator",
-				"repository": "Repositori",
-				"support": "Dukungan",
-				"description": "Dia sangat ingin membuat proyek open source pertamanya untuk pengalaman coding yang lebih banyak. Dalam proyek ini, dia ditantang untuk membuat proyek dengan lebih sedikit bug. Semoga Anda menikmati menggunakan MultiBungoBot!"
-			}
-		},
-		"dj": {
-			"description": "Mengelola mode DJ dan peran terkait",
-			"errors": {
-				"provide_role": "Harap berikan peran.",
-				"no_roles": "Peran DJ kosong.",
-				"invalid_subcommand": "Harap berikan subcommand yang valid."
-			},
-			"messages": {
-				"role_exists": "Role DJ <@&{roleId}> sudah ditambahkan.",
-				"role_added": "Role DJ <@&{roleId}> telah ditambahkan.",
-				"role_not_found": "Role DJ <@&{roleId}> tidak ditambahkan.",
-				"role_removed": "Role DJ <@&{roleId}> telah dihapus.",
-				"all_roles_cleared": "Semua Role DJ telah dihapus.",
-				"toggle": "Mode DJ telah diubah menjadi {status}."
-			},
-			"options": {
-				"add": "Role DJ yang ingin Anda tambahkan",
-				"remove": "Role DJ yang ingin Anda hapus",
-				"clear": "Menghapus semua role DJ",
-				"toggle": "Mengaktifkan/menonaktifkan role DJ",
-				"role": "Role DJ"
-			},
-			"subcommands": "Subcommand"
-		},
-		"language": {
-			"description": "Mengatur bahasa untuk bot",
-			"invalid_language": "Harap berikan bahasa yang valid. Contoh: `EnglishUS` untuk Bahasa Inggris (Amerika Serikat)\n\nAnda dapat menemukan list bahasa yang di dukung [di sini](https://discord.com/developers/docs/reference#locales)\n\n**Bahasa yang Tersedia:**\n{languages}",
-			"already_set": "Bahasa sudah diatur ke `{language}`",
-			"not_set": "Bahasa belum diatur.",
-			"set": "`✅` | Bahasa telah diatur ke `{language}`",
-			"reset": "`✅` | Bahasa telah direset ke bahasa default.",
-			"options": {
-				"set": "Mengatur bahasa untuk bot",
-				"language": "Bahasa yang ingin Anda atur",
-				"reset": "Mengubah bahasa kembali ke bahasa default"
-			}
-		},
-		"prefix": {
-			"description": "Menampilkan atau mengatur prefix bot",
-			"errors": {
-				"prefix_too_long": "Prefix tidak boleh lebih dari 3 karakter."
-			},
-			"messages": {
-				"current_prefix": "Prefix untuk server ini adalah `{prefix}`",
-				"prefix_set": "Prefix untuk server ini sekarang adalah `{prefix}`",
-				"prefix_reset": "Prefix untuk server ini sekarang adalah `{prefix}`"
-			},
-			"options": {
-				"set": "Mengatur prefix",
-				"prefix": "Prefix yang ingin Anda atur",
-				"reset": "Reset prefix ke default"
-			}
-		},
-		"setup": {
-			"description": "Mengatur bot",
-			"errors": {
-				"channel_exists": "Channel Song Request sudah ada.",
-				"channel_not_exists": "Channel Song Request tidak ada.",
-				"channel_delete_fail": "Channel Song Request telah dihapus. Jika channel tidak terhapus secara normal, mohon untuk menghapus sendiri."
-			},
-			"messages": {
-				"channel_created": "Channel Song Request telah dibuat di <#{channelId}>.",
-				"channel_deleted": "Channel Song Request telah dihapus.",
-				"channel_info": "Channel Song Request adalah <#{channelId}>."
-			},
-			"options": {
-				"create": "Membuat Channel Song Request",
-				"delete": "Menghapus Channel Song Request",
-				"info": "Menampilkan Channel Song Request"
-			}
-		},
-		"8d": {
-			"description": "Mengaktifkan/menonaktifkan filter 8d",
-			"messages": {
-				"filter_enabled": "`✅` | Filter 8D telah `DIAKTIFKAN`.",
-				"filter_disabled": "`✅` | Filter 8D telah `DINONAKTIFKAN`."
-			}
-		},
-		"bassboost": {
-			"description": "Mengaktifkan/menonaktifkan filter bassboost",
-			"messages": {
-				"filter_enabled": "`✅` | Filter bassboost telah `DIAKTIFKAN`. \n**Hati-hati, mendengarkan terlalu keras dapat merusak pendengaran Anda!**",
-				"filter_disabled": "`✅` | Filter bassboost telah `DINONAKTIFKAN`.",
-				"high": "`✅` | Filter bassboost tinggi telah `DIAKTIFKAN`.",
-				"low": "`✅` | Filter bassboost rendah telah `DIAKTIFKAN`.",
-				"medium": "`✅` | Filter bassboost sedang telah `DIAKTIFKAN`.",
-				"off": "`✅` | Filter bassboost telah `DINONAKTIFKAN`."
-			},
-			"options": {
-				"level": "Level bassboost yang ingin Anda atur"
-			}
-		},
-		"distortion": {
-			"description": "Mengaktifkan/menonaktifkan filter distorsi",
-			"messages": {
-				"filter_enabled": "`✅` | Filter distorsi telah `DIAKTIFKAN`.",
-				"filter_disabled": "`✅` | Filter distorsi telah `DINONAKTIFKAN`."
-			}
-		},
-		"karaoke": {
-			"description": "Mengaktifkan/menonaktifkan filter karaoke",
-			"messages": {
-				"filter_enabled": "`✅` | Filter karaoke telah `DIAKTIFKAN`.",
-				"filter_disabled": "`✅` | Filter karaoke telah `DINONAKTIFKAN`."
-			}
-		},
-		"lowpass": {
-			"description": "Mengaktifkan/menonaktifkan filter lowpass",
-			"messages": {
-				"filter_enabled": "`✅` | Filter lowpass telah `DIAKTIFKAN`.",
-				"filter_disabled": "`✅` | Filter lowpass telah `DINONAKTIFKAN`."
-			}
-		},
-		"nightcore": {
-			"description": "Mengaktifkan/menonaktifkan filter nightcore",
-			"messages": {
-				"filter_enabled": "`✅` | Filter nightcore telah `DIAKTIFKAN`.",
-				"filter_disabled": "`✅` | Filter nightcore telah `DINONAKTIFKAN`."
-			}
-		},
-		"pitch": {
-			"description": "Mengaktifkan/menonaktifkan filter pitch",
-			"options": {
-				"pitch": "Angka yang ingin Anda atur untuk pitch (antara 0,5 dan 5)"
-			},
-			"errors": {
-				"invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5."
-			},
-			"messages": {
-				"pitch_set": "`✅` | Pitch telah diatur ke **{pitch}**."
-			}
-		},
-		"rate": {
-			"description": "Mengubah kecepatan lagu",
-			"options": {
-				"rate": "Angka yang ingin Anda atur untuk kecepatan (antara 0,5 dan 5)"
-			},
-			"errors": {
-				"invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5."
-			},
-			"messages": {
-				"rate_set": "`✅` | Kecepatan telah diatur ke **{rate}**."
-			}
-		},
-		"reset": {
-			"description": "Mengatur ulang filter aktif",
-			"messages": {
-				"filters_reset": "`✅` | Filter telah direset."
-			}
-		},
-		"rotation": {
-			"description": "Mengaktifkan/menonaktifkan filter rotasi",
-			"messages": {
-				"enabled": "`✅` | Filter rotasi telah `DIAKTIFKAN`.",
-				"disabled": "`✅` | Filter rotasi telah `DINONAKTIFKAN`."
-			}
-		},
-		"speed": {
-			"description": "Mengubah kecepatan lagu",
-			"options": {
-				"speed": "Kecepatan yang ingin Anda atur"
-			},
-			"messages": {
-				"invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5.",
-				"set_speed": "`✅` | Kecepatan telah diatur ke **{speed}**."
-			}
-		},
-		"tremolo": {
-			"description": "Mengaktifkan/menonaktifkan filter tremolo",
-			"messages": {
-				"enabled": "`✅` | Filter tremolo telah `DIAKTIFKAN`.",
-				"disabled": "`✅` | Filter tremolo telah `DINONAKTIFKAN`."
-			}
-		},
-		"vibrato": {
-			"description": "Mengaktifkan/menonaktifkan filter vibrato",
-			"messages": {
-				"enabled": "`✅` | Filter vibrato telah `DIAKTIFKAN`.",
-				"disabled": "`✅` | Filter vibrato telah `DINONAKTIFKAN`."
-			}
-		},
-		"autoplay": {
-			"description": "Mengaktifkan/menonaktifkan pemutaran otomatis",
-			"messages": {
-				"enabled": "`✅` | Pemutaran otomatis telah `DIAKTIFKAN`.",
-				"disabled": "`✅` | Pemutaran otomatis telah `DINONAKTIFKAN`."
-			}
-		},
-		"clearqueue": {
-			"description": "Membersihkan antrean",
-			"messages": {
-				"cleared": "Antrean telah dibersihkan."
-			}
-		},
-		"grab": {
-			"description": "Mengambil lagu yang sedang diputar ke DM Anda",
-			"content": "**Durasi:** {length}\n**Direquest oleh:** <@{requester}>\n**Link:** [Klik di sini]({uri})",
-			"check_dm": "Silakan periksa DM Anda.",
-			"dm_failed": "Saya tidak bisa mengirim DM kepada Anda. Pastikan allow direct messages diaktifkan.",
-			"loading": "Memuat..."
-		},
-		"join": {
-			"description": "Join ke voice channel",
-			"already_connected": "Saya sudah terhubung ke <#{channelId}>.",
-			"no_voice_channel": "Anda perlu berada di voice channel untuk menggunakan command ini.",
-			"joined": "Berhasil join ke <#{channelId}>."
-		},
-		"leave": {
-			"description": "Meninggalkan voice channel",
-			"left": "Berhasil meninggalkan <#{channelId}>.",
-			"not_in_channel": "Saya tidak berada di voice channel."
-		},
-		"loop": {
-			"description": "Mengulang lagu saat ini atau antrean",
-			"looping_song": "**Mengulang lagu.**",
-			"looping_queue": "**Mengulang antrean.**",
-			"looping_off": "**Pengulangan sekarang dimatikan.**"
-		},
-		"nowplaying": {
-			"description": "Menampilkan lagu yang sedang diputar",
-			"now_playing": "Sedang Diputar",
-			"track_info": "[{title}]({uri}) - Direquest Oleh: <@{requester}>\n\n`{bar}`"
-		},
-		"pause": {
-			"description": "Menjeda lagu saat ini",
-			"successfully_paused": "Berhasil menjeda lagu.",
-			"messages": {
-				"vote_embed": "Vote to pause: **{votes}/{needed}**\n✅ to pause, ❌ to keep playing.",
-				"button_yes": "✅ Jeda",
-				"button_no": "❌ Lanjut",
-				"already_voted": "Anda sudah memberikan suara."
-			}
-		},
-		"play": {
-			"description": "Memutar lagu dari YouTube, Spotify atau http",
-			"options": {
-				"song": "Lagu yang ingin Anda putar"
-			},
-			"loading": "Memuat...",
-			"errors": {
-				"search_error": "Terjadi kesalahan saat mencari.",
-				"no_results": "Tidak ditemukan hasil.",
-				"queue_too_long": "Antrean terlalu panjang. Panjang maksimum adalah {maxQueueSize} lagu.",
-				"playlist_too_long": "Playlist terlalu panjang. Panjang maksimum adalah {maxPlaylistSize} lagu."
-			},
-			"added_to_queue": "Menambahkan [{title}]({uri}) ke antrean.",
-			"added_playlist_to_queue": "Menambahkan {length} lagu ke antrean.",
-			"warnings": {
-				"longtrack_warning": "⚠️ **Peringatan:** Satu atau lebih lagu dalam hasil pencarian melebihi durasi 30 menit. Pastikan Anda ingin memutar lagu panjang ini karena dapat memengaruhi pengalaman mendengarkan Anda."
-			}
-		},
-		"playnext": {
-			"description": "Menambahkan lagu untuk diputar selanjutnya dalam antrean",
-			"options": {
-				"song": "Lagu yang ingin Anda putar"
-			},
-			"loading": "Memuat...",
-			"errors": {
-				"search_error": "Terjadi kesalahan saat mencari.",
-				"no_results": "Tidak ditemukan hasil.",
-				"queue_too_long": "Antrean terlalu panjang. Maksimum {maxQueueSize} lagu.",
-				"playlist_too_long": "Playlist terlalu panjang. Maksimum {maxPlaylistSize} lagu."
-			},
-			"added_to_play_next": "Menambahkan [{title}]({uri}) untuk diputar selanjutnya dalam antrean.",
-			"added_playlist_to_play_next": "Menambahkan {length} lagu untuk diputar selanjutnya dalam antrean."
-		},
-		"queue": {
-			"description": "Menampilkan antrean saat ini",
-			"now_playing": "Sedang diputar: [{title}]({uri}) - Direquest oleh: <@{requester}> - Durasi: `{duration}`",
-			"live": "LANGSUNG",
-			"track_info": "{index}. [{title}]({uri}) - Direquest oleh: <@{requester}> - Durasi: `{duration}`",
-			"title": "Antrean",
-			"page_info": "Halaman {index} dari {total}",
-			"duration": "Durasi Antrean: `{totalDuration}`"
-		},
-		"remove": {
-			"description": "Menghapus lagu dari antrean",
-			"options": {
-				"song": "Nomor lagu yang ingin Anda hapus"
-			},
-			"errors": {
-				"no_songs": "Tidak ada lagu dalam antrean.",
-				"invalid_number": "Harap berikan nomor lagu yang valid."
-			},
-			"messages": {
-				"removed": "Menghapus lagu nomor {songNumber} dari antrean."
-			}
-		},
-		"region": {
-			"description": "Lihat atau ganti region server audio untuk kualitas lebih baik 🌐",
-			"options": {
-				"region": "Region yang ingin dipilih (contoh: EU, VN)"
-			},
-			"info_title": "🌐 Region Server Audio",
-			"current_region": "**Node saat ini:** `{nodeId}`\n**Region:** {region}\n**Ping:** `{ping}ms`",
-			"available_regions": "Region yang tersedia",
-			"region_field": "{nodeCount} node, {playerCount} player\n{nodes}",
-			"current_indicator": " (saat ini)",
-			"switched": "Berhasil pindah ke region {region}!\n**Node:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
-			"already_on_region": "Kamu sudah di node {region} (`{nodeId}`)!",
-			"no_nodes_in_region": "Tidak ada node yang tersedia di region {region}!",
-			"invalid_region": "Region `{region}` tidak dikenal. Tersedia: {available}",
-			"switch_failed": "Gagal mengganti region. Coba lagi!"
-		},
-		"replay": {
-			"description": "Memutar ulang lagu saat ini",
-			"errors": {
-				"not_seekable": "Tidak dapat memutar ulang lagu ini karena tidak dapat dicari."
-			},
-			"messages": {
-				"replaying": "Memutar ulang lagu saat ini."
-			}
-		},
-		"resume": {
-			"description": "Melanjutkan lagu saat ini",
-			"errors": {
-				"not_paused": "Player tidak sedang dijeda."
-			},
-			"messages": {
-				"resumed": "Melanjutkan lagu.",
-				"vote_embed": "Vote to resume: **{votes}/{needed}**\n✅ to resume, ❌ to keep paused.",
-				"button_yes": "✅ Lanjutkan",
-				"button_no": "❌ Tetap Jeda",
-				"already_voted": "Anda sudah memberikan suara."
-			}
-		},
-		"search": {
-			"description": "Mencari lagu",
-			"options": {
-				"song": "Lagu yang ingin Anda cari"
-			},
-			"errors": {
-				"no_results": "Tidak ditemukan hasil.",
-				"search_error": "Terjadi kesalahan saat mencari."
-			},
-			"messages": {
-				"added_to_queue": "Menambahkan [{title}]({uri}) ke antrean."
-			},
-			"select": "Silakan pilih lagu yang ingin Anda putar"
-		},
-		"seek": {
-			"description": "Mencari ke waktu tertentu dalam lagu",
-			"options": {
-				"duration": "Durasi yang ingin dicari"
-			},
-			"errors": {
-				"invalid_format": "Format waktu tidak valid. Contoh: seek 1m, seek 1h 30m",
-				"not_seekable": "Lagu ini tidak dapat dicari.",
-				"beyond_duration": "Tidak dapat mencari melewati durasi lagu {length}."
-			},
-			"messages": {
-				"seeked_to": "Mencari ke {duration}"
-			}
-		},
-		"shuffle": {
-			"description": "Mengacak antrean",
-			"messages": {
-				"shuffled": "Mengacak antrean."
-			},
-			"errors": {
-				"fairplay": "Mode fairplay diaktifkan. Anda tidak dapat mengacak antrean."
-			}
-		},
-		"skip": {
-			"description": "Melewati lagu saat ini",
-			"messages": {
-				"skipped": "Melewati [{title}]({uri}).",
-				"vote_embed": "Vote to skip: **{votes}/{needed}**\n✅ to skip, ❌ to keep playing.",
-				"button_skip": "👍 Lewati",
-				"button_keep": "👎 Lanjut",
-				"button_yes": "✅ Lewati",
-				"button_no": "❌ Lanjut",
-				"already_voted": "Anda sudah memberikan suara."
-			}
-		},
-		"skipto": {
-			"description": "Melewati ke lagu tertentu dalam antrean",
-			"options": {
-				"number": "Nomor lagu yang ingin Anda lewati"
-			},
-			"errors": {
-				"invalid_number": "Harap berikan nomor yang valid."
-			},
-			"messages": {
-				"skipped_to": "Melewati ke lagu nomor {number}."
-			}
-		},
-		"stop": {
-			"description": "Menghentikan musik dan membersihkan antrean",
-			"messages": {
-				"stopped": "Menghentikan musik dan membersihkan antrean.",
-				"vote_embed": "Vote to stop: **{votes}/{needed}**\n✅ to stop, ❌ to keep playing.",
-				"button_stop": "🛑 Berhenti",
-				"button_keep": "👎 Lanjut",
-				"button_yes": "✅ Berhenti",
-				"button_no": "❌ Lanjut",
-				"already_voted": "Anda sudah memberikan suara."
-			}
-		},
-		"volume": {
-			"description": "Mengatur volume musik",
-			"options": {
-				"number": "Volume yang ingin Anda atur"
-			},
-			"messages": {
-				"invalid_number": "Harap berikan nomor yang valid.",
-				"too_low": "Volume tidak boleh lebih rendah dari 0.",
-				"too_high": "Volume tidak boleh lebih tinggi dari 200. Apakah Anda ingin merusak pendengaran atau speaker Anda? Hmm, saya rasa itu bukan ide yang bagus.",
-				"set": "Mengatur volume ke {volume}"
-			}
-		},
-		"addsong": {
-			"description": "Menambahkan lagu ke playlist",
-			"options": {
-				"playlist": "Playlist yang ingin Anda tambahkan",
-				"song": "Lagu yang ingin Anda tambahkan"
-			},
-			"messages": {
-				"no_playlist": "Harap berikan playlist",
-				"no_song": "Harap berikan lagu",
-				"playlist_not_found": "Playlist itu tidak ada",
-				"no_songs_found": "Tidak ditemukan lagu",
-				"added": "Menambahkan {count} lagu ke {playlist}"
-			}
-		},
-		"create": {
-			"description": "Membuat playlist",
-			"options": {
-				"name": "Nama Playlist"
-			},
-			"messages": {
-				"name_too_long": "Nama playlist hanya boleh 50 karakter.",
-				"playlist_exists": "Playlist dengan nama itu sudah ada. Harap gunakan nama yang berbeda.",
-				"playlist_created": "Playlist **{name}** telah dibuat."
-			}
-		},
-		"delete": {
-			"description": "Menghapus playlist",
-			"options": {
-				"playlist": "Playlist yang ingin Anda hapus"
-			},
-			"messages": {
-				"playlist_not_found": "Playlist itu tidak ada.",
-				"playlist_deleted": "Menghapus playlist **{playlistName}**."
-			}
-		},
-		"list": {
-			"description": "Mengambil semua playlist untuk user",
-			"options": {
-				"user": "User yang playlistnya ingin Anda ambil"
-			},
-			"messages": {
-				"no_playlists": "User ini tidak memiliki Playlist.",
-				"your": "Anda",
-				"playlists_title": "Playlist {username}",
-				"error": "Terjadi kesalahan saat mengambil Playlist."
-			}
-		},
-		"load": {
-			"description": "Memuat playlist",
-			"options": {
-				"playlist": "Playlist yang ingin Anda muat"
-			},
-			"messages": {
-				"playlist_not_exist": "Playlist itu tidak ada.",
-				"playlist_empty": "Playlist itu kosong.",
-				"playlist_loaded": "Memuat `{name}` dengan `{count}` lagu."
-			}
-		},
-		"removesong": {
-			"description": "Menghapus lagu dari playlist",
-			"options": {
-				"playlist": "Playlist yang ingin Anda hapus dari",
-				"song": "Lagu yang ingin Anda hapus"
-			},
-			"messages": {
-				"provide_playlist": "Harap berikan playlist.",
-				"provide_song": "Harap berikan lagu.",
-				"playlist_not_exist": "Playlist itu tidak ada.",
-				"song_not_found": "Tidak ditemukan lagu yang cocok.",
-				"song_removed": "Menghapus {song} dari {playlist}.",
-				"error_occurred": "Terjadi kesalahan saat menghapus lagu."
-			}
-		},
-		"steal": {
-			"description": "Mencuri playlist dari user lain dan menambahkannya ke playlist Anda",
-			"options": {
-				"playlist": "Playlist yang ingin Anda curi",
-				"user": "User yang ingin Anda curi Playlistnya"
-			},
-			"messages": {
-				"provide_playlist": "Harap berikan nama playlist.",
-				"provide_user": "Harap sebutkan user.",
-				"playlist_not_exist": "Playlist itu tidak ada untuk user yang disebutkan.",
-				"playlist_stolen": "Berhasil mencuri playlist `{playlist}` dari {user}.",
-				"error_occurred": "Terjadi kesalahan saat mencuri Playlist."
-			}
-		},
-		"lyrics": {
-			"description": "Mendapatkan lirik lagu yang sedang diputar",
-			"lyrics_track": "### Lirik untuk: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
-			"searching": "`🔍` Mencari lirik **{trackTitle}**...",
-			"errors": {
-				"no_results": "Tidak ada lirik yang ditemukan untuk lagu saat ini.",
-				"lyrics_error": "Terjadi kesalahan saat mengambil lirik."
-			}
-		},
-		"fairplay": {
-			"description": "Atur bot untuk memutar musik secara adil",
-			"errors": {
-				"not_in_voice": "Anda harus berada di saluran suara untuk menggunakan perintah ini.",
-				"generic": "Terjadi kesalahan saat mencoba menjalankan perintah ini."
-			},
-			"messages": {
-				"disabled": "`✅` | Mode fairplay telah `DINONAKTIFKAN`.",
-				"enabled": "`✅` | Mode fairplay telah `DIAKTIFKAN`."
-			}
-		},
-		"playlocal": {
-			"description": "Memutar file audio lokal Anda",
-			"options": {
-				"file": "File audio yang ingin Anda putar"
-			},
-			"loading": "Memuat...",
-			"errors": {
-				"empty_query": "Silakan lampirkan file audio untuk diputar.",
-				"invalid_format": "Anda hanya dapat memutar file MP3, WAV, OGG, FLAC, AAC atau M4A.",
-				"no_results": "Gagal memutar file audio. File mungkin rusak."
-			},
-			"added_to_queue": "Menambahkan [{title}]({url}) ke antrean"
-		},
-		"loop_current": {
-			"description": "Ulangi lagu yang sedang diputar"
-		},
-		"loop_queue": {
-			"description": "Ulangi antrean"
-		},
-		"vote": {
-			"description": "Kelola sistem voting untuk perintah musik",
-			"options": {
-				"toggle": "Aktifkan atau nonaktifkan sistem voting",
-				"status": "Periksa status sistem voting saat ini"
-			}
-		},
-		"lavaconfig": {
-			"description": "Kelola konfigurasi LavaSrc saat runtime 🎵",
-			"errors": {
-				"service_unavailable": "Layanan konfigurasi LavaSrc tidak tersedia.",
-				"missing_subcommand": "Harap berikan subcommand. Tersedia: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
-				"missing_node": "Argumen yang diperlukan tidak ada: `node`. Contoh: `!lavaconfig {subcommand} node:main`",
-				"unknown_subcommand": "Subcommand tidak dikenal: `{subcommand}`. Tersedia: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
-			},
-			"messages": {
-				"processing": "Memproses...",
-				"config_updated_title": "✅ Konfigurasi {source} Diperbarui",
-				"config_updated_desc": "Berhasil memperbarui konfigurasi {source} untuk node **{nodeId}**",
-				"updated_config": "Konfigurasi Diperbarui",
-				"view_title": "📋 Konfigurasi LavaSrc - {nodeId}",
-				"nodes_title": "📡 Node Lavalink",
-				"no_nodes": "Tidak ada node yang tersedia.",
-				"total_nodes": "Total: {count} node"
-			},
-			"usage": {
-				"title": "Penggunaan",
-				"value": "`!lavaconfig <subcommand> [opsi]`\nContoh: `!lavaconfig spotify node:main clientId:xxx`"
-			}
-		},
-		"youtubeconfig": {
-			"description": "Kelola konfigurasi sumber YouTube saat runtime 🎵",
-			"errors": {
-				"service_unavailable": "Layanan konfigurasi YouTube tidak tersedia.",
-				"missing_subcommand": "Harap berikan subcommand. Tersedia: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_node": "Argumen yang diperlukan tidak ada: `node`. Contoh: `!youtubeconfig {subcommand} node:main`",
-				"unknown_subcommand": "Subcommand tidak dikenal: `{subcommand}`. Tersedia: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_oauth_option": "Harap berikan setidaknya satu opsi: `refreshToken` atau `skipInitialization`",
-				"missing_potoken_pair": "Baik `poToken` maupun `visitorData` harus diberikan bersama untuk hasil terbaik",
-				"missing_refresh_token": "Argumen yang diperlukan tidak ada: `refreshToken`. Contoh: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
-			},
-			"messages": {
-				"processing": "Memproses...",
-				"oauth_updated_title": "✅ Konfigurasi OAuth YouTube Diperbarui",
-				"oauth_updated_desc": "Berhasil memperbarui konfigurasi OAuth YouTube untuk node **{nodeId}**",
-				"potoken_updated_title": "✅ Konfigurasi poToken YouTube Diperbarui",
-				"potoken_updated_desc": "Berhasil memperbarui konfigurasi poToken YouTube untuk node **{nodeId}**",
-				"token_refreshed_title": "✅ Token OAuth Diperbarui",
-				"token_refreshed_desc": "Berhasil memperbarui token OAuth untuk node **{nodeId}**",
-				"view_title": "📋 Konfigurasi Sumber YouTube - {nodeId}",
-				"nodes_title": "📡 Node Lavalink",
-				"no_nodes": "Tidak ada node yang tersedia.",
-				"total_nodes": "Total: {count} node",
-				"not_set": "Tidak diatur",
-				"na": "T/A"
-			},
-			"fields": {
-				"refresh_token": "Refresh Token",
-				"skip_initialization": "Lewati Inisialisasi",
-				"potoken": "poToken",
-				"visitor_data": "Visitor Data",
-				"token_type": "Tipe Token",
-				"expires_in": "Kedaluwarsa Dalam",
-				"scope": "Cakupan",
-				"access_token_truncated": "Access Token (dipotong)",
-				"updated": "✅ Diperbarui",
-				"not_changed": "⚪ Tidak berubah",
-				"yes": "✅ Ya",
-				"no": "❌ Tidak",
-				"important": "⚠️ Penting",
-				"oauth_warning": "Token OAuth harus dirahasiakan. Pertimbangkan untuk menggunakan akun YouTube burner.",
-				"how_to_generate": "💡 Cara Menghasilkan",
-				"generator_link": "Gunakan [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) untuk mendapatkan nilai ini.",
-				"note": "ℹ️ Catatan",
-				"api_note": "Hanya refresh token yang dikembalikan oleh API. poToken dan visitorData tidak ditampilkan."
-			},
-			"usage": {
-				"title": "Penggunaan",
-				"value": "`!youtubeconfig <subcommand> [opsi]`\nContoh: `!youtubeconfig oauth node:main refreshToken:xxx`"
-			}
-		},
-		"livelyrics": {
-			"description": "Tampilkan lirik sinkron langsung untuk lagu yang sedang diputar! Mode karaoke🎤",
-			"errors": {
-				"no_player": "Tidak ada musik yang sedang diputar.",
-				"no_synced": "Tidak ditemukan lirik sinkron untuk lagu ini."
-			}
-		}
-	},
-	"buttons": {
-		"invite": "Undang",
-		"support": "Server Dukungan",
-		"previous": "Sebelumnya",
-		"resume": "Lanjutkan",
-		"stop": "Berhenti",
-		"skip": "Lewati",
-		"loop": "Ulangi",
-		"errors": {
-			"not_author": "Anda tidak dapat menggunakan tombol ini."
-		}
-	},
-	"player": {
-		"errors": {
-			"no_player": "Tidak ada player yang aktif di server ini.",
-			"no_channel": "Anda perlu berada di voice channel untuk menggunakan command ini.",
-			"queue_empty": "Antrean kosong.",
-			"no_previous": "Tidak ada lagu sebelumnya dalam antrean.",
-			"no_song": "Tidak ada lagu dalam antrean.",
-			"already_paused": "Lagu sudah dijeda."
-		},
-		"trackStart": {
-			"now_playing": "Sedang diputar",
-			"requested_by": "Direquest oleh {user}",
-			"duration": "Durasi",
-			"author": "Artis",
-			"not_connected_to_voice_channel": "Anda tidak terhubung ke <#{channel}> untuk menggunakan tombol-tombol ini.",
-			"need_dj_role": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
-			"previous_by": "Sebelumnya oleh {user}",
-			"no_previous_song": "Tidak ada lagu sebelumnya.",
-			"paused_by": "Di pause oleh {user}",
-			"resumed_by": "Di resume oleh {user}",
-			"skipped_by": "Di skip oleh {user}",
-			"no_more_songs_in_queue": "Tidak ada lagi lagu dalam antrean.",
-			"looping_by": "Loop oleh {user}",
-			"looping_queue_by": "Loop antrean oleh {user}",
-			"looping_off_by": "Loop mati oleh {user}"
-		},
-		"setupStart": {
-			"now_playing": "Sedang diputar",
-			"description": "[{title}]({uri}) oleh {author} • `[{length}]` - Direquest oleh <@{requester}>",
-			"error_searching": "Terjadi kesalahan saat mencari.",
-			"no_results": "Tidak ditemukan hasil.",
-			"nothing_playing": "Tidak ada yang diputar saat ini.",
-			"queue_too_long": "Antrean terlalu panjang. Maksimum {maxQueueSize} lagu.",
-			"playlist_too_long": "Playlist terlalu panjang. Maksimum {maxPlaylistSize} lagu.",
-			"added_to_queue": "Menambahkan [{title}]({uri}) ke antrean.",
-			"added_playlist_to_queue": "Menambahkan [{length}] lagu dari playlist ke antrean."
-		}
-	},
-	"event": {
-		"interaction": {
-			"setup_channel": "Anda tidak dapat menggunakan command ini di setup channel.",
-			"no_send_message": "Saya tidak memiliki izin **`SendMessage`** di `{guild}`\nChannel: {channel}.",
-			"no_embed_links": "Saya tidak memiliki izin **`EmbedLinks`**.",
-			"no_permission": "Saya tidak memiliki cukup izin untuk menjalankan command ini.",
-			"no_user_permission": "Anda tidak memiliki cukup izin untuk menggunakan command ini.",
-			"no_voice_channel": "Anda harus terhubung ke voice channel untuk menggunakan command `{command}` ini.",
-			"no_connect_permission": "Saya tidak memiliki izin `CONNECT` untuk menjalankan command `{command}` ini.",
-			"no_speak_permission": "Saya tidak memiliki izin `SPEAK` untuk menjalankan command `{command}` ini.",
-			"no_request_to_speak": "Saya tidak memiliki izin `REQUEST TO SPEAK` untuk menjalankan command `{command}` ini.",
-			"different_voice_channel": "Anda tidak terhubung ke {channel} untuk menggunakan command `{command}` ini.",
-			"no_music_playing": "Tidak ada lagu yang sedang diputar saat ini.",
-			"no_dj_role": "Role DJ belum diatur.",
-			"no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
-			"cooldown": "Harap tunggu {time} detik lagi sebelum menggunakan kembali command `{command}`.",
-			"error": "Terjadi kesalahan: `{error}`",
-			"vote_button": "Vote untuk saya!",
-			"vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
-			"slash_deprecated": "Perintah slash sudah tidak digunakan lagi! Silakan gunakan `{prefix}{command}` sebagai gantinya. 🎵",
-			"periodic_message_vote_only": "🎵 Suka musiknya? Vote kami di Top.gg! Vote kamu membantu kami berkembang! ❤️\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
-			"periodic_message_with_bots": "🎵 Suka musiknya? Vote kami di Top.gg! Ingin musik di banyak ruangan? Tambahkan lebih banyak bot! 🎶\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat"
-
-		},
-		"message": {
-			"prefix_mention": "Hai, prefix saya untuk server ini adalah `{prefix}`. Ingin informasi lebih lanjut? Lakukan `{prefix}help`\nTetap Aman, Tetap Luar Biasa!",
-			"no_send_message": "Saya tidak memiliki izin **`SendMessage`** di `{guild}`\nChannel: {channel}.",
-			"no_embed_links": "Saya tidak memiliki izin **`EmbedLinks`**.",
-			"no_permission": "Saya tidak memiliki cukup izin untuk menjalankan command ini.",
-			"no_user_permission": "Anda tidak memiliki cukup izin untuk menggunakan command ini.",
-			"no_voice_channel": "Anda harus terhubung ke voice channel untuk menggunakan command `{command}` ini.",
-			"no_connect_permission": "Saya tidak memiliki izin `CONNECT` untuk menjalankan command `{command}` ini.",
-			"no_speak_permission": "Saya tidak memiliki izin `SPEAK` untuk menjalankan command `{command}` ini.",
-			"no_request_to_speak": "Saya tidak memiliki izin `REQUEST TO SPEAK` untuk menjalankan command `{command}` ini.",
-			"different_voice_channel": "Anda tidak terhubung ke {channel} untuk menggunakan command `{command}` ini.",
-			"no_music_playing": "Tidak ada lagu yang sedang diputar saat ini.",
-			"no_dj_role": "Role DJ belum diatur.",
-			"no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
-			"missing_arguments": "Argumen tidak lengkap",
-			"missing_arguments_description": "Harap berikan argumen yang diperlukan untuk command `{command}`.\n\nContoh:\n{examples}",
-			"syntax_footer": "Sintaks: [] = opsional, <> = wajib • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"cooldown": "Harap tunggu {time} detik lagi sebelum menggunakan kembali command `{command}`.",
-			"no_mention_everyone": "Anda tidak dapat menggunakan command ini dengan everyone atau here. Silakan gunakan slash command.",
-			"error": "Terjadi kesalahan: `{error}`",
-			"no_voice_channel_queue": "Anda tidak terhubung ke voice channel untuk menambahkan lagu ke antrean.",
-			"no_permission_connect_speak": "Saya tidak memiliki cukup izin untuk terhubung/berbicara di <#{channel}>.",
-			"different_voice_channel_queue": "Anda tidak terhubung ke <#{channel}> untuk menambahkan lagu ke antrean.",
-			"vote_button": "Vote untuk saya!",
-			"vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
-			"no_free_bots": "Tidak ada bot yang tersedia saat ini. Anda mungkin ingin menambahkan lebih banyak bot ke server ini.",
-			"no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!"
-		},
-		"setupButton": {
-			"no_voice_channel_button": "Anda tidak terhubung ke voice channel untuk menggunakan tombol ini.",
-			"different_voice_channel_button": "Anda tidak terhubung ke {channel} untuk menggunakan tombol-tombol ini.",
-			"now_playing": "Sedang diputar",
-			"live": "LANGSUNG",
-			"requested_by": "Direquest oleh <@{requester}>",
-			"no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan tombol ini.",
-			"volume_set": "Volume diatur ke {vol}%",
-			"volume_footer": "Volume: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"paused": "Dipause",
-			"resumed": "Diresume",
-			"pause_resume": "{name} lagu.",
-			"pause_resume_footer": "{name} oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"no_music_to_skip": "Tidak ada lagu untuk dilewati.",
-			"skipped": "Melewati lagu.",
-			"skipped_footer": "Dilewati oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"stopped": "Menghentikan lagu.",
-			"stopped_footer": "Dihentikan oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"nothing_playing": "Tidak ada yang diputar saat ini.",
-			"loop_set": "Loop diatur ke {loop}.",
-			"loop_footer": "Loop diatur ke {loop} oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"shuffled": "Mengacak antrean.",
-			"no_previous_track": "Tidak ada lagu sebelumnya.",
-			"playing_previous": "Memutar lagu sebelumnya.",
-			"previous_footer": "Memutar lagu sebelumnya oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"rewinded": "Memutar mundur lagu.",
-			"rewind_footer": "Diputar mundur oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"forward_limit": "Anda tidak dapat memajukan lagu lebih dari panjang lagu.",
-			"forwarded": "Memajukan lagu.",
-			"forward_footer": "Dimajukan oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"button_not_available": "Tombol ini tidak tersedia.",
-			"no_music_playing": "Tidak ada lagu yang diputar di server ini."
-		},
-		"voice_state_update": {
-			"kicked": "Bot telah dikeluarkan dari saluran suara <#{channelId}>.",
-			"moved": "Bot telah dipindahkan ke <#{channelId}>.",
-			"left_due_to_timeout_no_listeners": "Bot telah meninggalkan saluran suara <#{channelId}> karena tidak aktif (tidak ada pendengar).",
-			"left_due_to_timeout_no_songs": "Bot telah meninggalkan saluran suara <#{channelId}> karena tidak aktif (tidak ada lagu)."
-		}
-	},
-	"Evaluate code": "Evaluasi kode",
-	"Leave a guild": "Tinggalkan server",
-	"List all guilds the bot is in": "Daftar semua server tempat bot berada",
-	"Restart the bot": "Restart bot",
-	"The loop mode you want to set": "Mode loop yang ingin Anda atur",
-	"will_leave": {
-		"no_listeners": "Bot akan keluar dalam {time} menit karena tidak ada pendengar.",
-		"no_songs": "Bot akan keluar dalam {time} menit karena tidak ada lagu."
-	},
-	"LIVE_LYRICS": {
-		"NO_PLAYER": "Tidak ada musik yang sedang diputar.",
-		"NO_LYRICS": "Tidak ditemukan lirik sinkron untuk lagu ini.",
-		"TITLE": "🎵 Lirik Langsung - {track}",
-		"CURRENT": "🎵 SEDANG DIPUTAR",
-		"STOPPED": "Lirik langsung dihentikan.",
-		"REFRESHED": "Lirik diperbarui!",
-		"ERROR": "Terjadi kesalahan saat mengambil lirik.",
-		"ENDED": "Lagu selesai. Lirik langsung dihentikan.",
-		"PAUSED": "Pemutaran dijeda. Lirik akan dilanjutkan saat pemutaran berlanjut.",
-		"SEARCHING": "Mencari lirik sinkron...",
-		"NO_SYNCED_TITLE": "⚠️ Lirik Sinkron Tidak Tersedia",
-		"NO_SYNCED_DESCRIPTION": "Tidak dapat menemukan lirik sinkron untuk **{trackTitle}**.\n\n**Alternatif:**\n• Gunakan `/lyrics` untuk lirik statis\n• Coba lagu yang berbeda\n\nLirik sinkron bekerja paling baik dengan lagu populer dari Spotify, Deezer, atau YouTube Music.",
-		"ALREADY_RUNNING": "Lirik langsung sudah berjalan! Gunakan tombol Stop untuk menghentikannya terlebih dahulu.",
-		"STARTED": "🎤 Lirik langsung dimulai! Periksa pesan di bawah.",
-		"PROGRESS": "Kemajuan",
-		"UPDATE_INTERVAL": "Pembaruan setiap {seconds} detik",
-		"CLICK_REFRESH": "Klik Segarkan untuk pembaruan instan",
-		"NO_LYRICS_AVAILABLE": "Tidak ada lirik tersedia",
-		"REFRESH_BUTTON": "Segarkan",
-		"STOP_BUTTON": "Berhenti"
-	},
-	"Show current maintenance status": "Tampilkan status pemeliharaan saat ini",
-	"Show current maintenance status.": "Show current maintenance status.",
-	"Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
-	"Update Spotify configuration": "Update Spotify configuration",
-	"Update Apple Music configuration": "Update Apple Music configuration",
-	"Update Deezer configuration": "Update Deezer configuration",
-	"Update Yandex Music configuration": "Update Yandex Music configuration",
-	"Update VK Music configuration": "Update VK Music configuration",
-	"Update Qobuz configuration": "Update Qobuz configuration",
-	"Update yt-dlp configuration": "Update yt-dlp configuration",
-	"View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
-	"List all available Lavalink nodes": "List all available Lavalink nodes",
-	"The Lavalink node ID": "The Lavalink node ID",
-	"Spotify client ID": "Spotify client ID",
-	"Spotify client secret": "Spotify client secret",
-	"Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
-	"Prefer anonymous token": "Prefer anonymous token",
-	"Custom token endpoint URL": "Custom token endpoint URL",
-	"Apple Music media API token": "Apple Music media API token",
-	"Deezer ARL cookie value": "Deezer ARL cookie value",
-	"Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
-	"Yandex Music access token": "Yandex Music access token",
-	"VK Music user token": "VK Music user token",
-	"Qobuz user OAuth token": "Qobuz user OAuth token",
-	"Qobuz application ID": "Qobuz application ID",
-	"Qobuz application secret": "Qobuz application secret",
-	"Path to yt-dlp executable": "Path to yt-dlp executable",
-	"Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
-	"Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
-	"Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
-	"Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
-	"Update YouTube poToken configuration": "Update YouTube poToken configuration",
-	"View current YouTube source configuration": "View current YouTube source configuration",
-	"Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
-	"YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
-	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
-	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
-	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
-	"The refresh token to use": "The refresh token to use"
+  "cmd": {
+    "247": {
+      "description": "Atur bot untuk tetap berada di voice channel",
+      "errors": {
+        "not_in_voice": "Anda perlu berada di voice channel untuk menggunakan command ini.",
+        "generic": "Terjadi kesalahan saat mencoba menjalankan command ini."
+      },
+      "messages": {
+        "disabled": "`✅` | Mode 24/7 telah `DINONAKTIFKAN`",
+        "enabled": "`✅` | Mode 24/7 telah `DIAKTIFKAN`. \n**Bot tidak akan meninggalkan voice channel meskipun tidak ada orang di voice channel.**"
+      }
+    },
+    "ping": {
+      "description": "Menampilkan ping bot.",
+      "content": "Mengukur ping...",
+      "bot_latency": "Latensi Bot",
+      "api_latency": "Latensi API",
+      "requested_by": "Direquest oleh {author}"
+    },
+    "lavalink": {
+      "description": "Menampilkan statistik Lavalink saat ini.",
+      "title": "Statistik Lavalink",
+      "content": "Player: {players}\nPlayer Aktif: {playingPlayers}\nUptime: {uptime}\nCore: {cores} Core\nMemory Usage: {used} / {reservable}\nSystem Load: {systemLoad}%\nLavalink Load: {lavalinkLoad}%",
+      "page_info": "Halaman {index} dari {total}"
+    },
+    "invite": {
+      "description": "Dapatkan link invite bot.",
+      "content": "Anda dapat menginvite saya dengan mengklik tombol di bawah. Ada bug atau error? Bergabunglah ke server support!"
+    },
+    "help": {
+      "description": "Menampilkan Help menu.",
+      "options": {
+        "command": "command yang ingin Anda dapatkan informasinya"
+      },
+      "content": "Halo! Aku adalah {bot}, bot musik yang dibuat dengan [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) dan Discord. Anda dapat menggunakan `{prefix}help <command>` untuk mendapatkan informasi lebih lanjut tentang command.",
+      "title": "Menu Bantuan",
+      "not_found": "command `{cmdName}` ini tidak ada.",
+      "help_cmd": "**Deskripsi:** {description}\n**Penggunaan:** {usage}\n**Contoh:** {examples}\n**Alias:** {aliases}\n**Kategori:** {category}\n**Cooldown:** {cooldown} detik\n**Izin:** {premUser}\n**Izin Bot:** {premBot}\n**Hanya Pengembang:** {dev}\n**command Slash:** {slash}\n**Argumen:** {args}\n**Player:** {player}\n**DJ:** {dj}\n**Izin DJ:** {djPerm}\n**Suara:** {voice}",
+      "footer": "Gunakan {prefix}help <command> untuk informasi lebih lanjut tentang command • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
+    },
+    "botinfo": {
+      "description": "Informasi tentang bot",
+      "content": "Informasi Bot:\n- **Sistem Operasi**: {osInfo}\n- **Uptime**: {osUptime}\n- **Nama Host**: {osHostname}\n- **Arsitektur CPU**: {cpuInfo}\n- **Penggunaan CPU**: {cpuUsed}%\n- **Penggunaan Memori**: {memUsed} / {memTotal}\n- **Versi Node**: {nodeVersion}\n- **Versi Discord**: {discordJsVersion}\n- **Terhubung ke** {guilds} guild, {channels} saluran, dan {users} pengguna\n- **Total command**: {commands}"
+    },
+    "about": {
+      "description": "Menampilkan informasi tentang bot",
+      "fields": {
+        "creator": "Kreator",
+        "repository": "Repositori",
+        "support": "Dukungan",
+        "description": "Dia sangat ingin membuat proyek open source pertamanya untuk pengalaman coding yang lebih banyak. Dalam proyek ini, dia ditantang untuk membuat proyek dengan lebih sedikit bug. Semoga Anda menikmati menggunakan MultiBungoBot!"
+      }
+    },
+    "dj": {
+      "description": "Mengelola mode DJ dan peran terkait",
+      "errors": {
+        "provide_role": "Harap berikan peran.",
+        "no_roles": "Peran DJ kosong.",
+        "invalid_subcommand": "Harap berikan subcommand yang valid."
+      },
+      "messages": {
+        "role_exists": "Role DJ <@&{roleId}> sudah ditambahkan.",
+        "role_added": "Role DJ <@&{roleId}> telah ditambahkan.",
+        "role_not_found": "Role DJ <@&{roleId}> tidak ditambahkan.",
+        "role_removed": "Role DJ <@&{roleId}> telah dihapus.",
+        "all_roles_cleared": "Semua Role DJ telah dihapus.",
+        "toggle": "Mode DJ telah diubah menjadi {status}."
+      },
+      "options": {
+        "add": "Role DJ yang ingin Anda tambahkan",
+        "remove": "Role DJ yang ingin Anda hapus",
+        "clear": "Menghapus semua role DJ",
+        "toggle": "Mengaktifkan/menonaktifkan role DJ",
+        "role": "Role DJ"
+      },
+      "subcommands": "Subcommand"
+    },
+    "language": {
+      "description": "Mengatur bahasa untuk bot",
+      "invalid_language": "Harap berikan bahasa yang valid. Contoh: `EnglishUS` untuk Bahasa Inggris (Amerika Serikat)\n\nAnda dapat menemukan list bahasa yang di dukung [di sini](https://discord.com/developers/docs/reference#locales)\n\n**Bahasa yang Tersedia:**\n{languages}",
+      "already_set": "Bahasa sudah diatur ke `{language}`",
+      "not_set": "Bahasa belum diatur.",
+      "set": "`✅` | Bahasa telah diatur ke `{language}`",
+      "reset": "`✅` | Bahasa telah direset ke bahasa default.",
+      "options": {
+        "set": "Mengatur bahasa untuk bot",
+        "language": "Bahasa yang ingin Anda atur",
+        "reset": "Mengubah bahasa kembali ke bahasa default"
+      }
+    },
+    "prefix": {
+      "description": "Menampilkan atau mengatur prefix bot",
+      "errors": {
+        "prefix_too_long": "Prefix tidak boleh lebih dari 3 karakter."
+      },
+      "messages": {
+        "current_prefix": "Prefix untuk server ini adalah `{prefix}`",
+        "prefix_set": "Prefix untuk server ini sekarang adalah `{prefix}`",
+        "prefix_reset": "Prefix untuk server ini sekarang adalah `{prefix}`"
+      },
+      "options": {
+        "set": "Mengatur prefix",
+        "prefix": "Prefix yang ingin Anda atur",
+        "reset": "Reset prefix ke default"
+      }
+    },
+    "setup": {
+      "description": "Mengatur bot",
+      "errors": {
+        "channel_exists": "Channel Song Request sudah ada.",
+        "channel_not_exists": "Channel Song Request tidak ada.",
+        "channel_delete_fail": "Channel Song Request telah dihapus. Jika channel tidak terhapus secara normal, mohon untuk menghapus sendiri."
+      },
+      "messages": {
+        "channel_created": "Channel Song Request telah dibuat di <#{channelId}>.",
+        "channel_deleted": "Channel Song Request telah dihapus.",
+        "channel_info": "Channel Song Request adalah <#{channelId}>."
+      },
+      "options": {
+        "create": "Membuat Channel Song Request",
+        "delete": "Menghapus Channel Song Request",
+        "info": "Menampilkan Channel Song Request"
+      }
+    },
+    "8d": {
+      "description": "Mengaktifkan/menonaktifkan filter 8d",
+      "messages": {
+        "filter_enabled": "`✅` | Filter 8D telah `DIAKTIFKAN`.",
+        "filter_disabled": "`✅` | Filter 8D telah `DINONAKTIFKAN`."
+      }
+    },
+    "bassboost": {
+      "description": "Mengaktifkan/menonaktifkan filter bassboost",
+      "messages": {
+        "filter_enabled": "`✅` | Filter bassboost telah `DIAKTIFKAN`. \n**Hati-hati, mendengarkan terlalu keras dapat merusak pendengaran Anda!**",
+        "filter_disabled": "`✅` | Filter bassboost telah `DINONAKTIFKAN`.",
+        "high": "`✅` | Filter bassboost tinggi telah `DIAKTIFKAN`.",
+        "low": "`✅` | Filter bassboost rendah telah `DIAKTIFKAN`.",
+        "medium": "`✅` | Filter bassboost sedang telah `DIAKTIFKAN`.",
+        "off": "`✅` | Filter bassboost telah `DINONAKTIFKAN`."
+      },
+      "options": {
+        "level": "Level bassboost yang ingin Anda atur"
+      }
+    },
+    "distortion": {
+      "description": "Mengaktifkan/menonaktifkan filter distorsi",
+      "messages": {
+        "filter_enabled": "`✅` | Filter distorsi telah `DIAKTIFKAN`.",
+        "filter_disabled": "`✅` | Filter distorsi telah `DINONAKTIFKAN`."
+      }
+    },
+    "karaoke": {
+      "description": "Mengaktifkan/menonaktifkan filter karaoke",
+      "messages": {
+        "filter_enabled": "`✅` | Filter karaoke telah `DIAKTIFKAN`.",
+        "filter_disabled": "`✅` | Filter karaoke telah `DINONAKTIFKAN`."
+      }
+    },
+    "lowpass": {
+      "description": "Mengaktifkan/menonaktifkan filter lowpass",
+      "messages": {
+        "filter_enabled": "`✅` | Filter lowpass telah `DIAKTIFKAN`.",
+        "filter_disabled": "`✅` | Filter lowpass telah `DINONAKTIFKAN`."
+      }
+    },
+    "nightcore": {
+      "description": "Mengaktifkan/menonaktifkan filter nightcore",
+      "messages": {
+        "filter_enabled": "`✅` | Filter nightcore telah `DIAKTIFKAN`.",
+        "filter_disabled": "`✅` | Filter nightcore telah `DINONAKTIFKAN`."
+      }
+    },
+    "pitch": {
+      "description": "Mengaktifkan/menonaktifkan filter pitch",
+      "options": {
+        "pitch": "Angka yang ingin Anda atur untuk pitch (antara 0,5 dan 5)"
+      },
+      "errors": {
+        "invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5."
+      },
+      "messages": {
+        "pitch_set": "`✅` | Pitch telah diatur ke **{pitch}**."
+      }
+    },
+    "rate": {
+      "description": "Mengubah kecepatan lagu",
+      "options": {
+        "rate": "Angka yang ingin Anda atur untuk kecepatan (antara 0,5 dan 5)"
+      },
+      "errors": {
+        "invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5."
+      },
+      "messages": {
+        "rate_set": "`✅` | Kecepatan telah diatur ke **{rate}**."
+      }
+    },
+    "reset": {
+      "description": "Mengatur ulang filter aktif",
+      "messages": {
+        "filters_reset": "`✅` | Filter telah direset."
+      }
+    },
+    "rotation": {
+      "description": "Mengaktifkan/menonaktifkan filter rotasi",
+      "messages": {
+        "enabled": "`✅` | Filter rotasi telah `DIAKTIFKAN`.",
+        "disabled": "`✅` | Filter rotasi telah `DINONAKTIFKAN`."
+      }
+    },
+    "speed": {
+      "description": "Mengubah kecepatan lagu",
+      "options": {
+        "speed": "Kecepatan yang ingin Anda atur"
+      },
+      "messages": {
+        "invalid_number": "Harap berikan angka yang valid antara 0,5 dan 5.",
+        "set_speed": "`✅` | Kecepatan telah diatur ke **{speed}**."
+      }
+    },
+    "tremolo": {
+      "description": "Mengaktifkan/menonaktifkan filter tremolo",
+      "messages": {
+        "enabled": "`✅` | Filter tremolo telah `DIAKTIFKAN`.",
+        "disabled": "`✅` | Filter tremolo telah `DINONAKTIFKAN`."
+      }
+    },
+    "vibrato": {
+      "description": "Mengaktifkan/menonaktifkan filter vibrato",
+      "messages": {
+        "enabled": "`✅` | Filter vibrato telah `DIAKTIFKAN`.",
+        "disabled": "`✅` | Filter vibrato telah `DINONAKTIFKAN`."
+      }
+    },
+    "autoplay": {
+      "description": "Mengaktifkan/menonaktifkan pemutaran otomatis",
+      "messages": {
+        "enabled": "`✅` | Pemutaran otomatis telah `DIAKTIFKAN`.",
+        "disabled": "`✅` | Pemutaran otomatis telah `DINONAKTIFKAN`."
+      }
+    },
+    "clearqueue": {
+      "description": "Membersihkan antrean",
+      "messages": {
+        "cleared": "Antrean telah dibersihkan."
+      }
+    },
+    "grab": {
+      "description": "Mengambil lagu yang sedang diputar ke DM Anda",
+      "content": "**Durasi:** {length}\n**Direquest oleh:** <@{requester}>\n**Link:** [Klik di sini]({uri})",
+      "check_dm": "Silakan periksa DM Anda.",
+      "dm_failed": "Saya tidak bisa mengirim DM kepada Anda. Pastikan allow direct messages diaktifkan.",
+      "loading": "Memuat..."
+    },
+    "join": {
+      "description": "Join ke voice channel",
+      "already_connected": "Saya sudah terhubung ke <#{channelId}>.",
+      "no_voice_channel": "Anda perlu berada di voice channel untuk menggunakan command ini.",
+      "joined": "Berhasil join ke <#{channelId}>."
+    },
+    "leave": {
+      "description": "Meninggalkan voice channel",
+      "left": "Berhasil meninggalkan <#{channelId}>.",
+      "not_in_channel": "Saya tidak berada di voice channel."
+    },
+    "loop": {
+      "description": "Mengulang lagu saat ini atau antrean",
+      "looping_song": "**Mengulang lagu.**",
+      "looping_queue": "**Mengulang antrean.**",
+      "looping_off": "**Pengulangan sekarang dimatikan.**"
+    },
+    "nowplaying": {
+      "description": "Menampilkan lagu yang sedang diputar",
+      "now_playing": "Sedang Diputar",
+      "track_info": "[{title}]({uri}) - Direquest Oleh: <@{requester}>\n\n`{bar}`"
+    },
+    "pause": {
+      "description": "Menjeda lagu saat ini",
+      "successfully_paused": "Berhasil menjeda lagu.",
+      "messages": {
+        "vote_embed": "Vote to pause: **{votes}/{needed}**\n✅ to pause, ❌ to keep playing.",
+        "button_yes": "✅ Jeda",
+        "button_no": "❌ Lanjut",
+        "already_voted": "Anda sudah memberikan suara."
+      }
+    },
+    "play": {
+      "description": "Memutar lagu dari YouTube, Spotify atau http",
+      "options": {
+        "song": "Lagu yang ingin Anda putar"
+      },
+      "loading": "Memuat...",
+      "errors": {
+        "search_error": "Terjadi kesalahan saat mencari.",
+        "no_results": "Tidak ditemukan hasil.",
+        "queue_too_long": "Antrean terlalu panjang. Panjang maksimum adalah {maxQueueSize} lagu.",
+        "playlist_too_long": "Playlist terlalu panjang. Panjang maksimum adalah {maxPlaylistSize} lagu."
+      },
+      "added_to_queue": "Menambahkan [{title}]({uri}) ke antrean.",
+      "added_playlist_to_queue": "Menambahkan {length} lagu ke antrean.",
+      "warnings": {
+        "longtrack_warning": "⚠️ **Peringatan:** Satu atau lebih lagu dalam hasil pencarian melebihi durasi 30 menit. Pastikan Anda ingin memutar lagu panjang ini karena dapat memengaruhi pengalaman mendengarkan Anda."
+      }
+    },
+    "playnext": {
+      "description": "Menambahkan lagu untuk diputar selanjutnya dalam antrean",
+      "options": {
+        "song": "Lagu yang ingin Anda putar"
+      },
+      "loading": "Memuat...",
+      "errors": {
+        "search_error": "Terjadi kesalahan saat mencari.",
+        "no_results": "Tidak ditemukan hasil.",
+        "queue_too_long": "Antrean terlalu panjang. Maksimum {maxQueueSize} lagu.",
+        "playlist_too_long": "Playlist terlalu panjang. Maksimum {maxPlaylistSize} lagu."
+      },
+      "added_to_play_next": "Menambahkan [{title}]({uri}) untuk diputar selanjutnya dalam antrean.",
+      "added_playlist_to_play_next": "Menambahkan {length} lagu untuk diputar selanjutnya dalam antrean."
+    },
+    "queue": {
+      "description": "Menampilkan antrean saat ini",
+      "now_playing": "Sedang diputar: [{title}]({uri}) - Direquest oleh: <@{requester}> - Durasi: `{duration}`",
+      "live": "LANGSUNG",
+      "track_info": "{index}. [{title}]({uri}) - Direquest oleh: <@{requester}> - Durasi: `{duration}`",
+      "title": "Antrean",
+      "page_info": "Halaman {index} dari {total}",
+      "duration": "Durasi Antrean: `{totalDuration}`"
+    },
+    "remove": {
+      "description": "Menghapus lagu dari antrean",
+      "options": {
+        "song": "Nomor lagu yang ingin Anda hapus"
+      },
+      "errors": {
+        "no_songs": "Tidak ada lagu dalam antrean.",
+        "invalid_number": "Harap berikan nomor lagu yang valid."
+      },
+      "messages": {
+        "removed": "Menghapus lagu nomor {songNumber} dari antrean."
+      }
+    },
+    "region": {
+      "description": "Lihat atau ganti region server audio untuk kualitas lebih baik 🌐",
+      "options": {
+        "region": "Region yang ingin dipilih (contoh: EU, VN)"
+      },
+      "info_title": "🌐 Region Server Audio",
+      "current_region": "**Node saat ini:** `{nodeId}`\n**Region:** {region}\n**Ping:** `{ping}ms`",
+      "available_regions": "Region yang tersedia",
+      "region_field": "{nodeCount} node, {playerCount} player\n{nodes}",
+      "current_indicator": " (saat ini)",
+      "switched": "Berhasil pindah ke region {region}!\n**Node:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
+      "already_on_region": "Kamu sudah di node {region} (`{nodeId}`)!",
+      "no_nodes_in_region": "Tidak ada node yang tersedia di region {region}!",
+      "invalid_region": "Region `{region}` tidak dikenal. Tersedia: {available}",
+      "switch_failed": "Gagal mengganti region. Coba lagi!"
+    },
+    "replay": {
+      "description": "Memutar ulang lagu saat ini",
+      "errors": {
+        "not_seekable": "Tidak dapat memutar ulang lagu ini karena tidak dapat dicari."
+      },
+      "messages": {
+        "replaying": "Memutar ulang lagu saat ini."
+      }
+    },
+    "resume": {
+      "description": "Melanjutkan lagu saat ini",
+      "errors": {
+        "not_paused": "Player tidak sedang dijeda."
+      },
+      "messages": {
+        "resumed": "Melanjutkan lagu.",
+        "vote_embed": "Vote to resume: **{votes}/{needed}**\n✅ to resume, ❌ to keep paused.",
+        "button_yes": "✅ Lanjutkan",
+        "button_no": "❌ Tetap Jeda",
+        "already_voted": "Anda sudah memberikan suara."
+      }
+    },
+    "search": {
+      "description": "Mencari lagu",
+      "options": {
+        "song": "Lagu yang ingin Anda cari"
+      },
+      "errors": {
+        "no_results": "Tidak ditemukan hasil.",
+        "search_error": "Terjadi kesalahan saat mencari."
+      },
+      "messages": {
+        "added_to_queue": "Menambahkan [{title}]({uri}) ke antrean."
+      },
+      "select": "Silakan pilih lagu yang ingin Anda putar"
+    },
+    "seek": {
+      "description": "Mencari ke waktu tertentu dalam lagu",
+      "options": {
+        "duration": "Durasi yang ingin dicari"
+      },
+      "errors": {
+        "invalid_format": "Format waktu tidak valid. Contoh: seek 1m, seek 1h 30m",
+        "not_seekable": "Lagu ini tidak dapat dicari.",
+        "beyond_duration": "Tidak dapat mencari melewati durasi lagu {length}."
+      },
+      "messages": {
+        "seeked_to": "Mencari ke {duration}"
+      }
+    },
+    "shuffle": {
+      "description": "Mengacak antrean",
+      "messages": {
+        "shuffled": "Mengacak antrean."
+      },
+      "errors": {
+        "fairplay": "Mode fairplay diaktifkan. Anda tidak dapat mengacak antrean."
+      }
+    },
+    "skip": {
+      "description": "Melewati lagu saat ini",
+      "messages": {
+        "skipped": "Melewati [{title}]({uri}).",
+        "vote_embed": "Vote to skip: **{votes}/{needed}**\n✅ to skip, ❌ to keep playing.",
+        "button_skip": "👍 Lewati",
+        "button_keep": "👎 Lanjut",
+        "button_yes": "✅ Lewati",
+        "button_no": "❌ Lanjut",
+        "already_voted": "Anda sudah memberikan suara."
+      }
+    },
+    "skipto": {
+      "description": "Melewati ke lagu tertentu dalam antrean",
+      "options": {
+        "number": "Nomor lagu yang ingin Anda lewati"
+      },
+      "errors": {
+        "invalid_number": "Harap berikan nomor yang valid."
+      },
+      "messages": {
+        "skipped_to": "Melewati ke lagu nomor {number}."
+      }
+    },
+    "stop": {
+      "description": "Menghentikan musik dan membersihkan antrean",
+      "messages": {
+        "stopped": "Menghentikan musik dan membersihkan antrean.",
+        "vote_embed": "Vote to stop: **{votes}/{needed}**\n✅ to stop, ❌ to keep playing.",
+        "button_stop": "🛑 Berhenti",
+        "button_keep": "👎 Lanjut",
+        "button_yes": "✅ Berhenti",
+        "button_no": "❌ Lanjut",
+        "already_voted": "Anda sudah memberikan suara."
+      }
+    },
+    "volume": {
+      "description": "Mengatur volume musik",
+      "options": {
+        "number": "Volume yang ingin Anda atur"
+      },
+      "messages": {
+        "invalid_number": "Harap berikan nomor yang valid.",
+        "too_low": "Volume tidak boleh lebih rendah dari 0.",
+        "too_high": "Volume tidak boleh lebih tinggi dari 200. Apakah Anda ingin merusak pendengaran atau speaker Anda? Hmm, saya rasa itu bukan ide yang bagus.",
+        "set": "Mengatur volume ke {volume}"
+      }
+    },
+    "addsong": {
+      "description": "Menambahkan lagu ke playlist",
+      "options": {
+        "playlist": "Playlist yang ingin Anda tambahkan",
+        "song": "Lagu yang ingin Anda tambahkan"
+      },
+      "messages": {
+        "no_playlist": "Harap berikan playlist",
+        "no_song": "Harap berikan lagu",
+        "playlist_not_found": "Playlist itu tidak ada",
+        "no_songs_found": "Tidak ditemukan lagu",
+        "added": "Menambahkan {count} lagu ke {playlist}"
+      }
+    },
+    "create": {
+      "description": "Membuat playlist",
+      "options": {
+        "name": "Nama Playlist"
+      },
+      "messages": {
+        "name_too_long": "Nama playlist hanya boleh 50 karakter.",
+        "playlist_exists": "Playlist dengan nama itu sudah ada. Harap gunakan nama yang berbeda.",
+        "playlist_created": "Playlist **{name}** telah dibuat."
+      }
+    },
+    "delete": {
+      "description": "Menghapus playlist",
+      "options": {
+        "playlist": "Playlist yang ingin Anda hapus"
+      },
+      "messages": {
+        "playlist_not_found": "Playlist itu tidak ada.",
+        "playlist_deleted": "Menghapus playlist **{playlistName}**."
+      }
+    },
+    "list": {
+      "description": "Mengambil semua playlist untuk user",
+      "options": {
+        "user": "User yang playlistnya ingin Anda ambil"
+      },
+      "messages": {
+        "no_playlists": "User ini tidak memiliki Playlist.",
+        "your": "Anda",
+        "playlists_title": "Playlist {username}",
+        "error": "Terjadi kesalahan saat mengambil Playlist."
+      }
+    },
+    "load": {
+      "description": "Memuat playlist",
+      "options": {
+        "playlist": "Playlist yang ingin Anda muat"
+      },
+      "messages": {
+        "playlist_not_exist": "Playlist itu tidak ada.",
+        "playlist_empty": "Playlist itu kosong.",
+        "playlist_loaded": "Memuat `{name}` dengan `{count}` lagu."
+      }
+    },
+    "removesong": {
+      "description": "Menghapus lagu dari playlist",
+      "options": {
+        "playlist": "Playlist yang ingin Anda hapus dari",
+        "song": "Lagu yang ingin Anda hapus"
+      },
+      "messages": {
+        "provide_playlist": "Harap berikan playlist.",
+        "provide_song": "Harap berikan lagu.",
+        "playlist_not_exist": "Playlist itu tidak ada.",
+        "song_not_found": "Tidak ditemukan lagu yang cocok.",
+        "song_removed": "Menghapus {song} dari {playlist}.",
+        "error_occurred": "Terjadi kesalahan saat menghapus lagu."
+      }
+    },
+    "steal": {
+      "description": "Mencuri playlist dari user lain dan menambahkannya ke playlist Anda",
+      "options": {
+        "playlist": "Playlist yang ingin Anda curi",
+        "user": "User yang ingin Anda curi Playlistnya"
+      },
+      "messages": {
+        "provide_playlist": "Harap berikan nama playlist.",
+        "provide_user": "Harap sebutkan user.",
+        "playlist_not_exist": "Playlist itu tidak ada untuk user yang disebutkan.",
+        "playlist_stolen": "Berhasil mencuri playlist `{playlist}` dari {user}.",
+        "error_occurred": "Terjadi kesalahan saat mencuri Playlist."
+      }
+    },
+    "lyrics": {
+      "description": "Mendapatkan lirik lagu yang sedang diputar",
+      "lyrics_track": "### Lirik untuk: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
+      "searching": "`🔍` Mencari lirik **{trackTitle}**...",
+      "errors": {
+        "no_results": "Tidak ada lirik yang ditemukan untuk lagu saat ini.",
+        "lyrics_error": "Terjadi kesalahan saat mengambil lirik."
+      }
+    },
+    "fairplay": {
+      "description": "Atur bot untuk memutar musik secara adil",
+      "errors": {
+        "not_in_voice": "Anda harus berada di saluran suara untuk menggunakan perintah ini.",
+        "generic": "Terjadi kesalahan saat mencoba menjalankan perintah ini."
+      },
+      "messages": {
+        "disabled": "`✅` | Mode fairplay telah `DINONAKTIFKAN`.",
+        "enabled": "`✅` | Mode fairplay telah `DIAKTIFKAN`."
+      }
+    },
+    "playlocal": {
+      "description": "Memutar file audio lokal Anda",
+      "options": {
+        "file": "File audio yang ingin Anda putar"
+      },
+      "loading": "Memuat...",
+      "errors": {
+        "empty_query": "Silakan lampirkan file audio untuk diputar.",
+        "invalid_format": "Anda hanya dapat memutar file MP3, WAV, OGG, FLAC, AAC atau M4A.",
+        "no_results": "Gagal memutar file audio. File mungkin rusak."
+      },
+      "added_to_queue": "Menambahkan [{title}]({url}) ke antrean"
+    },
+    "loop_current": {
+      "description": "Ulangi lagu yang sedang diputar"
+    },
+    "loop_queue": {
+      "description": "Ulangi antrean"
+    },
+    "vote": {
+      "description": "Kelola sistem voting untuk perintah musik",
+      "options": {
+        "toggle": "Aktifkan atau nonaktifkan sistem voting",
+        "status": "Periksa status sistem voting saat ini"
+      }
+    },
+    "lavaconfig": {
+      "description": "Kelola konfigurasi LavaSrc saat runtime 🎵",
+      "errors": {
+        "service_unavailable": "Layanan konfigurasi LavaSrc tidak tersedia.",
+        "missing_subcommand": "Harap berikan subcommand. Tersedia: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
+        "missing_node": "Argumen yang diperlukan tidak ada: `node`. Contoh: `!lavaconfig {subcommand} node:main`",
+        "unknown_subcommand": "Subcommand tidak dikenal: `{subcommand}`. Tersedia: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
+      },
+      "messages": {
+        "processing": "Memproses...",
+        "config_updated_title": "✅ Konfigurasi {source} Diperbarui",
+        "config_updated_desc": "Berhasil memperbarui konfigurasi {source} untuk node **{nodeId}**",
+        "updated_config": "Konfigurasi Diperbarui",
+        "view_title": "📋 Konfigurasi LavaSrc - {nodeId}",
+        "nodes_title": "📡 Node Lavalink",
+        "no_nodes": "Tidak ada node yang tersedia.",
+        "total_nodes": "Total: {count} node"
+      },
+      "usage": {
+        "title": "Penggunaan",
+        "value": "`!lavaconfig <subcommand> [opsi]`\nContoh: `!lavaconfig spotify node:main clientId:xxx`"
+      }
+    },
+    "youtubeconfig": {
+      "description": "Kelola konfigurasi sumber YouTube saat runtime 🎵",
+      "errors": {
+        "service_unavailable": "Layanan konfigurasi YouTube tidak tersedia.",
+        "missing_subcommand": "Harap berikan subcommand. Tersedia: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_node": "Argumen yang diperlukan tidak ada: `node`. Contoh: `!youtubeconfig {subcommand} node:main`",
+        "unknown_subcommand": "Subcommand tidak dikenal: `{subcommand}`. Tersedia: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_oauth_option": "Harap berikan setidaknya satu opsi: `refreshToken` atau `skipInitialization`",
+        "missing_potoken_pair": "Baik `poToken` maupun `visitorData` harus diberikan bersama untuk hasil terbaik",
+        "missing_refresh_token": "Argumen yang diperlukan tidak ada: `refreshToken`. Contoh: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
+      },
+      "messages": {
+        "processing": "Memproses...",
+        "oauth_updated_title": "✅ Konfigurasi OAuth YouTube Diperbarui",
+        "oauth_updated_desc": "Berhasil memperbarui konfigurasi OAuth YouTube untuk node **{nodeId}**",
+        "potoken_updated_title": "✅ Konfigurasi poToken YouTube Diperbarui",
+        "potoken_updated_desc": "Berhasil memperbarui konfigurasi poToken YouTube untuk node **{nodeId}**",
+        "token_refreshed_title": "✅ Token OAuth Diperbarui",
+        "token_refreshed_desc": "Berhasil memperbarui token OAuth untuk node **{nodeId}**",
+        "view_title": "📋 Konfigurasi Sumber YouTube - {nodeId}",
+        "nodes_title": "📡 Node Lavalink",
+        "no_nodes": "Tidak ada node yang tersedia.",
+        "total_nodes": "Total: {count} node",
+        "not_set": "Tidak diatur",
+        "na": "T/A"
+      },
+      "fields": {
+        "refresh_token": "Refresh Token",
+        "skip_initialization": "Lewati Inisialisasi",
+        "potoken": "poToken",
+        "visitor_data": "Visitor Data",
+        "token_type": "Tipe Token",
+        "expires_in": "Kedaluwarsa Dalam",
+        "scope": "Cakupan",
+        "access_token_truncated": "Access Token (dipotong)",
+        "updated": "✅ Diperbarui",
+        "not_changed": "⚪ Tidak berubah",
+        "yes": "✅ Ya",
+        "no": "❌ Tidak",
+        "important": "⚠️ Penting",
+        "oauth_warning": "Token OAuth harus dirahasiakan. Pertimbangkan untuk menggunakan akun YouTube burner.",
+        "how_to_generate": "💡 Cara Menghasilkan",
+        "generator_link": "Gunakan [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) untuk mendapatkan nilai ini.",
+        "note": "ℹ️ Catatan",
+        "api_note": "Hanya refresh token yang dikembalikan oleh API. poToken dan visitorData tidak ditampilkan."
+      },
+      "usage": {
+        "title": "Penggunaan",
+        "value": "`!youtubeconfig <subcommand> [opsi]`\nContoh: `!youtubeconfig oauth node:main refreshToken:xxx`"
+      }
+    },
+    "livelyrics": {
+      "description": "Tampilkan lirik sinkron langsung untuk lagu yang sedang diputar! Mode karaoke🎤",
+      "errors": {
+        "no_player": "Tidak ada musik yang sedang diputar.",
+        "no_synced": "Tidak ditemukan lirik sinkron untuk lagu ini."
+      }
+    }
+  },
+  "buttons": {
+    "invite": "Undang",
+    "support": "Server Dukungan",
+    "previous": "Sebelumnya",
+    "resume": "Lanjutkan",
+    "stop": "Berhenti",
+    "skip": "Lewati",
+    "loop": "Ulangi",
+    "errors": {
+      "not_author": "Anda tidak dapat menggunakan tombol ini."
+    }
+  },
+  "player": {
+    "errors": {
+      "no_player": "Tidak ada player yang aktif di server ini.",
+      "no_channel": "Anda perlu berada di voice channel untuk menggunakan command ini.",
+      "queue_empty": "Antrean kosong.",
+      "no_previous": "Tidak ada lagu sebelumnya dalam antrean.",
+      "no_song": "Tidak ada lagu dalam antrean.",
+      "already_paused": "Lagu sudah dijeda."
+    },
+    "trackStart": {
+      "now_playing": "Sedang diputar",
+      "requested_by": "Direquest oleh {user}",
+      "duration": "Durasi",
+      "author": "Artis",
+      "not_connected_to_voice_channel": "Anda tidak terhubung ke <#{channel}> untuk menggunakan tombol-tombol ini.",
+      "need_dj_role": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
+      "previous_by": "Sebelumnya oleh {user}",
+      "no_previous_song": "Tidak ada lagu sebelumnya.",
+      "paused_by": "Di pause oleh {user}",
+      "resumed_by": "Di resume oleh {user}",
+      "skipped_by": "Di skip oleh {user}",
+      "no_more_songs_in_queue": "Tidak ada lagi lagu dalam antrean.",
+      "looping_by": "Loop oleh {user}",
+      "looping_queue_by": "Loop antrean oleh {user}",
+      "looping_off_by": "Loop mati oleh {user}"
+    },
+    "setupStart": {
+      "now_playing": "Sedang diputar",
+      "description": "[{title}]({uri}) oleh {author} • `[{length}]` - Direquest oleh <@{requester}>",
+      "error_searching": "Terjadi kesalahan saat mencari.",
+      "no_results": "Tidak ditemukan hasil.",
+      "nothing_playing": "Tidak ada yang diputar saat ini.",
+      "queue_too_long": "Antrean terlalu panjang. Maksimum {maxQueueSize} lagu.",
+      "playlist_too_long": "Playlist terlalu panjang. Maksimum {maxPlaylistSize} lagu.",
+      "added_to_queue": "Menambahkan [{title}]({uri}) ke antrean.",
+      "added_playlist_to_queue": "Menambahkan [{length}] lagu dari playlist ke antrean."
+    }
+  },
+  "event": {
+    "interaction": {
+      "setup_channel": "Anda tidak dapat menggunakan command ini di setup channel.",
+      "no_send_message": "Saya tidak memiliki izin **`SendMessage`** di `{guild}`\nChannel: {channel}.",
+      "no_embed_links": "Saya tidak memiliki izin **`EmbedLinks`**.",
+      "no_permission": "Saya tidak memiliki cukup izin untuk menjalankan command ini.",
+      "no_user_permission": "Anda tidak memiliki cukup izin untuk menggunakan command ini.",
+      "no_voice_channel": "Anda harus terhubung ke voice channel untuk menggunakan command `{command}` ini.",
+      "no_connect_permission": "Saya tidak memiliki izin `CONNECT` untuk menjalankan command `{command}` ini.",
+      "no_speak_permission": "Saya tidak memiliki izin `SPEAK` untuk menjalankan command `{command}` ini.",
+      "no_request_to_speak": "Saya tidak memiliki izin `REQUEST TO SPEAK` untuk menjalankan command `{command}` ini.",
+      "different_voice_channel": "Anda tidak terhubung ke {channel} untuk menggunakan command `{command}` ini.",
+      "no_music_playing": "Tidak ada lagu yang sedang diputar saat ini.",
+      "no_dj_role": "Role DJ belum diatur.",
+      "no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
+      "cooldown": "Harap tunggu {time} detik lagi sebelum menggunakan kembali command `{command}`.",
+      "error": "Terjadi kesalahan: `{error}`",
+      "vote_button": "Vote untuk saya!",
+      "vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
+      "slash_deprecated": "Perintah slash sudah tidak digunakan lagi! Silakan gunakan `{prefix}{command}` sebagai gantinya. 🎵",
+      "periodic_message_vote_only": "🎵 Suka musiknya? Vote kami di Top.gg! Vote kamu membantu kami berkembang! ❤️\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
+      "periodic_message_with_bots": "🎵 Suka musiknya? Vote kami di Top.gg! Ingin musik di banyak ruangan? Tambahkan lebih banyak bot! 🎶\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
+      "voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+      "no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!",
+      "no_free_bots": "Tidak ada bot yang tersedia saat ini. Anda mungkin ingin menambahkan lebih banyak bot ke server ini.",
+      "maintenance": "The bot is under maintenance! Check back soon 🔧",
+      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+    },
+    "message": {
+      "prefix_mention": "Hai, prefix saya untuk server ini adalah `{prefix}`. Ingin informasi lebih lanjut? Lakukan `{prefix}help`\nTetap Aman, Tetap Luar Biasa!",
+      "no_send_message": "Saya tidak memiliki izin **`SendMessage`** di `{guild}`\nChannel: {channel}.",
+      "no_embed_links": "Saya tidak memiliki izin **`EmbedLinks`**.",
+      "no_permission": "Saya tidak memiliki cukup izin untuk menjalankan command ini.",
+      "no_user_permission": "Anda tidak memiliki cukup izin untuk menggunakan command ini.",
+      "no_voice_channel": "Anda harus terhubung ke voice channel untuk menggunakan command `{command}` ini.",
+      "no_connect_permission": "Saya tidak memiliki izin `CONNECT` untuk menjalankan command `{command}` ini.",
+      "no_speak_permission": "Saya tidak memiliki izin `SPEAK` untuk menjalankan command `{command}` ini.",
+      "no_request_to_speak": "Saya tidak memiliki izin `REQUEST TO SPEAK` untuk menjalankan command `{command}` ini.",
+      "different_voice_channel": "Anda tidak terhubung ke {channel} untuk menggunakan command `{command}` ini.",
+      "no_music_playing": "Tidak ada lagu yang sedang diputar saat ini.",
+      "no_dj_role": "Role DJ belum diatur.",
+      "no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan command ini.",
+      "missing_arguments": "Argumen tidak lengkap",
+      "missing_arguments_description": "Harap berikan argumen yang diperlukan untuk command `{command}`.\n\nContoh:\n{examples}",
+      "syntax_footer": "Sintaks: [] = opsional, <> = wajib • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "cooldown": "Harap tunggu {time} detik lagi sebelum menggunakan kembali command `{command}`.",
+      "no_mention_everyone": "Anda tidak dapat menggunakan command ini dengan everyone atau here. Silakan gunakan slash command.",
+      "error": "Terjadi kesalahan: `{error}`",
+      "no_voice_channel_queue": "Anda tidak terhubung ke voice channel untuk menambahkan lagu ke antrean.",
+      "no_permission_connect_speak": "Saya tidak memiliki cukup izin untuk terhubung/berbicara di <#{channel}>.",
+      "different_voice_channel_queue": "Anda tidak terhubung ke <#{channel}> untuk menambahkan lagu ke antrean.",
+      "vote_button": "Vote untuk saya!",
+      "vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
+      "no_free_bots": "Tidak ada bot yang tersedia saat ini. Anda mungkin ingin menambahkan lebih banyak bot ke server ini.",
+      "no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!"
+    },
+    "setupButton": {
+      "no_voice_channel_button": "Anda tidak terhubung ke voice channel untuk menggunakan tombol ini.",
+      "different_voice_channel_button": "Anda tidak terhubung ke {channel} untuk menggunakan tombol-tombol ini.",
+      "now_playing": "Sedang diputar",
+      "live": "LANGSUNG",
+      "requested_by": "Direquest oleh <@{requester}>",
+      "no_dj_permission": "Anda perlu memiliki role DJ untuk menggunakan tombol ini.",
+      "volume_set": "Volume diatur ke {vol}%",
+      "volume_footer": "Volume: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "paused": "Dipause",
+      "resumed": "Diresume",
+      "pause_resume": "{name} lagu.",
+      "pause_resume_footer": "{name} oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "no_music_to_skip": "Tidak ada lagu untuk dilewati.",
+      "skipped": "Melewati lagu.",
+      "skipped_footer": "Dilewati oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "stopped": "Menghentikan lagu.",
+      "stopped_footer": "Dihentikan oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "nothing_playing": "Tidak ada yang diputar saat ini.",
+      "loop_set": "Loop diatur ke {loop}.",
+      "loop_footer": "Loop diatur ke {loop} oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "shuffled": "Mengacak antrean.",
+      "no_previous_track": "Tidak ada lagu sebelumnya.",
+      "playing_previous": "Memutar lagu sebelumnya.",
+      "previous_footer": "Memutar lagu sebelumnya oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "rewinded": "Memutar mundur lagu.",
+      "rewind_footer": "Diputar mundur oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "forward_limit": "Anda tidak dapat memajukan lagu lebih dari panjang lagu.",
+      "forwarded": "Memajukan lagu.",
+      "forward_footer": "Dimajukan oleh {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "button_not_available": "Tombol ini tidak tersedia.",
+      "no_music_playing": "Tidak ada lagu yang diputar di server ini."
+    },
+    "voice_state_update": {
+      "kicked": "Bot telah dikeluarkan dari saluran suara <#{channelId}>.",
+      "moved": "Bot telah dipindahkan ke <#{channelId}>.",
+      "left_due_to_timeout_no_listeners": "Bot telah meninggalkan saluran suara <#{channelId}> karena tidak aktif (tidak ada pendengar).",
+      "left_due_to_timeout_no_songs": "Bot telah meninggalkan saluran suara <#{channelId}> karena tidak aktif (tidak ada lagu)."
+    }
+  },
+  "Evaluate code": "Evaluasi kode",
+  "Leave a guild": "Tinggalkan server",
+  "List all guilds the bot is in": "Daftar semua server tempat bot berada",
+  "Restart the bot": "Restart bot",
+  "The loop mode you want to set": "Mode loop yang ingin Anda atur",
+  "will_leave": {
+    "no_listeners": "Bot akan keluar dalam {time} menit karena tidak ada pendengar.",
+    "no_songs": "Bot akan keluar dalam {time} menit karena tidak ada lagu."
+  },
+  "LIVE_LYRICS": {
+    "NO_PLAYER": "Tidak ada musik yang sedang diputar.",
+    "NO_LYRICS": "Tidak ditemukan lirik sinkron untuk lagu ini.",
+    "TITLE": "🎵 Lirik Langsung - {track}",
+    "CURRENT": "🎵 SEDANG DIPUTAR",
+    "STOPPED": "Lirik langsung dihentikan.",
+    "REFRESHED": "Lirik diperbarui!",
+    "ERROR": "Terjadi kesalahan saat mengambil lirik.",
+    "ENDED": "Lagu selesai. Lirik langsung dihentikan.",
+    "PAUSED": "Pemutaran dijeda. Lirik akan dilanjutkan saat pemutaran berlanjut.",
+    "SEARCHING": "Mencari lirik sinkron...",
+    "NO_SYNCED_TITLE": "⚠️ Lirik Sinkron Tidak Tersedia",
+    "NO_SYNCED_DESCRIPTION": "Tidak dapat menemukan lirik sinkron untuk **{trackTitle}**.\n\n**Alternatif:**\n• Gunakan `/lyrics` untuk lirik statis\n• Coba lagu yang berbeda\n\nLirik sinkron bekerja paling baik dengan lagu populer dari Spotify, Deezer, atau YouTube Music.",
+    "ALREADY_RUNNING": "Lirik langsung sudah berjalan! Gunakan tombol Stop untuk menghentikannya terlebih dahulu.",
+    "STARTED": "🎤 Lirik langsung dimulai! Periksa pesan di bawah.",
+    "PROGRESS": "Kemajuan",
+    "UPDATE_INTERVAL": "Pembaruan setiap {seconds} detik",
+    "CLICK_REFRESH": "Klik Segarkan untuk pembaruan instan",
+    "NO_LYRICS_AVAILABLE": "Tidak ada lirik tersedia",
+    "REFRESH_BUTTON": "Segarkan",
+    "STOP_BUTTON": "Berhenti"
+  },
+  "Show current maintenance status": "Tampilkan status pemeliharaan saat ini",
+  "Show current maintenance status.": "Show current maintenance status.",
+  "Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
+  "Update Spotify configuration": "Update Spotify configuration",
+  "Update Apple Music configuration": "Update Apple Music configuration",
+  "Update Deezer configuration": "Update Deezer configuration",
+  "Update Yandex Music configuration": "Update Yandex Music configuration",
+  "Update VK Music configuration": "Update VK Music configuration",
+  "Update Qobuz configuration": "Update Qobuz configuration",
+  "Update yt-dlp configuration": "Update yt-dlp configuration",
+  "View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
+  "List all available Lavalink nodes": "List all available Lavalink nodes",
+  "The Lavalink node ID": "The Lavalink node ID",
+  "Spotify client ID": "Spotify client ID",
+  "Spotify client secret": "Spotify client secret",
+  "Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
+  "Prefer anonymous token": "Prefer anonymous token",
+  "Custom token endpoint URL": "Custom token endpoint URL",
+  "Apple Music media API token": "Apple Music media API token",
+  "Deezer ARL cookie value": "Deezer ARL cookie value",
+  "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
+  "Yandex Music access token": "Yandex Music access token",
+  "VK Music user token": "VK Music user token",
+  "Qobuz user OAuth token": "Qobuz user OAuth token",
+  "Qobuz application ID": "Qobuz application ID",
+  "Qobuz application secret": "Qobuz application secret",
+  "Path to yt-dlp executable": "Path to yt-dlp executable",
+  "Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
+  "Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
+  "Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
+  "Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
+  "Update YouTube poToken configuration": "Update YouTube poToken configuration",
+  "View current YouTube source configuration": "View current YouTube source configuration",
+  "Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
+  "YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
+  "Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
+  "Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
+  "Visitor data associated with the poToken": "Visitor data associated with the poToken",
+  "The refresh token to use": "The refresh token to use"
 }

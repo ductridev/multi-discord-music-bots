@@ -1,938 +1,935 @@
 {
-	"cmd": {
-		"247": {
-			"description": "让我24/7守在语音频道！随时待命播放音乐 🎵",
-			"errors": {
-				"not_in_voice": "嘿！先进语音频道吧，我才知道要守在哪里 🎵",
-				"generic": "哎呀，出了点问题！稍后再试试？🔧"
-			},
-			"messages": {
-				"disabled": "24/7模式已关闭！我会在没人的时候自动离开了 👋",
-				"enabled": "24/7模式已开启！就算没人我也守着，随时准备播放音乐 🎶"
-			}
-		},
-		"ping": {
-			"description": "看看我现在反应有多快！⚡",
-			"content": "测试延迟中...",
-			"bot_latency": "机器人延迟",
-			"api_latency": "API 延迟",
-			"vc_latency": "语音频道延迟",
-			"vc_region": "语音频道区域",
-			"requested_by": "由 {author} 请求"
-		},
-		"lavalink": {
-			"description": "查看当前 Lavalink 运行状态 🔧",
-			"title": "Lavalink 状态",
-			"content": "播放器: {players}\n正在播放: {playingPlayers}\n运行时间: {uptime}\n核心数: {cores} 个\n内存使用: {used} / {reservable}\n系统负载: {systemLoad}%\nLavalink 负载: {lavalinkLoad}%\n插件: {plugins}",
-			"page_info": "第 {index} 页 / 共 {total} 页"
-		},
-		"invite": {
-			"description": "获取我的邀请链接，把我加到你的服务器吧！🎵",
-			"content": "点击下面的按钮邀请我！遇到问题？加入支持服务器找我们聊聊！💬"
-		},
-		"help": {
-			"description": "显示帮助菜单，看看我都能做什么！📚",
-			"options": {
-				"command": "您想查看的命令"
-			},
-			"content": "大家好！我是 {bot}，使用 [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) 和 Discord 制作的音乐机器人。使用 `{prefix}help <命令>` 查看详细信息吧！",
-			"title": "帮助菜单",
-			"not_found": "找不到 `{cmdName}` 这个命令哦 🤔",
-			"help_cmd": "**描述:** {description}\n**用法:** {usage}\n**示例:** {examples}\n**别名:** {aliases}\n**分类:** {category}\n**冷却:** {cooldown} 秒\n**用户权限:** {premUser}\n**机器人权限:** {premBot}\n**开发者专用:** {dev}\n**斜杠命令:** {slash}\n**参数:** {args}\n**播放器:** {player}\n**DJ:** {dj}\n**DJ 权限:** {djPerm}\n**语音:** {voice}",
-			"footer": "使用 {prefix}help <命令> 查看详情 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️"
-		},
-		"botinfo": {
-			"description": "查看我的详细信息！🤖",
-			"content": "机器人信息：\n- **操作系统**: {osInfo}\n- **运行时间**: {osUptime}\n- **主机名**: {osHostname}\n- **CPU 架构**: {cpuInfo}\n- **CPU 使用率**: {cpuUsed}%\n- **内存使用**: {memUsed} / {memTotal}\n- **Node 版本**: {nodeVersion}\n- **Discord 版本**: {discordJsVersion}\n- **已连接到** {guilds} 个服务器，{channels} 个频道和 {users} 个用户\n- **命令总数**: {commands}"
-		},
-		"about": {
-			"description": "关于我的一些介绍 💫",
-			"fields": {
-				"creator": "创作者",
-				"repository": "代码库",
-				"support": "支持",
-				"description": "开发者非常想通过制作开源项目获得更多编码经验。在这个项目中，他面临着制作无bug项目的挑战。希望你喜欢使用 MultiBungoBot！"
-			}
-		},
-		"dj": {
-			"description": "控制谁能操作音乐！设置DJ角色限制音乐控制权 🎧",
-			"errors": {
-				"provide_role": "请告诉我要添加哪个角色哦 🎭",
-				"no_roles": "还没有设置DJ角色呢！先添加一个吧 🎧",
-				"invalid_subcommand": "这个子命令不对哦！检查一下拼写？🤔"
-			},
-			"messages": {
-				"role_exists": "DJ角色 <@&{roleId}> 已经添加过了！✅",
-				"role_added": "DJ角色 <@&{roleId}> 添加成功！现在他们可以控制音乐了 🎵",
-				"role_not_found": "DJ角色列表里没有 <@&{roleId}> 这个角色哦 🤷",
-				"role_removed": "DJ角色 <@&{roleId}> 已移除！他们不能控制音乐了 🚫",
-				"all_roles_cleared": "所有DJ角色都清除了！现在大家都能控制音乐 🎉",
-				"toggle": "DJ模式已切换为 {status} 🎚️"
-			},
-			"options": {
-				"add": "要添加的DJ角色",
-				"remove": "要删除的DJ角色",
-				"clear": "清除所有DJ角色",
-				"toggle": "切换DJ模式",
-				"role": "DJ角色"
-			},
-			"subcommands": "子命令"
-		},
-		"language": {
-			"description": "切换我的语言！让我说你熟悉的话 🌍",
-			"invalid_language": "这个语言代码不对哦！试试 `EnglishUS` （美式英语）\n\n在[这里](https://discord.com/developers/docs/reference#locales)查看所有支持的语言\n\n**可用语言:**\n{languages}",
-			"already_set": "语言已经是 `{language}` 了！",
-			"not_set": "还没有设置语言呢！",
-			"set": "语言已切换为 `{language}` 🌏",
-			"reset": "语言已重置为默认！回到原点 🔄",
-			"options": {
-				"set": "设置语言",
-				"language": "要切换到的语言",
-				"reset": "重置为默认语言"
-			}
-		},
-		"prefix": {
-			"description": "查看或修改我的命令前缀！自定义你的专属标识 ⚙️",
-			"errors": {
-				"prefix_too_long": "前缀太长了！最多3个字符哦 📏"
-			},
-			"messages": {
-				"current_prefix": "这个服务器的前缀是 `{prefix}`",
-				"prefix_set": "前缀已改为 `{prefix}` ✅",
-				"prefix_reset": "前缀已重置为 `{prefix}` 🔄"
-			},
-			"options": {
-				"set": "设置新前缀",
-				"prefix": "想要的前缀",
-				"reset": "重置为默认前缀"
-			}
-		},
-		"setup": {
-			"description": "创建专属音乐请求频道！一个地方管理所有音乐 🎛️",
-			"errors": {
-				"channel_exists": "已经有音乐请求频道了！不需要重复创建 ✅",
-				"channel_not_exists": "还没有创建音乐请求频道呢！先创建一个吧 🎵",
-				"channel_delete_fail": "频道已删除！如果还在，请手动删除它 🗑️"
-			},
-			"messages": {
-				"channel_created": "音乐请求频道已在 <#{channelId}> 创建！开始点歌吧 🎉",
-				"channel_deleted": "音乐请求频道已删除！拜拜 👋",
-				"channel_info": "音乐请求频道在 <#{channelId}> 这里哦 📍"
-			},
-			"options": {
-				"create": "创建音乐频道",
-				"delete": "删除音乐频道",
-				"info": "查看音乐频道"
-			}
-		},
-		"8d": {
-			"description": "切换 8D 环绕音效！感受声音在你周围旋转 🔊",
-			"messages": {
-				"filter_enabled": "8D 效果开启！戴上耳机效果更佳哦 🎧",
-				"filter_disabled": "8D 效果关闭！回到原声 🔇"
-			}
-		},
-		"bassboost": {
-			"description": "切换低音增强！让音乐更劲爆 🔊",
-			"messages": {
-				"filter_enabled": "低音增强已开启！注意保护听力哦 📢",
-				"filter_disabled": "低音增强已关闭！",
-				"high": "高级低音增强已开启！震撒 💥",
-				"low": "低级低音增强已开启！舒适 🎶",
-				"medium": "中级低音增强已开启！刚刚好 ✅",
-				"off": "低音增强已关闭！"
-			},
-			"options": {
-				"level": "要设置的低音等级"
-			}
-		},
-		"distortion": {
-			"description": "切换失真效果！让声音更有重金属感 🤘",
-			"messages": {
-				"filter_enabled": "失真效果开启！摄滚的声音 🎸",
-				"filter_disabled": "失真效果关闭！"
-			}
-		},
-		"karaoke": {
-			"description": "切换卡拉OK模式！去除人声，尽情殌唱 🎤",
-			"messages": {
-				"filter_enabled": "卡拉OK模式开启！展示你的歌声吧 🎵",
-				"filter_disabled": "卡拉OK模式关闭！"
-			}
-		},
-		"lowpass": {
-			"description": "切换低通滤波！让声音更加深沉 🎶",
-			"messages": {
-				"filter_enabled": "低通效果开启！深沉的音色 🎷",
-				"filter_disabled": "低通效果关闭！"
-			}
-		},
-		"nightcore": {
-			"description": "切换夜核模式！加快速度，提高音调 ⚡",
-			"messages": {
-				"filter_enabled": "夜核模式开启！变身萌系版本 🌙",
-				"filter_disabled": "夜核模式关闭！"
-			}
-		},
-		"pitch": {
-			"description": "调整音调高低！让声音变高或变低 🎹",
-			"options": {
-				"pitch": "要设置的音调值（0.5-5之间）"
-			},
-			"errors": {
-				"invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢"
-			},
-			"messages": {
-				"pitch_set": "音调已设置为 **{pitch}** 🎼"
-			}
-		},
-		"rate": {
-			"description": "调整播放速率！加快或放慢音乐 ⏩",
-			"options": {
-				"rate": "要设置的速率值（0.5-5之间）"
-			},
-			"errors": {
-				"invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢"
-			},
-			"messages": {
-				"rate_set": "播放速率已设置为 **{rate}** ⏱️"
-			}
-		},
-		"reset": {
-			"description": "重置所有音效！回到原声 🔄",
-			"messages": {
-				"filters_reset": "所有效果已清除！回到最纯净的声音 ✨"
-			}
-		},
-		"rotation": {
-			"description": "切换旋转音效！让声音在你周围转圈 🌀",
-			"messages": {
-				"enabled": "旋转效果开启！感受声音的移动 🌀",
-				"disabled": "旋转效果关闭！"
-			}
-		},
-		"speed": {
-			"description": "调整播放速度！变快或变慢 💨",
-			"options": {
-				"speed": "要设置的速度值"
-			},
-			"messages": {
-				"invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢",
-				"set_speed": "播放速度已设置为 **{speed}** ⚡"
-			}
-		},
-		"tremolo": {
-			"description": "启用/关闭颤音滤镜",
-			"messages": {
-				"enabled": "`✅` | 颤音滤镜已`启用`。",
-				"disabled": "`✅` | 颤音滤镜已`禁用`。"
-			}
-		},
-		"vibrato": {
-			"description": "启用/关闭震音滤镜",
-			"messages": {
-				"enabled": "`✅` | 震音滤镜已`启用`。",
-				"disabled": "`✅` | 震音滤镜已`禁用`。"
-			}
-		},
-		"announce": {
-			"messages": {
-				"default_content": "机器人正在维护中，我们可能会重启机器人。因此，请在维护完成后使用 bresumesesssion 命令继续收听。"
-			}
-		},
-		"autoplay": {
-			"description": "切换自动播放！让音乐永不停止 🔁",
-			"messages": {
-				"enabled": "自动播放已开启！队列播完后我会继续播放相似的歌曲 🎶",
-				"disabled": "自动播放已关闭！播完就停止 ⏸️"
-			}
-		},
-		"clearqueue": {
-			"description": "清空播放队列！重新开始 🗑️",
-			"messages": {
-				"cleared": "队列已清空！现在可以添加新歌了 ✨"
-			}
-		},
-		"grab": {
-			"description": "把当前播放的歌信息私信给你！收藏好歌 💾",
-			"loading": "加载中...",
-			"content": "**时长:** {length}\n**点歌人:** <@{requester}>\n**链接:** [点击这里]({uri})",
-			"check_dm": "去私信看看吧！📨",
-			"dm_failed": "发不了私信给你！请检查是否允许收到直接消息 ⚙️"
-		},
-		"join": {
-			"description": "加入语音频道！叫我过来 🎵",
-			"already_connected": "我已经在 <#{channelId}> 了！",
-			"no_voice_channel": "嘿！先进语音频道吧，我才知道要去哪里 🎵",
-			"joined": "已成功加入 <#{channelId}>！准备好播放音乐了 🎉"
-		},
-		"leave": {
-			"description": "离开语音频道！再见 👋",
-			"left": "已离开 <#{channelId}>！下次再聊 ✌️",
-			"not_in_channel": "我还没在语音频道里呢！🤷"
-		},
-		"loop": {
-			"description": "切换循环模式！单曲/队列/关闭 🔁",
-			"looping_song": "单曲循环开启！这首歌会一直播放 🔂",
-			"looping_queue": "队列循环开启！播完会从头再来 🔁",
-			"looping_off": "循环已关闭！播完就停 ⏹️"
-		},
-		"nowplaying": {
-			"description": "查看正在播放的歌曲 🎵",
-			"now_playing": "正在播放",
-			"track_info": "[{title}]({uri}) - 点歌人: <@{requester}>\n\n`{bar}`"
-		},
-		"pause": {
-			"description": "暂停当前歌曲！暂停一下 ⏸️",
-			"successfully_paused": "已暂停！想好了再继续 ✅",
-			"messages": {
-				"vote_embed": "投票暂停: **{votes}/{needed}**\n✅ 暂停，❌ 继续播放。",
-				"button_yes": "✅ 暂停",
-				"button_no": "❌ 继续",
-				"already_voted": "你已经投过票了！🗳️"
-			}
-		},
-		"play": {
-			"description": "播放你喜欢的任何歌曲！支持 YouTube、Spotify、SoundCloud 等 🎵",
-			"options": {
-				"song": "要播放的歌曲名称或链接"
-			},
-			"loading": "加载中...",
-			"warnings": {
-				"longtrack_warning": "⚠️ **提醒:** 搜索结果里有超过30分钟的超长曲目。确定要播放这么长的歌吗？可能会影响听歌体验哦 ⏱️"
-			},
-			"errors": {
-				"search_error": "搜索时出错了！换个关键词试试？🔍",
-				"no_results": "没找到结果！换个搜索词试试？🤔",
-				"queue_too_long": "队列太长了！最多 {maxQueueSize} 首歌哦 📊",
-				"playlist_too_long": "播放列表太长了！最多 {maxPlaylistSize} 首歌 📊"
-			},
-			"added_to_queue": "已添加 [{title}]({uri}) 到队列！马上就播 🎶",
-			"added_playlist_to_queue": "已添加 {length} 首歌到队列！好多音乐 🎉"
-		},
-		"playnext": {
-			"description": "把歌加到队列最前面！下一首就播 ⏩",
-			"options": {
-				"song": "要播放的歌曲名称或链接"
-			},
-			"loading": "加载中...",
-			"errors": {
-				"search_error": "搜索时出错了！换个关键词试试？🔍",
-				"no_results": "没找到结果！换个搜索词试试？🤔",
-				"queue_too_long": "队列太长了！最多 {maxQueueSize} 首歌哦 📊",
-				"playlist_too_long": "播放列表太长了！最多 {maxPlaylistSize} 首歌 📊"
-			},
-			"added_to_play_next": "已把 [{title}]({uri}) 加到下一首！马上就轮到它了 🎯",
-			"added_playlist_to_play_next": "已把 {length} 首歌加到队列前面！优先播放 ⭐"
-		},
-		"queue": {
-			"description": "查看当前播放队列 📜",
-			"now_playing": "正在播放: [{title}]({uri}) - 点歌人: <@{requester}> - 时长: `{duration}`",
-			"live": "直播",
-			"track_info": "{index}. [{title}]({uri}) - 点歌人: <@{requester}> - 时长: `{duration}`",
-			"title": "播放队列",
-			"page_info": "第 {index} 页 / 共 {total} 页",
-			"duration": "总时长: `{totalDuration}`"
-		},
-		"remove": {
-			"description": "从队列中移除指定歌曲 🗑️",
-			"options": {
-				"song": "要删除的歌曲编号"
-			},
-			"errors": {
-				"no_songs": "队列里没有歌！先添加一些吧 🎵",
-				"invalid_number": "输入的编号不对哦！看看队列里有哪些歌 🔢"
-			},
-			"messages": {
-				"removed": "已删除第 {songNumber} 首歌！拜拜 👋"
-			}
-		},
-		"region": {
-			"description": "查看或切换音频服务器区域，选择最近的节点获得最佳音质 🌐",
-			"options": {
-				"region": "要切换的区域（例如：EU、VN）"
-			},
-			"info_title": "🌐 音频服务器区域",
-			"current_region": "**当前节点：** `{nodeId}`\n**区域：** {region}\n**延迟：** `{ping}ms`",
-			"available_regions": "可用区域",
-			"region_field": "{nodeCount} 个节点，{playerCount} 个播放器\n{nodes}",
-			"current_indicator": "（当前）",
-			"switched": "已切换到 {region} 区域！\n**节点：** `{oldNode}` → `{newNode}`\n**延迟：** `{oldPing}ms` → `{newPing}ms`",
-			"already_on_region": "你已经在 {region} 区域了（`{nodeId}`）！",
-			"no_nodes_in_region": "{region} 区域目前没有可用节点！",
-			"invalid_region": "未知区域 `{region}`。可用区域：{available}",
-			"switch_failed": "切换区域失败，请重试！"
-		},
-		"replay": {
-			"description": "重新播放当前歌曲！再来一遍 🔁",
-			"errors": {
-				"not_seekable": "这首歌不支持重播哦！可能是直播流 📺"
-			},
-			"messages": {
-				"replaying": "重播当前歌曲！从头开始 🔄"
-			}
-		},
-		"resume": {
-			"description": "恢复播放当前歌曲！继续听 ▶️",
-			"errors": {
-				"not_paused": "没有暂停啊！音乐正在播放 🎵"
-			},
-			"messages": {
-				"resumed": "继续播放！音乐起来 🎶",
-				"vote_embed": "投票恢复播放: **{votes}/{needed}**\n✅ 恢复，❌ 保持暂停。",
-				"button_yes": "✅ 恢复",
-				"button_no": "❌ 保持暂停",
-				"already_voted": "你已经投过票了！🗳️"
-			}
-		},
-		"search": {
-			"description": "搜索歌曲并从结果中选择！找你喜欢的 🔍",
-			"options": {
-				"song": "要搜索的歌曲关键词"
-			},
-			"select": "选一首你想听的歌吧！🎵",
-			"errors": {
-				"no_results": "没找到结果！换个关键词试试？🤔",
-				"search_error": "搜索时出错了！稍后再试？🔧"
-			},
-			"messages": {
-				"added_to_queue": "已添加 [{title}]({uri}) 到队列！马上就播 🎶"
-			}
-		},
-		"seek": {
-			"description": "跳转到歌曲的指定位置！快进快退 ⏩",
-			"options": {
-				"duration": "要跳转到的时间点"
-			},
-			"errors": {
-				"invalid_format": "时间格式不对哦！试试: seek 1m 或 seek 1h 30m ⏱️",
-				"not_seekable": "这首歌不支持跳转！可能是直播流 📺",
-				"beyond_duration": "不能跳过歌曲长度 {length}！过头了 ⏰"
-			},
-			"messages": {
-				"seeked_to": "已跳转到 {duration} 🎯"
-			}
-		},
-		"shuffle": {
-			"description": "随机打乱播放队列！惊喜顺序 🔀",
-			"errors": {
-				"fairplay": "开了公平模式就不能打乱队列哦！让大家公平点歌 ⚖️"
-			},
-			"messages": {
-				"shuffled": "队列已打乱！惊喜顺序开启 🎲"
-			}
-		},
-		"skip": {
-			"description": "跳过当前歌曲！下一首 ⏭️",
-			"messages": {
-				"skipped": "已跳过 [{title}]({uri})！下一首 🎵",
-				"vote_embed": "投票跳过: **{votes}/{needed}**\n✅ 跳过，❌ 继续播放。",
-				"button_skip": "👍 跳过",
-				"button_keep": "👎 保留",
-				"button_yes": "✅ 跳过",
-				"button_no": "❌ 保留",
-				"already_voted": "你已经投过票了！🗳️"
-			}
-		},
-		"skipto": {
-			"description": "跳至队列中的特定歌曲",
-			"options": {
-				"number": "您要跳至的歌曲编号"
-			},
-			"errors": {
-				"invalid_number": "请提供有效的编号。"
-			},
-			"messages": {
-				"skipped_to": "已跳至歌曲编号 {number}。"
-			}
-		},
-		"stop": {
-			"description": "停止音乐并清除队列",
-			"messages": {
-				"stopped": "已停止音乐并清除队列。",
-				"vote_embed": "投票停止: **{votes}/{needed}**\n✅ 停止，❌ 继续播放。",
-				"button_stop": "🛑 停止",
-				"button_keep": "👎 保留",
-				"button_yes": "✅ 停止",
-				"button_no": "❌ 继续",
-				"already_voted": "您已经投过票了。"
-			}
-		},
-		"volume": {
-			"description": "设置播放器的音量",
-			"options": {
-				"number": "您要设置的音量"
-			},
-			"messages": {
-				"invalid_number": "请提供有效的数字。",
-				"too_low": "音量不能低于 0。",
-				"too_high": "音量不能高于 200。您想损害您的听力或扬声器吗？嗯，我认为这不是一个好主意。",
-				"set": "已将音量设置为 {volume}"
-			}
-		},
-		"addsong": {
-			"description": "将歌曲添加到播放列表！保存你的最爱 💾",
-			"options": {
-				"playlist": "目标播放列表",
-				"song": "要添加的歌曲"
-			},
-			"messages": {
-				"no_playlist": "请选择一个播放列表！📝",
-				"no_song": "请提供要添加的歌曲！🎵",
-				"playlist_not_found": "这个播放列表不存在哦！检查一下名称？🤔",
-				"no_songs_found": "没找到歌曲！换个搜索词试试？🔍",
-				"added": "已将 {count} 首歌添加到 {playlist}！收藏成功 ✨"
-			}
-		},
-		"create": {
-			"description": "创建新的播放列表！收藏你的最爱 🎶",
-			"options": {
-				"name": "播放列表的名称"
-			},
-			"messages": {
-				"name_too_long": "名称太长了！最多50个字符哦 📝",
-				"playlist_exists": "这个名字已经被用了！换一个别的吧 🔄",
-				"playlist_created": "播放列表 **{name}** 创建成功！开始添加歌曲吧 🎉"
-			}
-		},
-		"delete": {
-			"description": "删除播放列表！永久移除 🗑️",
-			"options": {
-				"playlist": "要删除的播放列表"
-			},
-			"messages": {
-				"playlist_not_found": "这个播放列表不存在哦 🤔",
-				"playlist_deleted": "已删除播放列表 **{playlistName}**！拜拜 👋"
-			}
-		},
-		"list": {
-			"description": "查看用户的所有播放列表 📚",
-			"options": {
-				"user": "要查看的用户"
-			},
-			"messages": {
-				"no_playlists": "这个用户还没有播放列表呢！📂",
-				"your": "你的",
-				"playlists_title": "{username} 的播放列表",
-				"error": "获取播放列表时出错了！稍后再试？🔧"
-			}
-		},
-		"load": {
-			"description": "加载播放列表到队列！批量播放 📥",
-			"options": {
-				"playlist": "要加载的播放列表"
-			},
-			"messages": {
-				"playlist_not_exist": "这个播放列表不存在哦 🤔",
-				"playlist_empty": "这个播放列表是空的！先添加一些歌吧 📂",
-				"playlist_loaded": "已加载 `{name}`，共 {count} 首歌！开听 🎶"
-			}
-		},
-		"removesong": {
-			"description": "从播放列表中移除指定歌曲 ✂️",
-			"options": {
-				"playlist": "目标播放列表",
-				"song": "要删除的歌曲"
-			},
-			"messages": {
-				"provide_playlist": "请选择一个播放列表！📝",
-				"provide_song": "请告诉我要删哪首歌！🎵",
-				"playlist_not_exist": "这个播放列表不存在哦 🤔",
-				"song_not_found": "在播放列表里没找到这首歌 🔍",
-				"song_removed": "已从 {playlist} 中删除 {song}！拜拜 👋",
-				"error_occurred": "删除时出错了！稍后再试？🔧"
-			}
-		},
-		"steal": {
-			"description": "复制别人的播放列表到你的收藏！分享就是关爱 🎶",
-			"options": {
-				"playlist": "要复制的播放列表",
-				"user": "播放列表的主人"
-			},
-			"messages": {
-				"provide_playlist": "请提供播放列表名称！📝",
-				"provide_user": "请@一个用户！👥",
-				"playlist_not_exist": "这个用户没有这个播放列表 🤷",
-				"playlist_stolen": "已成功复制 `{playlist}` 从 {user}！现在它是你的了 🎉",
-				"error_occurred": "复制时出错了！稍后再试？🔧"
-			}
-		},
-		"lyrics": {
-			"description": "获取当前歌曲的歌词！跟着唱 🎤",
-			"lyrics_track": "### 歌词: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
-			"searching": "`🔍` 正在搜索 **{trackTitle}** 的歌词...",
-			"errors": {
-				"no_results": "没找到这首歌的歌词！可能太冷门了 🤷",
-				"lyrics_error": "获取歌词时出错了！稍后再试？🔧"
-			}
-		},
-		"livelyrics": {
-			"description": "显示当前歌曲的实时同步歌词！卡拉OK模式 🎤",
-			"errors": {
-				"no_player": "当前没有播放音乐。",
-				"no_synced": "这首歌没有找到同步歌词。"
-			}
-		},
-		"fairplay": {
-			"description": "启用公平模式！让每个人都有机会播放喜欢的歌 ⚖️",
-			"errors": {
-				"not_in_voice": "嘿！先进语音频道吧 🎵",
-				"generic": "哎呀，出了点问题！稍后再试试？🔧"
-			},
-			"messages": {
-				"disabled": "公平模式已关闭！现在可以随意点歌了 🎵",
-				"enabled": "公平模式已开启！每个人都能公平点歌了 ⚖️",
-				"added_to_queue": "已添加 [{title}]({url}) 到队列！",
-				"errors": {
-					"empty_query": "请附上音频文件哦！📁",
-					"invalid_format": "只支持 MP3、WAV、OGG、FLAC、AAC 或 M4A 格式！🎵",
-					"no_results": "播放失败！文件可能损坏了 🚫"
-				}
-			}
-		},
-		"playlocal": {
-			"description": "播放你的本地音频文件！上传就能听 💾",
-			"options": {
-				"file": "要播放的音频文件"
-			},
-			"loading": "加载中...",
-			"errors": {
-				"empty_query": "请附上音频文件哦！📁",
-				"invalid_format": "只支持 MP3、WAV、OGG、FLAC、AAC 或 M4A 格式！🎵",
-				"no_results": "播放失败！文件可能损坏了 🚫"
-			},
-			"added_to_queue": "已添加 [{title}]({url}) 到队列！"
-		},
-		"loop_current": {
-			"description": "循环播放当前歌曲！单曲循环 🔂"
-		},
-		"loop_queue": {
-			"description": "循环播放整个队列！列表循环 🔁"
-		},
-		"resume_session": {
-			"no_session_found": "未找到上一个会话。",
-			"resume_failed": "出现错误。无法恢复会话。",
-			"resumed": "已成功恢复会话。"
-		},
-		"save_session": {
-			"saved": "成功保存 {saved} 个会话。无法保存 {failed} 个会话。"
-		},
-		"vote": {
-			"description": "管理音乐命令的投票系统",
-			"options": {
-				"toggle": "开启或关闭投票系统",
-				"status": "检查投票系统的当前状态"
-			}
-		},
-		"lavaconfig": {
-			"description": "运行时管理 LavaSrc 配置 🎵",
-			"errors": {
-				"service_unavailable": "LavaSrc 配置服务不可用。",
-				"missing_subcommand": "请提供子命令。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
-				"missing_node": "缺少必要参数: `node`。示例: `!lavaconfig {subcommand} node:main`",
-				"unknown_subcommand": "未知子命令: `{subcommand}`。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
-			},
-			"messages": {
-				"processing": "处理中...",
-				"config_updated_title": "✅ {source} 配置已更新",
-				"config_updated_desc": "已成功更新节点 **{nodeId}** 的 {source} 配置",
-				"updated_config": "已更新配置",
-				"view_title": "📋 LavaSrc 配置 - {nodeId}",
-				"nodes_title": "📡 Lavalink 节点",
-				"no_nodes": "没有可用节点。",
-				"total_nodes": "共 {count} 个节点"
-			},
-			"usage": {
-				"title": "用法",
-				"value": "`!lavaconfig <子命令> [选项]`\n示例: `!lavaconfig spotify node:main clientId:xxx`"
-			}
-		},
-		"youtubeconfig": {
-			"description": "运行时管理 YouTube 源配置 🎵",
-			"errors": {
-				"service_unavailable": "YouTube 配置服务不可用。",
-				"missing_subcommand": "请提供子命令。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_node": "缺少必要参数: `node`。示例: `!youtubeconfig {subcommand} node:main`",
-				"unknown_subcommand": "未知子命令: `{subcommand}`。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_oauth_option": "请提供至少一个选项: `refreshToken` 或 `skipInitialization`",
-				"missing_potoken_pair": "为了获得最佳效果，`poToken` 和 `visitorData` 应该一起提供",
-				"missing_refresh_token": "缺少必要参数: `refreshToken`。示例: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
-			},
-			"messages": {
-				"processing": "处理中...",
-				"oauth_updated_title": "✅ YouTube OAuth 配置已更新",
-				"oauth_updated_desc": "已成功更新节点 **{nodeId}** 的 YouTube OAuth 配置",
-				"potoken_updated_title": "✅ YouTube poToken 配置已更新",
-				"potoken_updated_desc": "已成功更新节点 **{nodeId}** 的 YouTube poToken 配置",
-				"token_refreshed_title": "✅ OAuth 令牌已刷新",
-				"token_refreshed_desc": "已成功刷新节点 **{nodeId}** 的 OAuth 令牌",
-				"view_title": "📋 YouTube 源配置 - {nodeId}",
-				"nodes_title": "📡 Lavalink 节点",
-				"no_nodes": "没有可用节点。",
-				"total_nodes": "共 {count} 个节点",
-				"not_set": "未设置",
-				"na": "不适用"
-			},
-			"fields": {
-				"refresh_token": "刷新令牌",
-				"skip_initialization": "跳过初始化",
-				"potoken": "poToken",
-				"visitor_data": "访客数据",
-				"token_type": "令牌类型",
-				"expires_in": "过期时间",
-				"scope": "范围",
-				"access_token_truncated": "访问令牌（已截断）",
-				"updated": "✅ 已更新",
-				"not_changed": "⚪ 未更改",
-				"yes": "✅ 是",
-				"no": "❌ 否",
-				"important": "⚠️ 重要",
-				"oauth_warning": "OAuth 令牌应该保密。建议使用临时 YouTube 账号。",
-				"how_to_generate": "💡 如何生成",
-				"generator_link": "使用 [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) 获取这些值。",
-				"note": "ℹ️ 注意",
-				"api_note": "API 只返回刷新令牌。poToken 和 visitorData 不会暴露。"
-			},
-			"usage": {
-				"title": "用法",
-				"value": "`!youtubeconfig <子命令> [选项]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
-			}
-		},
-		"livelyrics": {
-			"description": "启用或禁用实时歌词同步"
-		}
-	},
-	"buttons": {
-		"invite": "邀请",
-		"support": "支持服务器",
-		"previous": "上一首",
-		"resume": "恢复",
-		"stop": "停止",
-		"skip": "跳过",
-		"loop": "循环",
-		"errors": {
-			"not_author": "这个按钮不是给你用的哦！🚫"
-		}
-	},
-	"player": {
-		"errors": {
-			"no_player": "这里没有播放器！先播放一首歌吧 🎵",
-			"no_channel": "啦！先进语音频道吧 🎵",
-			"queue_empty": "队列是空的！添加一些歌曲吧 📚",
-			"no_previous": "队列里没有上一首歌！这就是第一首 🎵",
-			"no_song": "队列里没有歌！先点一些吧 🎶",
-			"already_paused": "已经暂停了哦！再暂停就停美了 ⏸️"
-		},
-		"trackStart": {
-			"now_playing": "正在播放",
-			"requested_by": "由 {user} 请求",
-			"duration": "时长",
-			"author": "作者",
-			"not_connected_to_voice_channel": "您未连接到 <#{channel}> 以使用这些按钮。",
-			"need_dj_role": "您需要拥有 DJ 角色才能使用此命令。",
-			"previous_by": "由 {user} 上一首",
-			"no_previous_song": "没有上一首歌曲。",
-			"paused_by": "由 {user} 暂停",
-			"resumed_by": "由 {user} 恢复",
-			"skipped_by": "由 {user} 跳过",
-			"no_more_songs_in_queue": "队列中没有更多歌曲。",
-			"looping_by": "由 {user} 循环播放",
-			"looping_queue_by": "由 {user} 循环播放队列",
-			"looping_off_by": "由 {user} 关闭循环播放"
-		},
-		"setupStart": {
-			"now_playing": "正在播放",
-			"description": "[{title}]({uri}) 作者: {author} • `[{length}]` - 请求者: <@{requester}>",
-			"error_searching": "搜索时出错。",
-			"no_results": "未找到结果。",
-			"nothing_playing": "现在没有播放任何内容。",
-			"queue_too_long": "队列太长。最大长度为 {maxQueueSize} 首歌曲。",
-			"playlist_too_long": "播放列表太长。最大长度为 {maxPlaylistSize} 首歌曲。",
-			"added_to_queue": "已将 [{title}]({uri}) 添加到队列。",
-			"added_playlist_to_queue": "已将播放列表中的 [{length}] 首歌曲添加到队列。"
-		}
-	},
-	"event": {
-		"interaction": {
-			"setup_channel": "不能在设置频道里用这个命令！换个频道试试 🚫",
-			"no_send_message": "我在 `{guild}` 的 {channel} 频道没有 **`发送消息`** 权限！💬",
-			"no_embed_links": "我没有 **`嵌入链接`** 权限！🔗",
-			"no_permission": "我没有足够的权限执行这个命令！🔒",
-			"no_user_permission": "你没有权限使用这个命令！⚠️",
-			"no_voice_channel": "先进语音频道才能用 `{command}` 命令哦！🎵",
-			"no_connect_permission": "我需要 `连接` 权限才能执行 `{command}` 命令！🔒",
-			"no_speak_permission": "我需要 `发言` 权限才能执行 `{command}` 命令！🔊",
-			"no_request_to_speak": "我在舞台频道需要 `请求发言` 权限！🎭",
-			"different_voice_channel": "你不在 {channel} 才能用 `{command}` 命令！过来这边 🎵",
-			"no_music_playing": "现在没在播放音乐！先播一首 🎶",
-			"no_dj_role": "还没设置DJ角色呢！用 `dj` 命令设置 🎧",
-			"no_dj_permission": "你需要DJ角色才能用这个命令！🎧",
-			"cooldown": "慢点！再等 {time} 秒才能用 `{command}` 命令 ⏱️",
-			"error": "哎呀！出错了: `{error}` 😢",
-			"vote_button": "为我投票！⭐",
-			"vote_message": "等一下！在 top.gg 上为机器人投票后才能用这个命令。谢谢支持！💖",
-			"slash_deprecated": "斜杠命令已弃用！请改用 `{prefix}{command}`。🎵",
-			"periodic_message_vote_only": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票吧！您的支持让我们更强大！❤️\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
-			"periodic_message_with_bots": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票！想在多个房间播放音乐？添加更多机器人吧！🎶\n音频不稳定？使用 `bregion` 切换到离你更近的地区"
-
-		},
-		"message": {
-			"prefix_mention": "嘿，我这个服务器的前缀是 `{prefix}`。想要了解更多信息？请执行 `{prefix}help`\n注意安全，保持出色！",
-			"no_send_message": "我在 `{guild}`\n频道: {channel} 中没有 **`发送消息`** 权限。",
-			"no_embed_links": "我没有 **`嵌入链接`** 权限。",
-			"no_permission": "我没有足够的权限来执行此命令。",
-			"no_user_permission": "您没有足够的权限来使用此命令。",
-			"no_voice_channel": "您必须连接到语音频道才能使用此 `{command}` 命令。",
-			"no_connect_permission": "我没有 `连接` 权限来执行此 `{command}` 命令。",
-			"no_speak_permission": "我没有 `发言` 权限来执行此 `{command}` 命令。",
-			"no_request_to_speak": "我没有 `请求发言` 权限来执行此 `{command}` 命令。",
-			"different_voice_channel": "您未连接到 {channel} 以使用此 `{command}` 命令。",
-			"no_music_playing": "现在没有播放任何内容。",
-			"no_dj_role": "未设置 DJ 角色。",
-			"no_dj_permission": "您需要拥有 DJ 角色才能使用此命令。",
-			"missing_arguments": "缺少参数",
-			"missing_arguments_description": "请为 `{command}` 命令提供所需的 参数。\n\n示例:\n{examples}",
-			"syntax_footer": "语法: [] = 可选，<> = 必需 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"cooldown": "请等待 {time} 秒后再使用 `{command}` 命令。",
-			"no_mention_everyone": "您不能对所有人或此处使用此命令。",
-			"error": "发生错误: `{error}`",
-			"no_voice_channel_queue": "您未连接到语音频道以将歌曲排入队列。",
-			"no_permission_connect_speak": "我在 <#{channel}> 中没有足够的权限连接/发言。",
-			"different_voice_channel_queue": "您未连接到 <#{channel}> 以将歌曲排入队列。",
-			"maintenance": "机器人正在维护中。请稍后再试。",
-			"no_free_bots": "目前没有可用的机器人。您可能需要向此服务器添加更多机器人。",
-			"no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
-			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
-			"vote_button": "为我投票！",
-			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。"
-		},
-		"setupButton": {
-			"no_voice_channel_button": "你不在语音频道里才能用这个按钮！🎵",
-			"different_voice_channel_button": "你不在 {channel} 才能用这些按钮！过来这边 🎵",
-			"now_playing": "正在播放",
-			"live": "直播",
-			"requested_by": "由 <@{requester}> 点歌",
-			"no_dj_permission": "你需要DJ角色才能用这个命令！🎧",
-			"volume_set": "音量已设为 {vol}%",
-			"volume_footer": "音量: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"paused": "已暂停",
-			"resumed": "已恢复",
-			"pause_resume": "{name} 音乐。",
-			"pause_resume_footer": "由 {displayName} {name} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"no_music_to_skip": "没有可以跳过的歌！队列空了 🎶",
-			"skipped": "已跳过音乐。",
-			"skipped_footer": "由 {displayName} 跳过 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"stopped": "已停止音乐。",
-			"stopped_footer": "由 {displayName} 停止 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"nothing_playing": "现在没有播放任何内容！开始音乐 🎶",
-			"loop_set": "循环已设置为 {loop}。",
-			"loop_footer": "由 {displayName} 将循环设置为 {loop} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"shuffled": "已随机播放队列。",
-			"no_previous_track": "没有上一首曲目！这是第一首歌 🎵",
-			"playing_previous": "正在播放上一首曲目。",
-			"previous_footer": "由 {displayName} 播放上一首曲目 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"rewinded": "已倒回音乐。",
-			"rewind_footer": "由 {displayName} 倒回 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"forward_limit": "不能快进过头哦！超过歌曲长度了 ⏩",
-			"forwarded": "已快进音乐。",
-			"forward_footer": "由 {displayName} 快进 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
-			"button_not_available": "这个按钮现在不可用！🚫",
-			"no_music_playing": "这个服务器没有播放音乐！开始播放吧 🎵"
-		},
-		"voice_state_update": {
-			"kicked": "被从 <#{channelId}> 踢出来了！看来有人不想要我 😢",
-			"moved": "被移到 <#{channelId}> 了！跟着你过去 🎵",
-			"left_due_to_timeout_no_listeners": "离开 <#{channelId}> 了 - 没人听了！随时叫我回来 👋",
-			"left_due_to_timeout_no_songs": "离开 <#{channelId}> 了 - 歌播完了！下次多加点歌 🎶"
-		}
-	},
-	"will_leave": {
-		"no_listeners": "如果没人听，{time} 分钟后我就走了！来聊聊天？👂",
-		"no_songs": "{time} 分钟后我就走了 - 队列空了！添加一些歌吧 🎶"
-	},
-	"LIVE_LYRICS": {
-		"NO_PLAYER": "当前没有播放音乐。",
-		"NO_LYRICS": "这首歌没有找到同步歌词。",
-		"TITLE": "实时歌词 - {track}",
-		"CURRENT": "🎵 正在播放",
-		"STOPPED": "实时歌词已停止。",
-		"REFRESHED": "歌词已刷新！",
-		"ERROR": "获取歌词时发生错误。",
-		"ENDED": "歌曲已结束。实时歌词已停止。",
-		"PAUSED": "播放已暂停。歌词将在继续播放时恢复。",
-		"SEARCHING": "正在搜索同步歌词...",
-		"NO_SYNCED_TITLE": "⚠️ 同步歌词不可用",
-		"NO_SYNCED_DESCRIPTION": "找不到 **{trackTitle}** 的同步歌词。\n\n**替代方案：**\n• 使用 `/lyrics` 查看静态歌词\n• 尝试其他歌曲\n\n同步歌词最适用于 Spotify、Deezer 或 YouTube Music 上的热门歌曲。",
-		"ALREADY_RUNNING": "实时歌词已在运行！请先使用停止按钮结束它。",
-		"STARTED": "🎤 实时歌词已开始！请查看下方的消息。",
-		"PROGRESS": "进度",
-		"UPDATE_INTERVAL": "每 {seconds} 秒更新",
-		"CLICK_REFRESH": "点击刷新立即更新",
-		"NO_LYRICS_AVAILABLE": "暂无歌词",
-		"REFRESH_BUTTON": "刷新",
-		"STOP_BUTTON": "停止"
-	},
-	"will_restart_after": "{time} 后机器人将重启",
-	"maintenance": {
-		"title": "维护模式",
-		"enabled_title": "🛠️ 已启用维护模式",
-		"enabled_desc": "机器人当前处于**维护模式**。音乐命令已禁用。",
-		"disabled_title": "✅ 已禁用维护模式",
-		"disabled_desc": "机器人已**恢复正常运行**。",
-		"field_title": "🔧 维护",
-		"status_title": "🛠️ 维护状态",
-		"status_value": "正在维护中",
-		"affected_title": "🕒 受影响的功能",
-		"affected_value": "音乐和队列命令暂时禁用。",
-		"requested_by": "由 {author} 请求",
-		"global_field_value_enabled": "```diff\n+ {count}/{total} 正在维护中\n```",
-		"global_field_value_disabled": "```diff\n- 全部正常运行\n```",
-		"global_field_fetch_failed": "⚠️ 无法获取数据。",
-		"local_field_enabled": "```diff\n+ 正在维护中\n```",
-		"local_field_disabled": "```diff\n- 正常运行\n```"
-	},
-	"Evaluate code": "运行和测试代码片段 💻",
-	"Leave a guild": "让机器人离开服务器 🚪",
-	"List all guilds the bot is in": "显示我在的所有服务器 📝",
-	"Restart the bot": "重启机器人 🔄",
-	"The loop mode you want to set": "选择循环模式（关闭/单曲/队列）🔁",
-	"Show current maintenance status": "查看机器人是否在维护 🛠️",
-	"Show current maintenance status.": "查看维护状态 🛠️",
-	"Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
-	"Update Spotify configuration": "Update Spotify configuration",
-	"Update Apple Music configuration": "Update Apple Music configuration",
-	"Update Deezer configuration": "Update Deezer configuration",
-	"Update Yandex Music configuration": "Update Yandex Music configuration",
-	"Update VK Music configuration": "Update VK Music configuration",
-	"Update Qobuz configuration": "Update Qobuz configuration",
-	"Update yt-dlp configuration": "Update yt-dlp configuration",
-	"View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
-	"List all available Lavalink nodes": "List all available Lavalink nodes",
-	"The Lavalink node ID": "The Lavalink node ID",
-	"Spotify client ID": "Spotify client ID",
-	"Spotify client secret": "Spotify client secret",
-	"Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
-	"Prefer anonymous token": "Prefer anonymous token",
-	"Custom token endpoint URL": "Custom token endpoint URL",
-	"Apple Music media API token": "Apple Music media API token",
-	"Deezer ARL cookie value": "Deezer ARL cookie value",
-	"Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
-	"Yandex Music access token": "Yandex Music access token",
-	"VK Music user token": "VK Music user token",
-	"Qobuz user OAuth token": "Qobuz user OAuth token",
-	"Qobuz application ID": "Qobuz application ID",
-	"Qobuz application secret": "Qobuz application secret",
-	"Path to yt-dlp executable": "Path to yt-dlp executable",
-	"Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
-	"Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
-	"Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
-	"Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
-	"Update YouTube poToken configuration": "Update YouTube poToken configuration",
-	"View current YouTube source configuration": "View current YouTube source configuration",
-	"Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
-	"YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
-	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
-	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
-	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
-	"The refresh token to use": "The refresh token to use"
+  "cmd": {
+    "247": {
+      "description": "让我24/7守在语音频道！随时待命播放音乐 🎵",
+      "errors": {
+        "not_in_voice": "嘿！先进语音频道吧，我才知道要守在哪里 🎵",
+        "generic": "哎呀，出了点问题！稍后再试试？🔧"
+      },
+      "messages": {
+        "disabled": "24/7模式已关闭！我会在没人的时候自动离开了 👋",
+        "enabled": "24/7模式已开启！就算没人我也守着，随时准备播放音乐 🎶"
+      }
+    },
+    "ping": {
+      "description": "看看我现在反应有多快！⚡",
+      "content": "测试延迟中...",
+      "bot_latency": "机器人延迟",
+      "api_latency": "API 延迟",
+      "vc_latency": "语音频道延迟",
+      "vc_region": "语音频道区域",
+      "requested_by": "由 {author} 请求"
+    },
+    "lavalink": {
+      "description": "查看当前 Lavalink 运行状态 🔧",
+      "title": "Lavalink 状态",
+      "content": "播放器: {players}\n正在播放: {playingPlayers}\n运行时间: {uptime}\n核心数: {cores} 个\n内存使用: {used} / {reservable}\n系统负载: {systemLoad}%\nLavalink 负载: {lavalinkLoad}%\n插件: {plugins}",
+      "page_info": "第 {index} 页 / 共 {total} 页"
+    },
+    "invite": {
+      "description": "获取我的邀请链接，把我加到你的服务器吧！🎵",
+      "content": "点击下面的按钮邀请我！遇到问题？加入支持服务器找我们聊聊！💬"
+    },
+    "help": {
+      "description": "显示帮助菜单，看看我都能做什么！📚",
+      "options": {
+        "command": "您想查看的命令"
+      },
+      "content": "大家好！我是 {bot}，使用 [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) 和 Discord 制作的音乐机器人。使用 `{prefix}help <命令>` 查看详细信息吧！",
+      "title": "帮助菜单",
+      "not_found": "找不到 `{cmdName}` 这个命令哦 🤔",
+      "help_cmd": "**描述:** {description}\n**用法:** {usage}\n**示例:** {examples}\n**别名:** {aliases}\n**分类:** {category}\n**冷却:** {cooldown} 秒\n**用户权限:** {premUser}\n**机器人权限:** {premBot}\n**开发者专用:** {dev}\n**斜杠命令:** {slash}\n**参数:** {args}\n**播放器:** {player}\n**DJ:** {dj}\n**DJ 权限:** {djPerm}\n**语音:** {voice}",
+      "footer": "使用 {prefix}help <命令> 查看详情 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️"
+    },
+    "botinfo": {
+      "description": "查看我的详细信息！🤖",
+      "content": "机器人信息：\n- **操作系统**: {osInfo}\n- **运行时间**: {osUptime}\n- **主机名**: {osHostname}\n- **CPU 架构**: {cpuInfo}\n- **CPU 使用率**: {cpuUsed}%\n- **内存使用**: {memUsed} / {memTotal}\n- **Node 版本**: {nodeVersion}\n- **Discord 版本**: {discordJsVersion}\n- **已连接到** {guilds} 个服务器，{channels} 个频道和 {users} 个用户\n- **命令总数**: {commands}"
+    },
+    "about": {
+      "description": "关于我的一些介绍 💫",
+      "fields": {
+        "creator": "创作者",
+        "repository": "代码库",
+        "support": "支持",
+        "description": "开发者非常想通过制作开源项目获得更多编码经验。在这个项目中，他面临着制作无bug项目的挑战。希望你喜欢使用 MultiBungoBot！"
+      }
+    },
+    "dj": {
+      "description": "控制谁能操作音乐！设置DJ角色限制音乐控制权 🎧",
+      "errors": {
+        "provide_role": "请告诉我要添加哪个角色哦 🎭",
+        "no_roles": "还没有设置DJ角色呢！先添加一个吧 🎧",
+        "invalid_subcommand": "这个子命令不对哦！检查一下拼写？🤔"
+      },
+      "messages": {
+        "role_exists": "DJ角色 <@&{roleId}> 已经添加过了！✅",
+        "role_added": "DJ角色 <@&{roleId}> 添加成功！现在他们可以控制音乐了 🎵",
+        "role_not_found": "DJ角色列表里没有 <@&{roleId}> 这个角色哦 🤷",
+        "role_removed": "DJ角色 <@&{roleId}> 已移除！他们不能控制音乐了 🚫",
+        "all_roles_cleared": "所有DJ角色都清除了！现在大家都能控制音乐 🎉",
+        "toggle": "DJ模式已切换为 {status} 🎚️"
+      },
+      "options": {
+        "add": "要添加的DJ角色",
+        "remove": "要删除的DJ角色",
+        "clear": "清除所有DJ角色",
+        "toggle": "切换DJ模式",
+        "role": "DJ角色"
+      },
+      "subcommands": "子命令"
+    },
+    "language": {
+      "description": "切换我的语言！让我说你熟悉的话 🌍",
+      "invalid_language": "这个语言代码不对哦！试试 `EnglishUS` （美式英语）\n\n在[这里](https://discord.com/developers/docs/reference#locales)查看所有支持的语言\n\n**可用语言:**\n{languages}",
+      "already_set": "语言已经是 `{language}` 了！",
+      "not_set": "还没有设置语言呢！",
+      "set": "语言已切换为 `{language}` 🌏",
+      "reset": "语言已重置为默认！回到原点 🔄",
+      "options": {
+        "set": "设置语言",
+        "language": "要切换到的语言",
+        "reset": "重置为默认语言"
+      }
+    },
+    "prefix": {
+      "description": "查看或修改我的命令前缀！自定义你的专属标识 ⚙️",
+      "errors": {
+        "prefix_too_long": "前缀太长了！最多3个字符哦 📏"
+      },
+      "messages": {
+        "current_prefix": "这个服务器的前缀是 `{prefix}`",
+        "prefix_set": "前缀已改为 `{prefix}` ✅",
+        "prefix_reset": "前缀已重置为 `{prefix}` 🔄"
+      },
+      "options": {
+        "set": "设置新前缀",
+        "prefix": "想要的前缀",
+        "reset": "重置为默认前缀"
+      }
+    },
+    "setup": {
+      "description": "创建专属音乐请求频道！一个地方管理所有音乐 🎛️",
+      "errors": {
+        "channel_exists": "已经有音乐请求频道了！不需要重复创建 ✅",
+        "channel_not_exists": "还没有创建音乐请求频道呢！先创建一个吧 🎵",
+        "channel_delete_fail": "频道已删除！如果还在，请手动删除它 🗑️"
+      },
+      "messages": {
+        "channel_created": "音乐请求频道已在 <#{channelId}> 创建！开始点歌吧 🎉",
+        "channel_deleted": "音乐请求频道已删除！拜拜 👋",
+        "channel_info": "音乐请求频道在 <#{channelId}> 这里哦 📍"
+      },
+      "options": {
+        "create": "创建音乐频道",
+        "delete": "删除音乐频道",
+        "info": "查看音乐频道"
+      }
+    },
+    "8d": {
+      "description": "切换 8D 环绕音效！感受声音在你周围旋转 🔊",
+      "messages": {
+        "filter_enabled": "8D 效果开启！戴上耳机效果更佳哦 🎧",
+        "filter_disabled": "8D 效果关闭！回到原声 🔇"
+      }
+    },
+    "bassboost": {
+      "description": "切换低音增强！让音乐更劲爆 🔊",
+      "messages": {
+        "filter_enabled": "低音增强已开启！注意保护听力哦 📢",
+        "filter_disabled": "低音增强已关闭！",
+        "high": "高级低音增强已开启！震撒 💥",
+        "low": "低级低音增强已开启！舒适 🎶",
+        "medium": "中级低音增强已开启！刚刚好 ✅",
+        "off": "低音增强已关闭！"
+      },
+      "options": {
+        "level": "要设置的低音等级"
+      }
+    },
+    "distortion": {
+      "description": "切换失真效果！让声音更有重金属感 🤘",
+      "messages": {
+        "filter_enabled": "失真效果开启！摄滚的声音 🎸",
+        "filter_disabled": "失真效果关闭！"
+      }
+    },
+    "karaoke": {
+      "description": "切换卡拉OK模式！去除人声，尽情殌唱 🎤",
+      "messages": {
+        "filter_enabled": "卡拉OK模式开启！展示你的歌声吧 🎵",
+        "filter_disabled": "卡拉OK模式关闭！"
+      }
+    },
+    "lowpass": {
+      "description": "切换低通滤波！让声音更加深沉 🎶",
+      "messages": {
+        "filter_enabled": "低通效果开启！深沉的音色 🎷",
+        "filter_disabled": "低通效果关闭！"
+      }
+    },
+    "nightcore": {
+      "description": "切换夜核模式！加快速度，提高音调 ⚡",
+      "messages": {
+        "filter_enabled": "夜核模式开启！变身萌系版本 🌙",
+        "filter_disabled": "夜核模式关闭！"
+      }
+    },
+    "pitch": {
+      "description": "调整音调高低！让声音变高或变低 🎹",
+      "options": {
+        "pitch": "要设置的音调值（0.5-5之间）"
+      },
+      "errors": {
+        "invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢"
+      },
+      "messages": {
+        "pitch_set": "音调已设置为 **{pitch}** 🎼"
+      }
+    },
+    "rate": {
+      "description": "调整播放速率！加快或放慢音乐 ⏩",
+      "options": {
+        "rate": "要设置的速率值（0.5-5之间）"
+      },
+      "errors": {
+        "invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢"
+      },
+      "messages": {
+        "rate_set": "播放速率已设置为 **{rate}** ⏱️"
+      }
+    },
+    "reset": {
+      "description": "重置所有音效！回到原声 🔄",
+      "messages": {
+        "filters_reset": "所有效果已清除！回到最纯净的声音 ✨"
+      }
+    },
+    "rotation": {
+      "description": "切换旋转音效！让声音在你周围转圈 🌀",
+      "messages": {
+        "enabled": "旋转效果开启！感受声音的移动 🌀",
+        "disabled": "旋转效果关闭！"
+      }
+    },
+    "speed": {
+      "description": "调整播放速度！变快或变慢 💨",
+      "options": {
+        "speed": "要设置的速度值"
+      },
+      "messages": {
+        "invalid_number": "输入不对哦！请输入0.5到55之间的数字 🔢",
+        "set_speed": "播放速度已设置为 **{speed}** ⚡"
+      }
+    },
+    "tremolo": {
+      "description": "启用/关闭颤音滤镜",
+      "messages": {
+        "enabled": "`✅` | 颤音滤镜已`启用`。",
+        "disabled": "`✅` | 颤音滤镜已`禁用`。"
+      }
+    },
+    "vibrato": {
+      "description": "启用/关闭震音滤镜",
+      "messages": {
+        "enabled": "`✅` | 震音滤镜已`启用`。",
+        "disabled": "`✅` | 震音滤镜已`禁用`。"
+      }
+    },
+    "announce": {
+      "messages": {
+        "default_content": "机器人正在维护中，我们可能会重启机器人。因此，请在维护完成后使用 bresumesesssion 命令继续收听。"
+      }
+    },
+    "autoplay": {
+      "description": "切换自动播放！让音乐永不停止 🔁",
+      "messages": {
+        "enabled": "自动播放已开启！队列播完后我会继续播放相似的歌曲 🎶",
+        "disabled": "自动播放已关闭！播完就停止 ⏸️"
+      }
+    },
+    "clearqueue": {
+      "description": "清空播放队列！重新开始 🗑️",
+      "messages": {
+        "cleared": "队列已清空！现在可以添加新歌了 ✨"
+      }
+    },
+    "grab": {
+      "description": "把当前播放的歌信息私信给你！收藏好歌 💾",
+      "loading": "加载中...",
+      "content": "**时长:** {length}\n**点歌人:** <@{requester}>\n**链接:** [点击这里]({uri})",
+      "check_dm": "去私信看看吧！📨",
+      "dm_failed": "发不了私信给你！请检查是否允许收到直接消息 ⚙️"
+    },
+    "join": {
+      "description": "加入语音频道！叫我过来 🎵",
+      "already_connected": "我已经在 <#{channelId}> 了！",
+      "no_voice_channel": "嘿！先进语音频道吧，我才知道要去哪里 🎵",
+      "joined": "已成功加入 <#{channelId}>！准备好播放音乐了 🎉"
+    },
+    "leave": {
+      "description": "离开语音频道！再见 👋",
+      "left": "已离开 <#{channelId}>！下次再聊 ✌️",
+      "not_in_channel": "我还没在语音频道里呢！🤷"
+    },
+    "loop": {
+      "description": "切换循环模式！单曲/队列/关闭 🔁",
+      "looping_song": "单曲循环开启！这首歌会一直播放 🔂",
+      "looping_queue": "队列循环开启！播完会从头再来 🔁",
+      "looping_off": "循环已关闭！播完就停 ⏹️"
+    },
+    "nowplaying": {
+      "description": "查看正在播放的歌曲 🎵",
+      "now_playing": "正在播放",
+      "track_info": "[{title}]({uri}) - 点歌人: <@{requester}>\n\n`{bar}`"
+    },
+    "pause": {
+      "description": "暂停当前歌曲！暂停一下 ⏸️",
+      "successfully_paused": "已暂停！想好了再继续 ✅",
+      "messages": {
+        "vote_embed": "投票暂停: **{votes}/{needed}**\n✅ 暂停，❌ 继续播放。",
+        "button_yes": "✅ 暂停",
+        "button_no": "❌ 继续",
+        "already_voted": "你已经投过票了！🗳️"
+      }
+    },
+    "play": {
+      "description": "播放你喜欢的任何歌曲！支持 YouTube、Spotify、SoundCloud 等 🎵",
+      "options": {
+        "song": "要播放的歌曲名称或链接"
+      },
+      "loading": "加载中...",
+      "warnings": {
+        "longtrack_warning": "⚠️ **提醒:** 搜索结果里有超过30分钟的超长曲目。确定要播放这么长的歌吗？可能会影响听歌体验哦 ⏱️"
+      },
+      "errors": {
+        "search_error": "搜索时出错了！换个关键词试试？🔍",
+        "no_results": "没找到结果！换个搜索词试试？🤔",
+        "queue_too_long": "队列太长了！最多 {maxQueueSize} 首歌哦 📊",
+        "playlist_too_long": "播放列表太长了！最多 {maxPlaylistSize} 首歌 📊"
+      },
+      "added_to_queue": "已添加 [{title}]({uri}) 到队列！马上就播 🎶",
+      "added_playlist_to_queue": "已添加 {length} 首歌到队列！好多音乐 🎉"
+    },
+    "playnext": {
+      "description": "把歌加到队列最前面！下一首就播 ⏩",
+      "options": {
+        "song": "要播放的歌曲名称或链接"
+      },
+      "loading": "加载中...",
+      "errors": {
+        "search_error": "搜索时出错了！换个关键词试试？🔍",
+        "no_results": "没找到结果！换个搜索词试试？🤔",
+        "queue_too_long": "队列太长了！最多 {maxQueueSize} 首歌哦 📊",
+        "playlist_too_long": "播放列表太长了！最多 {maxPlaylistSize} 首歌 📊"
+      },
+      "added_to_play_next": "已把 [{title}]({uri}) 加到下一首！马上就轮到它了 🎯",
+      "added_playlist_to_play_next": "已把 {length} 首歌加到队列前面！优先播放 ⭐"
+    },
+    "queue": {
+      "description": "查看当前播放队列 📜",
+      "now_playing": "正在播放: [{title}]({uri}) - 点歌人: <@{requester}> - 时长: `{duration}`",
+      "live": "直播",
+      "track_info": "{index}. [{title}]({uri}) - 点歌人: <@{requester}> - 时长: `{duration}`",
+      "title": "播放队列",
+      "page_info": "第 {index} 页 / 共 {total} 页",
+      "duration": "总时长: `{totalDuration}`"
+    },
+    "remove": {
+      "description": "从队列中移除指定歌曲 🗑️",
+      "options": {
+        "song": "要删除的歌曲编号"
+      },
+      "errors": {
+        "no_songs": "队列里没有歌！先添加一些吧 🎵",
+        "invalid_number": "输入的编号不对哦！看看队列里有哪些歌 🔢"
+      },
+      "messages": {
+        "removed": "已删除第 {songNumber} 首歌！拜拜 👋"
+      }
+    },
+    "region": {
+      "description": "查看或切换音频服务器区域，选择最近的节点获得最佳音质 🌐",
+      "options": {
+        "region": "要切换的区域（例如：EU、VN）"
+      },
+      "info_title": "🌐 音频服务器区域",
+      "current_region": "**当前节点：** `{nodeId}`\n**区域：** {region}\n**延迟：** `{ping}ms`",
+      "available_regions": "可用区域",
+      "region_field": "{nodeCount} 个节点，{playerCount} 个播放器\n{nodes}",
+      "current_indicator": "（当前）",
+      "switched": "已切换到 {region} 区域！\n**节点：** `{oldNode}` → `{newNode}`\n**延迟：** `{oldPing}ms` → `{newPing}ms`",
+      "already_on_region": "你已经在 {region} 区域了（`{nodeId}`）！",
+      "no_nodes_in_region": "{region} 区域目前没有可用节点！",
+      "invalid_region": "未知区域 `{region}`。可用区域：{available}",
+      "switch_failed": "切换区域失败，请重试！"
+    },
+    "replay": {
+      "description": "重新播放当前歌曲！再来一遍 🔁",
+      "errors": {
+        "not_seekable": "这首歌不支持重播哦！可能是直播流 📺"
+      },
+      "messages": {
+        "replaying": "重播当前歌曲！从头开始 🔄"
+      }
+    },
+    "resume": {
+      "description": "恢复播放当前歌曲！继续听 ▶️",
+      "errors": {
+        "not_paused": "没有暂停啊！音乐正在播放 🎵"
+      },
+      "messages": {
+        "resumed": "继续播放！音乐起来 🎶",
+        "vote_embed": "投票恢复播放: **{votes}/{needed}**\n✅ 恢复，❌ 保持暂停。",
+        "button_yes": "✅ 恢复",
+        "button_no": "❌ 保持暂停",
+        "already_voted": "你已经投过票了！🗳️"
+      }
+    },
+    "search": {
+      "description": "搜索歌曲并从结果中选择！找你喜欢的 🔍",
+      "options": {
+        "song": "要搜索的歌曲关键词"
+      },
+      "select": "选一首你想听的歌吧！🎵",
+      "errors": {
+        "no_results": "没找到结果！换个关键词试试？🤔",
+        "search_error": "搜索时出错了！稍后再试？🔧"
+      },
+      "messages": {
+        "added_to_queue": "已添加 [{title}]({uri}) 到队列！马上就播 🎶"
+      }
+    },
+    "seek": {
+      "description": "跳转到歌曲的指定位置！快进快退 ⏩",
+      "options": {
+        "duration": "要跳转到的时间点"
+      },
+      "errors": {
+        "invalid_format": "时间格式不对哦！试试: seek 1m 或 seek 1h 30m ⏱️",
+        "not_seekable": "这首歌不支持跳转！可能是直播流 📺",
+        "beyond_duration": "不能跳过歌曲长度 {length}！过头了 ⏰"
+      },
+      "messages": {
+        "seeked_to": "已跳转到 {duration} 🎯"
+      }
+    },
+    "shuffle": {
+      "description": "随机打乱播放队列！惊喜顺序 🔀",
+      "errors": {
+        "fairplay": "开了公平模式就不能打乱队列哦！让大家公平点歌 ⚖️"
+      },
+      "messages": {
+        "shuffled": "队列已打乱！惊喜顺序开启 🎲"
+      }
+    },
+    "skip": {
+      "description": "跳过当前歌曲！下一首 ⏭️",
+      "messages": {
+        "skipped": "已跳过 [{title}]({uri})！下一首 🎵",
+        "vote_embed": "投票跳过: **{votes}/{needed}**\n✅ 跳过，❌ 继续播放。",
+        "button_skip": "👍 跳过",
+        "button_keep": "👎 保留",
+        "button_yes": "✅ 跳过",
+        "button_no": "❌ 保留",
+        "already_voted": "你已经投过票了！🗳️"
+      }
+    },
+    "skipto": {
+      "description": "跳至队列中的特定歌曲",
+      "options": {
+        "number": "您要跳至的歌曲编号"
+      },
+      "errors": {
+        "invalid_number": "请提供有效的编号。"
+      },
+      "messages": {
+        "skipped_to": "已跳至歌曲编号 {number}。"
+      }
+    },
+    "stop": {
+      "description": "停止音乐并清除队列",
+      "messages": {
+        "stopped": "已停止音乐并清除队列。",
+        "vote_embed": "投票停止: **{votes}/{needed}**\n✅ 停止，❌ 继续播放。",
+        "button_stop": "🛑 停止",
+        "button_keep": "👎 保留",
+        "button_yes": "✅ 停止",
+        "button_no": "❌ 继续",
+        "already_voted": "您已经投过票了。"
+      }
+    },
+    "volume": {
+      "description": "设置播放器的音量",
+      "options": {
+        "number": "您要设置的音量"
+      },
+      "messages": {
+        "invalid_number": "请提供有效的数字。",
+        "too_low": "音量不能低于 0。",
+        "too_high": "音量不能高于 200。您想损害您的听力或扬声器吗？嗯，我认为这不是一个好主意。",
+        "set": "已将音量设置为 {volume}"
+      }
+    },
+    "addsong": {
+      "description": "将歌曲添加到播放列表！保存你的最爱 💾",
+      "options": {
+        "playlist": "目标播放列表",
+        "song": "要添加的歌曲"
+      },
+      "messages": {
+        "no_playlist": "请选择一个播放列表！📝",
+        "no_song": "请提供要添加的歌曲！🎵",
+        "playlist_not_found": "这个播放列表不存在哦！检查一下名称？🤔",
+        "no_songs_found": "没找到歌曲！换个搜索词试试？🔍",
+        "added": "已将 {count} 首歌添加到 {playlist}！收藏成功 ✨"
+      }
+    },
+    "create": {
+      "description": "创建新的播放列表！收藏你的最爱 🎶",
+      "options": {
+        "name": "播放列表的名称"
+      },
+      "messages": {
+        "name_too_long": "名称太长了！最多50个字符哦 📝",
+        "playlist_exists": "这个名字已经被用了！换一个别的吧 🔄",
+        "playlist_created": "播放列表 **{name}** 创建成功！开始添加歌曲吧 🎉"
+      }
+    },
+    "delete": {
+      "description": "删除播放列表！永久移除 🗑️",
+      "options": {
+        "playlist": "要删除的播放列表"
+      },
+      "messages": {
+        "playlist_not_found": "这个播放列表不存在哦 🤔",
+        "playlist_deleted": "已删除播放列表 **{playlistName}**！拜拜 👋"
+      }
+    },
+    "list": {
+      "description": "查看用户的所有播放列表 📚",
+      "options": {
+        "user": "要查看的用户"
+      },
+      "messages": {
+        "no_playlists": "这个用户还没有播放列表呢！📂",
+        "your": "你的",
+        "playlists_title": "{username} 的播放列表",
+        "error": "获取播放列表时出错了！稍后再试？🔧"
+      }
+    },
+    "load": {
+      "description": "加载播放列表到队列！批量播放 📥",
+      "options": {
+        "playlist": "要加载的播放列表"
+      },
+      "messages": {
+        "playlist_not_exist": "这个播放列表不存在哦 🤔",
+        "playlist_empty": "这个播放列表是空的！先添加一些歌吧 📂",
+        "playlist_loaded": "已加载 `{name}`，共 {count} 首歌！开听 🎶"
+      }
+    },
+    "removesong": {
+      "description": "从播放列表中移除指定歌曲 ✂️",
+      "options": {
+        "playlist": "目标播放列表",
+        "song": "要删除的歌曲"
+      },
+      "messages": {
+        "provide_playlist": "请选择一个播放列表！📝",
+        "provide_song": "请告诉我要删哪首歌！🎵",
+        "playlist_not_exist": "这个播放列表不存在哦 🤔",
+        "song_not_found": "在播放列表里没找到这首歌 🔍",
+        "song_removed": "已从 {playlist} 中删除 {song}！拜拜 👋",
+        "error_occurred": "删除时出错了！稍后再试？🔧"
+      }
+    },
+    "steal": {
+      "description": "复制别人的播放列表到你的收藏！分享就是关爱 🎶",
+      "options": {
+        "playlist": "要复制的播放列表",
+        "user": "播放列表的主人"
+      },
+      "messages": {
+        "provide_playlist": "请提供播放列表名称！📝",
+        "provide_user": "请@一个用户！👥",
+        "playlist_not_exist": "这个用户没有这个播放列表 🤷",
+        "playlist_stolen": "已成功复制 `{playlist}` 从 {user}！现在它是你的了 🎉",
+        "error_occurred": "复制时出错了！稍后再试？🔧"
+      }
+    },
+    "lyrics": {
+      "description": "获取当前歌曲的歌词！跟着唱 🎤",
+      "lyrics_track": "### 歌词: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
+      "searching": "`🔍` 正在搜索 **{trackTitle}** 的歌词...",
+      "errors": {
+        "no_results": "没找到这首歌的歌词！可能太冷门了 🤷",
+        "lyrics_error": "获取歌词时出错了！稍后再试？🔧"
+      }
+    },
+    "livelyrics": {
+      "description": "启用或禁用实时歌词同步"
+    },
+    "fairplay": {
+      "description": "启用公平模式！让每个人都有机会播放喜欢的歌 ⚖️",
+      "errors": {
+        "not_in_voice": "嘿！先进语音频道吧 🎵",
+        "generic": "哎呀，出了点问题！稍后再试试？🔧"
+      },
+      "messages": {
+        "disabled": "公平模式已关闭！现在可以随意点歌了 🎵",
+        "enabled": "公平模式已开启！每个人都能公平点歌了 ⚖️",
+        "added_to_queue": "已添加 [{title}]({url}) 到队列！",
+        "errors": {
+          "empty_query": "请附上音频文件哦！📁",
+          "invalid_format": "只支持 MP3、WAV、OGG、FLAC、AAC 或 M4A 格式！🎵",
+          "no_results": "播放失败！文件可能损坏了 🚫"
+        }
+      }
+    },
+    "playlocal": {
+      "description": "播放你的本地音频文件！上传就能听 💾",
+      "options": {
+        "file": "要播放的音频文件"
+      },
+      "loading": "加载中...",
+      "errors": {
+        "empty_query": "请附上音频文件哦！📁",
+        "invalid_format": "只支持 MP3、WAV、OGG、FLAC、AAC 或 M4A 格式！🎵",
+        "no_results": "播放失败！文件可能损坏了 🚫"
+      },
+      "added_to_queue": "已添加 [{title}]({url}) 到队列！"
+    },
+    "loop_current": {
+      "description": "循环播放当前歌曲！单曲循环 🔂"
+    },
+    "loop_queue": {
+      "description": "循环播放整个队列！列表循环 🔁"
+    },
+    "resume_session": {
+      "no_session_found": "未找到上一个会话。",
+      "resume_failed": "出现错误。无法恢复会话。",
+      "resumed": "已成功恢复会话。"
+    },
+    "save_session": {
+      "saved": "成功保存 {saved} 个会话。无法保存 {failed} 个会话。"
+    },
+    "vote": {
+      "description": "管理音乐命令的投票系统",
+      "options": {
+        "toggle": "开启或关闭投票系统",
+        "status": "检查投票系统的当前状态"
+      }
+    },
+    "lavaconfig": {
+      "description": "运行时管理 LavaSrc 配置 🎵",
+      "errors": {
+        "service_unavailable": "LavaSrc 配置服务不可用。",
+        "missing_subcommand": "请提供子命令。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
+        "missing_node": "缺少必要参数: `node`。示例: `!lavaconfig {subcommand} node:main`",
+        "unknown_subcommand": "未知子命令: `{subcommand}`。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
+      },
+      "messages": {
+        "processing": "处理中...",
+        "config_updated_title": "✅ {source} 配置已更新",
+        "config_updated_desc": "已成功更新节点 **{nodeId}** 的 {source} 配置",
+        "updated_config": "已更新配置",
+        "view_title": "📋 LavaSrc 配置 - {nodeId}",
+        "nodes_title": "📡 Lavalink 节点",
+        "no_nodes": "没有可用节点。",
+        "total_nodes": "共 {count} 个节点"
+      },
+      "usage": {
+        "title": "用法",
+        "value": "`!lavaconfig <子命令> [选项]`\n示例: `!lavaconfig spotify node:main clientId:xxx`"
+      }
+    },
+    "youtubeconfig": {
+      "description": "运行时管理 YouTube 源配置 🎵",
+      "errors": {
+        "service_unavailable": "YouTube 配置服务不可用。",
+        "missing_subcommand": "请提供子命令。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_node": "缺少必要参数: `node`。示例: `!youtubeconfig {subcommand} node:main`",
+        "unknown_subcommand": "未知子命令: `{subcommand}`。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_oauth_option": "请提供至少一个选项: `refreshToken` 或 `skipInitialization`",
+        "missing_potoken_pair": "为了获得最佳效果，`poToken` 和 `visitorData` 应该一起提供",
+        "missing_refresh_token": "缺少必要参数: `refreshToken`。示例: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
+      },
+      "messages": {
+        "processing": "处理中...",
+        "oauth_updated_title": "✅ YouTube OAuth 配置已更新",
+        "oauth_updated_desc": "已成功更新节点 **{nodeId}** 的 YouTube OAuth 配置",
+        "potoken_updated_title": "✅ YouTube poToken 配置已更新",
+        "potoken_updated_desc": "已成功更新节点 **{nodeId}** 的 YouTube poToken 配置",
+        "token_refreshed_title": "✅ OAuth 令牌已刷新",
+        "token_refreshed_desc": "已成功刷新节点 **{nodeId}** 的 OAuth 令牌",
+        "view_title": "📋 YouTube 源配置 - {nodeId}",
+        "nodes_title": "📡 Lavalink 节点",
+        "no_nodes": "没有可用节点。",
+        "total_nodes": "共 {count} 个节点",
+        "not_set": "未设置",
+        "na": "不适用"
+      },
+      "fields": {
+        "refresh_token": "刷新令牌",
+        "skip_initialization": "跳过初始化",
+        "potoken": "poToken",
+        "visitor_data": "访客数据",
+        "token_type": "令牌类型",
+        "expires_in": "过期时间",
+        "scope": "范围",
+        "access_token_truncated": "访问令牌（已截断）",
+        "updated": "✅ 已更新",
+        "not_changed": "⚪ 未更改",
+        "yes": "✅ 是",
+        "no": "❌ 否",
+        "important": "⚠️ 重要",
+        "oauth_warning": "OAuth 令牌应该保密。建议使用临时 YouTube 账号。",
+        "how_to_generate": "💡 如何生成",
+        "generator_link": "使用 [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) 获取这些值。",
+        "note": "ℹ️ 注意",
+        "api_note": "API 只返回刷新令牌。poToken 和 visitorData 不会暴露。"
+      },
+      "usage": {
+        "title": "用法",
+        "value": "`!youtubeconfig <子命令> [选项]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
+      }
+    }
+  },
+  "buttons": {
+    "invite": "邀请",
+    "support": "支持服务器",
+    "previous": "上一首",
+    "resume": "恢复",
+    "stop": "停止",
+    "skip": "跳过",
+    "loop": "循环",
+    "errors": {
+      "not_author": "这个按钮不是给你用的哦！🚫"
+    }
+  },
+  "player": {
+    "errors": {
+      "no_player": "这里没有播放器！先播放一首歌吧 🎵",
+      "no_channel": "啦！先进语音频道吧 🎵",
+      "queue_empty": "队列是空的！添加一些歌曲吧 📚",
+      "no_previous": "队列里没有上一首歌！这就是第一首 🎵",
+      "no_song": "队列里没有歌！先点一些吧 🎶",
+      "already_paused": "已经暂停了哦！再暂停就停美了 ⏸️"
+    },
+    "trackStart": {
+      "now_playing": "正在播放",
+      "requested_by": "由 {user} 请求",
+      "duration": "时长",
+      "author": "作者",
+      "not_connected_to_voice_channel": "您未连接到 <#{channel}> 以使用这些按钮。",
+      "need_dj_role": "您需要拥有 DJ 角色才能使用此命令。",
+      "previous_by": "由 {user} 上一首",
+      "no_previous_song": "没有上一首歌曲。",
+      "paused_by": "由 {user} 暂停",
+      "resumed_by": "由 {user} 恢复",
+      "skipped_by": "由 {user} 跳过",
+      "no_more_songs_in_queue": "队列中没有更多歌曲。",
+      "looping_by": "由 {user} 循环播放",
+      "looping_queue_by": "由 {user} 循环播放队列",
+      "looping_off_by": "由 {user} 关闭循环播放"
+    },
+    "setupStart": {
+      "now_playing": "正在播放",
+      "description": "[{title}]({uri}) 作者: {author} • `[{length}]` - 请求者: <@{requester}>",
+      "error_searching": "搜索时出错。",
+      "no_results": "未找到结果。",
+      "nothing_playing": "现在没有播放任何内容。",
+      "queue_too_long": "队列太长。最大长度为 {maxQueueSize} 首歌曲。",
+      "playlist_too_long": "播放列表太长。最大长度为 {maxPlaylistSize} 首歌曲。",
+      "added_to_queue": "已将 [{title}]({uri}) 添加到队列。",
+      "added_playlist_to_queue": "已将播放列表中的 [{length}] 首歌曲添加到队列。"
+    }
+  },
+  "event": {
+    "interaction": {
+      "setup_channel": "不能在设置频道里用这个命令！换个频道试试 🚫",
+      "no_send_message": "我在 `{guild}` 的 {channel} 频道没有 **`发送消息`** 权限！💬",
+      "no_embed_links": "我没有 **`嵌入链接`** 权限！🔗",
+      "no_permission": "我没有足够的权限执行这个命令！🔒",
+      "no_user_permission": "你没有权限使用这个命令！⚠️",
+      "no_voice_channel": "先进语音频道才能用 `{command}` 命令哦！🎵",
+      "no_connect_permission": "我需要 `连接` 权限才能执行 `{command}` 命令！🔒",
+      "no_speak_permission": "我需要 `发言` 权限才能执行 `{command}` 命令！🔊",
+      "no_request_to_speak": "我在舞台频道需要 `请求发言` 权限！🎭",
+      "different_voice_channel": "你不在 {channel} 才能用 `{command}` 命令！过来这边 🎵",
+      "no_music_playing": "现在没在播放音乐！先播一首 🎶",
+      "no_dj_role": "还没设置DJ角色呢！用 `dj` 命令设置 🎧",
+      "no_dj_permission": "你需要DJ角色才能用这个命令！🎧",
+      "cooldown": "慢点！再等 {time} 秒才能用 `{command}` 命令 ⏱️",
+      "error": "哎呀！出错了: `{error}` 😢",
+      "vote_button": "为我投票！⭐",
+      "vote_message": "等一下！在 top.gg 上为机器人投票后才能用这个命令。谢谢支持！💖",
+      "slash_deprecated": "斜杠命令已弃用！请改用 `{prefix}{command}`。🎵",
+      "periodic_message_vote_only": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票吧！您的支持让我们更强大！❤️\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
+      "periodic_message_with_bots": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票！想在多个房间播放音乐？添加更多机器人吧！🎶\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
+      "voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
+      "no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
+      "no_free_bots": "目前没有可用的机器人。您可能需要向此服务器添加更多机器人。",
+      "maintenance": "机器人正在维护中。请稍后再试。",
+      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+    },
+    "message": {
+      "prefix_mention": "嘿，我这个服务器的前缀是 `{prefix}`。想要了解更多信息？请执行 `{prefix}help`\n注意安全，保持出色！",
+      "no_send_message": "我在 `{guild}`\n频道: {channel} 中没有 **`发送消息`** 权限。",
+      "no_embed_links": "我没有 **`嵌入链接`** 权限。",
+      "no_permission": "我没有足够的权限来执行此命令。",
+      "no_user_permission": "您没有足够的权限来使用此命令。",
+      "no_voice_channel": "您必须连接到语音频道才能使用此 `{command}` 命令。",
+      "no_connect_permission": "我没有 `连接` 权限来执行此 `{command}` 命令。",
+      "no_speak_permission": "我没有 `发言` 权限来执行此 `{command}` 命令。",
+      "no_request_to_speak": "我没有 `请求发言` 权限来执行此 `{command}` 命令。",
+      "different_voice_channel": "您未连接到 {channel} 以使用此 `{command}` 命令。",
+      "no_music_playing": "现在没有播放任何内容。",
+      "no_dj_role": "未设置 DJ 角色。",
+      "no_dj_permission": "您需要拥有 DJ 角色才能使用此命令。",
+      "missing_arguments": "缺少参数",
+      "missing_arguments_description": "请为 `{command}` 命令提供所需的 参数。\n\n示例:\n{examples}",
+      "syntax_footer": "语法: [] = 可选，<> = 必需 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "cooldown": "请等待 {time} 秒后再使用 `{command}` 命令。",
+      "no_mention_everyone": "您不能对所有人或此处使用此命令。",
+      "error": "发生错误: `{error}`",
+      "no_voice_channel_queue": "您未连接到语音频道以将歌曲排入队列。",
+      "no_permission_connect_speak": "我在 <#{channel}> 中没有足够的权限连接/发言。",
+      "different_voice_channel_queue": "您未连接到 <#{channel}> 以将歌曲排入队列。",
+      "maintenance": "机器人正在维护中。请稍后再试。",
+      "no_free_bots": "目前没有可用的机器人。您可能需要向此服务器添加更多机器人。",
+      "no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
+      "voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
+      "vote_button": "为我投票！",
+      "vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。"
+    },
+    "setupButton": {
+      "no_voice_channel_button": "你不在语音频道里才能用这个按钮！🎵",
+      "different_voice_channel_button": "你不在 {channel} 才能用这些按钮！过来这边 🎵",
+      "now_playing": "正在播放",
+      "live": "直播",
+      "requested_by": "由 <@{requester}> 点歌",
+      "no_dj_permission": "你需要DJ角色才能用这个命令！🎧",
+      "volume_set": "音量已设为 {vol}%",
+      "volume_footer": "音量: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "paused": "已暂停",
+      "resumed": "已恢复",
+      "pause_resume": "{name} 音乐。",
+      "pause_resume_footer": "由 {displayName} {name} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "no_music_to_skip": "没有可以跳过的歌！队列空了 🎶",
+      "skipped": "已跳过音乐。",
+      "skipped_footer": "由 {displayName} 跳过 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "stopped": "已停止音乐。",
+      "stopped_footer": "由 {displayName} 停止 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "nothing_playing": "现在没有播放任何内容！开始音乐 🎶",
+      "loop_set": "循环已设置为 {loop}。",
+      "loop_footer": "由 {displayName} 将循环设置为 {loop} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "shuffled": "已随机播放队列。",
+      "no_previous_track": "没有上一首曲目！这是第一首歌 🎵",
+      "playing_previous": "正在播放上一首曲目。",
+      "previous_footer": "由 {displayName} 播放上一首曲目 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "rewinded": "已倒回音乐。",
+      "rewind_footer": "由 {displayName} 倒回 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "forward_limit": "不能快进过头哦！超过歌曲长度了 ⏩",
+      "forwarded": "已快进音乐。",
+      "forward_footer": "由 {displayName} 快进 • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
+      "button_not_available": "这个按钮现在不可用！🚫",
+      "no_music_playing": "这个服务器没有播放音乐！开始播放吧 🎵"
+    },
+    "voice_state_update": {
+      "kicked": "被从 <#{channelId}> 踢出来了！看来有人不想要我 😢",
+      "moved": "被移到 <#{channelId}> 了！跟着你过去 🎵",
+      "left_due_to_timeout_no_listeners": "离开 <#{channelId}> 了 - 没人听了！随时叫我回来 👋",
+      "left_due_to_timeout_no_songs": "离开 <#{channelId}> 了 - 歌播完了！下次多加点歌 🎶"
+    }
+  },
+  "will_leave": {
+    "no_listeners": "如果没人听，{time} 分钟后我就走了！来聊聊天？👂",
+    "no_songs": "{time} 分钟后我就走了 - 队列空了！添加一些歌吧 🎶"
+  },
+  "LIVE_LYRICS": {
+    "NO_PLAYER": "当前没有播放音乐。",
+    "NO_LYRICS": "这首歌没有找到同步歌词。",
+    "TITLE": "实时歌词 - {track}",
+    "CURRENT": "🎵 正在播放",
+    "STOPPED": "实时歌词已停止。",
+    "REFRESHED": "歌词已刷新！",
+    "ERROR": "获取歌词时发生错误。",
+    "ENDED": "歌曲已结束。实时歌词已停止。",
+    "PAUSED": "播放已暂停。歌词将在继续播放时恢复。",
+    "SEARCHING": "正在搜索同步歌词...",
+    "NO_SYNCED_TITLE": "⚠️ 同步歌词不可用",
+    "NO_SYNCED_DESCRIPTION": "找不到 **{trackTitle}** 的同步歌词。\n\n**替代方案：**\n• 使用 `/lyrics` 查看静态歌词\n• 尝试其他歌曲\n\n同步歌词最适用于 Spotify、Deezer 或 YouTube Music 上的热门歌曲。",
+    "ALREADY_RUNNING": "实时歌词已在运行！请先使用停止按钮结束它。",
+    "STARTED": "🎤 实时歌词已开始！请查看下方的消息。",
+    "PROGRESS": "进度",
+    "UPDATE_INTERVAL": "每 {seconds} 秒更新",
+    "CLICK_REFRESH": "点击刷新立即更新",
+    "NO_LYRICS_AVAILABLE": "暂无歌词",
+    "REFRESH_BUTTON": "刷新",
+    "STOP_BUTTON": "停止"
+  },
+  "will_restart_after": "{time} 后机器人将重启",
+  "maintenance": {
+    "title": "维护模式",
+    "enabled_title": "🛠️ 已启用维护模式",
+    "enabled_desc": "机器人当前处于**维护模式**。音乐命令已禁用。",
+    "disabled_title": "✅ 已禁用维护模式",
+    "disabled_desc": "机器人已**恢复正常运行**。",
+    "field_title": "🔧 维护",
+    "status_title": "🛠️ 维护状态",
+    "status_value": "正在维护中",
+    "affected_title": "🕒 受影响的功能",
+    "affected_value": "音乐和队列命令暂时禁用。",
+    "requested_by": "由 {author} 请求",
+    "global_field_value_enabled": "```diff\n+ {count}/{total} 正在维护中\n```",
+    "global_field_value_disabled": "```diff\n- 全部正常运行\n```",
+    "global_field_fetch_failed": "⚠️ 无法获取数据。",
+    "local_field_enabled": "```diff\n+ 正在维护中\n```",
+    "local_field_disabled": "```diff\n- 正常运行\n```"
+  },
+  "Evaluate code": "运行和测试代码片段 💻",
+  "Leave a guild": "让机器人离开服务器 🚪",
+  "List all guilds the bot is in": "显示我在的所有服务器 📝",
+  "Restart the bot": "重启机器人 🔄",
+  "The loop mode you want to set": "选择循环模式（关闭/单曲/队列）🔁",
+  "Show current maintenance status": "查看机器人是否在维护 🛠️",
+  "Show current maintenance status.": "查看维护状态 🛠️",
+  "Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
+  "Update Spotify configuration": "Update Spotify configuration",
+  "Update Apple Music configuration": "Update Apple Music configuration",
+  "Update Deezer configuration": "Update Deezer configuration",
+  "Update Yandex Music configuration": "Update Yandex Music configuration",
+  "Update VK Music configuration": "Update VK Music configuration",
+  "Update Qobuz configuration": "Update Qobuz configuration",
+  "Update yt-dlp configuration": "Update yt-dlp configuration",
+  "View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
+  "List all available Lavalink nodes": "List all available Lavalink nodes",
+  "The Lavalink node ID": "The Lavalink node ID",
+  "Spotify client ID": "Spotify client ID",
+  "Spotify client secret": "Spotify client secret",
+  "Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
+  "Prefer anonymous token": "Prefer anonymous token",
+  "Custom token endpoint URL": "Custom token endpoint URL",
+  "Apple Music media API token": "Apple Music media API token",
+  "Deezer ARL cookie value": "Deezer ARL cookie value",
+  "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
+  "Yandex Music access token": "Yandex Music access token",
+  "VK Music user token": "VK Music user token",
+  "Qobuz user OAuth token": "Qobuz user OAuth token",
+  "Qobuz application ID": "Qobuz application ID",
+  "Qobuz application secret": "Qobuz application secret",
+  "Path to yt-dlp executable": "Path to yt-dlp executable",
+  "Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
+  "Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
+  "Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
+  "Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
+  "Update YouTube poToken configuration": "Update YouTube poToken configuration",
+  "View current YouTube source configuration": "View current YouTube source configuration",
+  "Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
+  "YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
+  "Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
+  "Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
+  "Visitor data associated with the poToken": "Visitor data associated with the poToken",
+  "The refresh token to use": "The refresh token to use"
 }

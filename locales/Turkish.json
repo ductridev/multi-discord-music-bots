@@ -1,919 +1,923 @@
 {
-	"cmd": {
-		"247": {
-			"description": "Botun ses kanalında kalmasını sağlar.",
-			"errors": {
-				"not_in_voice": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
-				"generic": "Bu komutu çalıştırmaya çalışırken bir hata oluştu."
-			},
-			"messages": {
-				"disabled": "`✅` | 24/7 modu `KAPATILDI`.",
-				"enabled": "`✅` | 24/7 modu `AKTİFLEŞTİRİLDİ`."
-			}
-		},
-		"ping": {
-			"description": "Botun gecikmesini gösterir.",
-			"content": "Pingleniyor...",
-			"bot_latency": "Bot Gecikmesi",
-			"api_latency": "API Gecikmesi",
-			"requested_by": "{author} tarafından talep edildi."
-		},
-		"lavalink": {
-			"description": "Mevcut Lavalink istatistiklerini gösterir.",
-			"title": "Lavalink İstatistikleri",
-			"content": "Oynatıcı: {players}\nOynayan Oynatıcılar: {playingPlayers}\nÇalışma Süresi: {uptime}\nÇekirdekler: {cores} Çekirdek(ler)\nBellek Kullanımı: {used} / {reservable}\nSistem Yükü: {systemLoad}%\nLavalink Yükü: {lavalinkLoad}%",
-			"page_info": "Sayfa {index} / {total}"
-		},
-		"invite": {
-			"description": "Bot davet bağlantısını al.",
-			"content": "Beni davet etmek için aşağıdaki butona tıklayın. Herhangi bir hata veya kesinti mi var? Destek sunucusuna katılın!"
-		},
-		"help": {
-			"description": "Yardım menüsünü gösterir.",
-			"options": {
-				"command": "Hakkında bilgi almak istediğiniz komut."
-			},
-			"content": "Merhaba! Ben {bot}, [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) ve Discord.js ile yapılmış bir müzik botuyum. {prefix}help <command> yazarak bir komut hakkında daha fazla bilgi alabilirsiniz.",
-			"title": "Yardım Menüsü",
-			"not_found": "Bu {cmdName} komutu mevcut değil.",
-			"help_cmd": "**Açıklama**: {description}\n**Kullanım**: {usage}\n**Örnekler**: {examples}\n**Alternatifler**: {aliases}\n**Kategori**: {category}\n**Bekleme Süresi**: {cooldown} saniye\n**İzinler**: {premUser}\n**Bot İzinleri**: {premBot}\n**Sadece Geliştirici**: {dev}\n**Slash Komut**: {slash}\n**Argümanlar**: {args}\n**Oynatıcı**: {player}\n**DJ**: {dj}\n**DJ İzinleri**: {djPerm}\n**Ses**: {voice}",
-			"footer": "Bir komut hakkında daha fazla bilgi almak için {prefix}help <command> kullanın • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
-		},
-		"botinfo": {
-			"description": "Bot hakkında bilgi verir.",
-			"content": "Bot Bilgisi:\n- **İşletim Sistemi**: {osInfo}\n- **Çalışma Süresi**: {osUptime}\n- **Ana Bilgisayar Adı**: {osHostname}\n- **CPU Mimarisi**: {cpuInfo}\n- **CPU Kullanımı**: %{cpuUsed}\n- **Bellek Kullanımı**: {memUsed} / {memTotal}\n- **Node Versiyonu**: {nodeVersion}\n- **Discord.js Versiyonu**: {discordJsVersion}\n- {guilds} sunucuya, {channels} kanala ve {users} kullanıcıya bağlı\n- **Toplam Komutlar**: {commands}"
-		},
-		"about": {
-			"description": "Bot hakkında bilgi gösterir.",
-			"fields": {
-				"creator": "Oluşturucu",
-				"repository": "Depo",
-				"support": "Destek",
-				"description": "İlk açık kaynak projesini yapmak için gerçekten hevesliydi ve daha fazla kodlama deneyimi kazanmak istedi. Bu projede daha az hatalı bir proje oluşturma zorluğuyla karşılaştı. MultiBungoBot'i kullanmaktan keyif almanızı umuyorum!"
-			}
-		},
-		"dj": {
-			"description": "DJ modunu ve ilişkili rolleri yönetir.",
-			"errors": {
-				"provide_role": "Lütfen bir rol belirtin.",
-				"no_roles": "DJ rolü yok.",
-				"invalid_subcommand": "Lütfen geçerli bir alt komut belirtin."
-			},
-			"messages": {
-				"role_exists": "DJ rolü <@&{roleId}> zaten eklenmiş.",
-				"role_added": "DJ rolü <@&{roleId}> eklendi.",
-				"role_not_found": "DJ rolü <@&{roleId}> eklenmemiş.",
-				"role_removed": "DJ rolü <@&{roleId}> kaldırıldı.",
-				"all_roles_cleared": "Tüm DJ rolleri kaldırıldı.",
-				"toggle": "DJ modu {status} olarak değiştirildi."
-			},
-			"options": {
-				"add": "Eklemek istediğiniz DJ rolü",
-				"remove": "Kaldırmak istediğiniz DJ rolü.",
-				"clear": "Tüm DJ rollerini temizler.",
-				"toggle": "DJ rolünü durumunu değiştirir.",
-				"role": "DJ rolü."
-			},
-			"subcommands": "Alt komutlar"
-		},
-		"language": {
-			"description": "Botun dilini ayarlar.",
-			"invalid_language": "Lütfen geçerli bir dil belirtin. Örnek: `EnglishUS` İngilizce (ABD) için.\n\nDesteklenen dillerin listesine [buradan](https://discord.com/developers/docs/reference#locales) ulaşabilirsiniz.\n\nMevcut Diller:\n{languages}",
-			"already_set": "Dil zaten `{language}` olarak ayarlanmış.",
-			"not_set": "Dil ayarlanmamış.",
-			"set": "`✅` | Dil `{language}` olarak ayarlandı.",
-			"reset": "`✅` | Dil varsayılan dile sıfırlandı.",
-			"options": {
-				"set": "Botun dilini ayarlar.",
-				"language": "Ayarlamak istediğiniz dil.",
-				"reset": "Dili varsayılan olana sıfırlar."
-			}
-		},
-		"prefix": {
-			"description": "Botun ön ekini gösterir veya ayarlar.",
-			"errors": {
-				"prefix_too_long": "Ön ek 3 karakterden uzun olamaz."
-			},
-			"messages": {
-				"current_prefix": "Bu sunucu için ön ek `{prefix}`.",
-				"prefix_set": "Bu sunucu için ön ek şimdi `{prefix}`.",
-				"prefix_reset": "Bu sunucu için ön ek şimdi `{prefix}`."
-			},
-			"options": {
-				"set": "Ön eki ayarlar.",
-				"prefix": "Ayarlamak istediğiniz ön ek.",
-				"reset": "Ön eki varsayılana sıfırlar."
-			}
-		},
-		"setup": {
-			"description": "Botu kurar",
-			"errors": {
-				"channel_exists": "Şarkı isteği kanalı zaten mevcut.",
-				"channel_not_exists": "Şarkı isteği kanalı mevcut değil",
-				"channel_delete_fail": "Kurulum kanalı veritabanından silindi. Lütfen kanalı kendiniz silin."
-			},
-			"messages": {
-				"channel_created": "Şarkı isteği kanalı <#{channelId}> kanalında oluşturuldu.",
-				"channel_deleted": "Şarkı isteği kanalı silindi.",
-				"channel_info": "Şarkı isteği kanalı <#{channelId}>."
-			},
-			"options": {
-				"create": "Şarkı isteği kanalı oluşturur.",
-				"delete": "Şarkı isteği kanalını siler.",
-				"info": "Şarkı isteği kanalını gösterir."
-			}
-		},
-		"8d": {
-			"description": "8D filtresini açar/kapatır.",
-			"messages": {
-				"filter_enabled": "`✅` | 8D filtresi `AÇILDI`.",
-				"filter_disabled": "`✅` | 8D filtresi `KAPATILDI`."
-			}
-		},
-		"bassboost": {
-			"description": "Bassboost filtresini açar/kapatır.",
-			"options": {
-				"level": "Ayarlamak istediğiniz bassboost seviyesi."
-			},
-			"messages": {
-				"high": "`✅` | Yüksek bassboost filtresi `AÇILDI`.",
-				"low": "`✅` | Düşük bassboost filtresi `AÇILDI`.",
-				"medium": "`✅` | Orta bassboost filtresi `AÇILDI`.",
-				"off": "`✅` | Bassboost filtresi `KAPATILDI`."
-			}
-		},
-		"distortion": {
-			"description": "Distortion filtresini açar/kapatır.",
-			"messages": {
-				"filter_enabled": "`✅` | Distortion filtresi `AÇILDI`.",
-				"filter_disabled": "`✅` | Distortion filtresi `KAPATILDI`."
-			}
-		},
-		"karaoke": {
-			"description": "Karaoke filtresini açar/kapatır.",
-			"messages": {
-				"filter_enabled": "`✅` | Karaoke filtresi `AÇILDI`.",
-				"filter_disabled": "`✅` | Karaoke filtresi `KAPATILDI`."
-			}
-		},
-		"lowpass": {
-			"description": "Lowpass filtresini açar/kapatır.",
-			"messages": {
-				"filter_enabled": "`✅` | Lowpass filtresi `AÇILDI`.",
-				"filter_disabled": "`✅` | Lowpass filtresi `KAPATILDI`."
-			}
-		},
-		"nightcore": {
-			"description": "Nightcore filtresini açar/kapatır.",
-			"messages": {
-				"filter_enabled": "`✅` | Nightcore filtresi `AÇILDI`.",
-				"filter_disabled": "`✅` | Nightcore filtresi `KAPATILDI`."
-			}
-		},
-		"pitch": {
-			"description": "Pitch filtresini açar/kapatır.",
-			"options": {
-				"pitch": "Ayarlamak istediğiniz pitch değeri (0.5 ile 5 arasında)"
-			},
-			"errors": {
-				"invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin."
-			},
-			"messages": {
-				"pitch_set": "`✅` | Pitch **{pitch}** olarak ayarlandı."
-			}
-		},
-		"rate": {
-			"description": "Şarkının hızını değiştirir.",
-			"options": {
-				"rate": "Ayarlamak istediğiniz hız değeri (0.5 ile 5 arasında)"
-			},
-			"errors": {
-				"invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin."
-			},
-			"messages": {
-				"rate_set": "`✅` | Hız **{rate}** olarak ayarlandı.."
-			}
-		},
-		"reset": {
-			"description": "Aktif filtreleri sıfırlar",
-			"messages": {
-				"filters_reset": "`✅` | Filtreler sıfırlandı."
-			}
-		},
-		"rotation": {
-			"description": "Rotation filtresini açar/kapatır.",
-			"messages": {
-				"enabled": "`✅` | Rotation filtresi `AÇILDI`.",
-				"disabled": "`✅` | Rotation filtresi `KAPATILDI`."
-			}
-		},
-		"speed": {
-			"description": "Şarkının hızını değiştirir.",
-			"options": {
-				"speed": "Ayarlamak istediğiniz hız."
-			},
-			"messages": {
-				"invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin.",
-				"set_speed": "`✅` | Hız **{speed}** olarak ayarlandı."
-			}
-		},
-		"tremolo": {
-			"description": "Tremolo filtresini açar/kapatır.",
-			"messages": {
-				"enabled": "`✅` | Tremolo filtresi `AÇILDI`.",
-				"disabled": "`✅` | Tremolo filtresi `KAPATILDI`."
-			}
-		},
-		"vibrato": {
-			"description": "Vibrato filtresini açar/kapatır.",
-			"messages": {
-				"enabled": "`✅` | Vibrato filtresi `AÇILDI`.",
-				"disabled": "`✅` | Vibrato filtresi `KAPATILDI`."
-			}
-		},
-		"autoplay": {
-			"description": "Otomatik çalmayı açar/kapatır.",
-			"messages": {
-				"enabled": "`✅` | Otomatik çalma `AÇILDI`.",
-				"disabled": "`✅` | Otomatik çalma `KAPATILDI`."
-			}
-		},
-		"clearqueue": {
-			"description": "Kuyruğu temizler",
-			"messages": {
-				"cleared": "Kuyruk temizlendi."
-			}
-		},
-		"grab": {
-			"description": "Çalan şarkıyı özel mesaj yoluyla gönderir.",
-			"loading": "Yükleniyor...",
-			"content": "**Süre**: {length}\n**Talep Eden**: <@{requester}>\n**Bağlantı**: [Buraya tıklayın]({uri})",
-			"check_dm": "Lütfen özel mesajlarınızı kontrol edin.",
-			"dm_failed": "Özel mesaj gönderemedim. Lütfen doğrudan mesajların açık olduğundan emin olun."
-		},
-		"join": {
-			"description": "Botun ses kanalına katılmasını sağlar.",
-			"already_connected": "Zaten <#{channelId}> kanalına bağlıyım.",
-			"no_voice_channel": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
-			"joined": "<#{channelId}> kanalına başarıyla katıldı."
-		},
-		"leave": {
-			"description": "Botu ses kanalından çıkartır.",
-			"left": "<#{channelId}> kanalından başarıyla ayrıldı.",
-			"not_in_channel": "Bir ses kanalında değilim."
-		},
-		"loop": {
-			"description": "Mevcut şarkıyı veya sırayı döngüye alır.",
-			"looping_song": "**Şarkı döngüde.**",
-			"looping_queue": "**Kuyruk döngüde.**",
-			"looping_off": "**Döngü kapatıldı.**"
-		},
-		"lyrics": {
-			"description": "Şu an çalan parçanın sözlerini alır.",
-			"lyrics_track": "### Sözler: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
-			"searching": "`🔍` {trackTitle} şarkı sözleri aranıyor...",
-			"errors": {
-				"no_results": "Mevcut parça için şarkı sözleri bulunamadı.",
-				"lyrics_error": "Şarkı sözlerini alırken bir hata oluştu."
-			}
-		},
-		"nowplaying": {
-			"description": "Şu an çalan şarkıyı gösterir.",
-			"now_playing": "Şu An Çalıyor",
-			"track_info": "[{title}]({uri})- İsteyen: <@{requester}>\n\n{bar}`"
-		},
-		"pause": {
-			"description": "Mevcut şarkıyı duraklatır.",
-			"successfully_paused": "Şarkı başarıyla duraklatıldı.",
-			"messages": {
-				"vote_embed": "Duraklatma için oy: **{votes}/{needed}**\n✅ durdurmak için, ❌ çalmaya devam etmek için",
-				"button_yes": "✅ Duraklat",
-				"button_no": "❌ Devam Et",
-				"already_voted": "Zaten oy kullandınız."
-			}
-		},
-		"play": {
-			"description": "YouTube, Spotify veya bir bağlantıdan şarkı çalar.",
-			"options": {
-				"song": "Çalmak istediğiniz şarkı."
-			},
-			"loading": "Yükleniyor...",
-			"errors": {
-				"search_error": "Arama sırasında bir hata oluştu.",
-				"no_results": "Sonuç bulunamadı.",
-				"queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
-				"playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır."
-			},
-			"added_to_queue": "Kuyruğa [{title}]({uri}) eklendi.",
-			"added_playlist_to_queue": "{length} şarkı kuyruğa eklendi.",
-			"warnings": {
-				"longtrack_warning": "⚠️ **Uyarı:** Arama sonuçlarındaki bir veya daha fazla parça 30 dakikadan uzun. Lütfen bu uzun parçaları çalmak istediğinizden emin olun çünkü dinleme deneyiminizi etkileyebilir."
-			}
-		},
-		"playnext": {
-			"description": "Sıradaki olarak çalınacak şarkıyı kuyruğa ekler.",
-			"options": {
-				"song": "Sıradaki olarak çalmak istediğiniz şarkı."
-			},
-			"loading": "Yükleniyor...",
-			"errors": {
-				"search_error": "Arama sırasında bir hata oluştu.",
-				"no_results": "Sonuç bulunamadı.",
-				"queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
-				"playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır."
-			},
-			"added_to_play_next": "Sıradaki olarak [{title}]({uri}) kuyruğa eklendi.",
-			"added_playlist_to_play_next": "{length} şarkı sıradaki olarak kuyruğa eklendi."
-		},
-		"queue": {
-			"description": "Mevcut kuyruğu gösterir.",
-			"now_playing": "[{title}]({uri}) - İsteyen: <@{requester}> - Süre: `{duration}`",
-			"live": "Canlı Yayın",
-			"track_info": "{index}. [{title}]({uri}) - İsteyen: <@{requester}> - Süre: `{duration}`",
-			"title": "Kuyruk",
-			"page_info": "Sayfa {index} / {total}",
-			"duration": "Kuyruk Süresi: `{totalDuration}`"
-		},
-		"remove": {
-			"description": "Kuyruktan bir şarkıyı kaldırır.",
-			"options": {
-				"song": "Kaldırmak istediğiniz şarkı numarası."
-			},
-			"errors": {
-				"no_songs": "Kuyrukta şarkı yok.",
-				"invalid_number": "Lütfen geçerli bir şarkı numarası girin."
-			},
-			"messages": {
-				"removed": "{songNumber} numaralı şarkı kuyruktan kaldırıldı."
-			}
-		},
-		"region": {
-			"description": "Daha iyi kalite için ses sunucusu bölgesini görüntüle veya değiştir 🌐",
-			"options": {
-				"region": "Geçiş yapılacak bölge (örn: EU, VN)"
-			},
-			"info_title": "🌐 Ses Sunucusu Bölgesi",
-			"current_region": "**Mevcut düğüm:** `{nodeId}`\n**Bölge:** {region}\n**Ping:** `{ping}ms`",
-			"available_regions": "Mevcut bölgeler",
-			"region_field": "{nodeCount} düğüm, {playerCount} oynatıcı\n{nodes}",
-			"current_indicator": " (mevcut)",
-			"switched": "{region} bölgesine geçildi!\n**Düğüm:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
-			"already_on_region": "Zaten {region} düğümündesiniz (`{nodeId}`)!",
-			"no_nodes_in_region": "{region} bölgesinde kullanılabilir düğüm yok!",
-			"invalid_region": "Bilinmeyen bölge `{region}`. Mevcut: {available}",
-			"switch_failed": "Bölge değiştirilemedi. Tekrar deneyin!"
-		},
-		"replay": {
-			"description": "Mevcut parçayı tekrar çalar.",
-			"errors": {
-				"not_seekable": "Bu parça tekrarlanamaz çünkü ileri/geri sarılamaz."
-			},
-			"messages": {
-				"replaying": "Mevcut parça tekrarlanıyor."
-			}
-		},
-		"resume": {
-			"description": "Mevcut şarkıyı devam ettirir.",
-			"errors": {
-				"not_paused": "Oynatıcı duraklatılmamış."
-			},
-			"messages": {
-				"resumed": "Oynatıcı devam ettiriliyor.",
-				"vote_embed": "Devam için oy: **{votes}/{needed}**\n✅ devam etmek için, ❌ duraklatılmış tutmak için",
-				"button_yes": "✅ Devam Et",
-				"button_no": "❌ Duraklatılmış Tut",
-				"already_voted": "Zaten oy kullandınız."
-			}
-		},
-		"search": {
-			"description": "Şarkı arar.",
-			"options": {
-				"song": "Aramak istediğiniz şarkı."
-			},
-			"select": "Lütfen çalmak istediğiniz şarkıyı seçin",
-			"errors": {
-				"no_results": "Sonuç bulunamadı.",
-				"search_error": "Arama sırasında bir hata oluştu."
-			},
-			"messages": {
-				"added_to_queue": "Kuyruğa {title}]({uri}) eklendi."
-			}
-		},
-		"seek": {
-			"description": "Şarkının belirli bir süresine gider.",
-			"options": {
-				"duration": "Gitmek istediğiniz süre."
-			},
-			"errors": {
-				"invalid_format": "Geçersiz zaman formatı. Örnekler: seek 1m, seek 1h 30m",
-				"not_seekable": "Bu parça ileri/geri sarılamaz",
-				"beyond_duration": "Şarkının süresi olan {length} süresini aşamazsınız."
-			},
-			"messages": {
-				"seeked_to": "{duration} süresine gidildi."
-			}
-		},
-		"shuffle": {
-			"description": "Kuyruğu karıştırır.",
-			"messages": {
-				"shuffled": "Kuyruk karıştırıldı."
-			},
-			"errors": {
-				"fairplay": "Adil oyun modu etkin. Kuyruğu karıştıramazsınız."
-			}
-		},
-		"skip": {
-			"description": "Mevcut şarkıyı geçer.",
-			"messages": {
-				"skipped": "[{title}]({uri}) şarkısı geçildi..",
-				"vote_embed": "Atla için oy: **{votes}/{needed}**\n✅ atlamak için, ❌ çalmaya devam etmek için",
-				"button_skip": "👍 Atla",
-				"button_keep": "👎 Devam Et",
-				"button_yes": "✅ Atla",
-				"button_no": "❌ Devam Et",
-				"already_voted": "Zaten oy kullandınız."
-			}
-		},
-		"skipto": {
-			"description": "Kuyrukta belirli bir şarkıya atlar.",
-			"options": {
-				"number": "Atlamak istediğiniz şarkının numarası."
-			},
-			"errors": {
-				"invalid_number": "Lütfen geçerli bir numara girin."
-			},
-			"messages": {
-				"skipped_to": "{number} numaralı şarkıya atlandı."
-			}
-		},
-		"stop": {
-			"description": "Müziği durdurur ve kuyruğu temizler.",
-			"messages": {
-				"stopped": "Müzik durduruldu ve kuyruk temizlendi.",
-				"vote_embed": "Durdurma için oy: **{votes}/{needed}**\n✅ durdurmak için, ❌ çalmaya devam etmek için",
-				"button_stop": "🛑 Durdur",
-				"button_keep": "👎 Devam Et",
-				"button_yes": "✅ Durdur",
-				"button_no": "❌ Devam Et",
-				"already_voted": "Zaten oy kullandınız."
-			}
-		},
-		"volume": {
-			"description": "Oynatıcının ses seviyesini ayarlar.",
-			"options": {
-				"number": "Ayarlamak istediğiniz ses seviyesi."
-			},
-			"messages": {
-				"invalid_number": "Lütfen geçerli bir sayı girin.",
-				"too_low": "Ses seviyesi 0'dan düşük olamaz.",
-				"too_high": "Ses seviyesi 200'den yüksek olamaz. İşitme veya hoparlörlerinize zarar vermek istemezsiniz, değil mi?",
-				"set": "Ses seviyesi {volume} olarak ayarlandı."
-			}
-		},
-		"addsong": {
-			"description": "Çalma listesine bir şarkı ekler.",
-			"options": {
-				"playlist": "Eklemek istediğiniz çalma listesi.",
-				"song": "Eklemek istediğiniz şarkı."
-			},
-			"messages": {
-				"no_playlist": "Lütfen bir çalma listesi belirtin.",
-				"no_song": "Lütfen bir şarkı belirtin.",
-				"playlist_not_found": "Bu çalma listesi mevcut değil.",
-				"no_songs_found": "Şarkı bulunamadı.",
-				"added": "{count} şarkı {playlist} çalma listesine eklendi."
-			}
-		},
-		"create": {
-			"description": "Bir çalma listesi oluşturur.",
-			"options": {
-				"name": "Çalma listesinin adı."
-			},
-			"messages": {
-				"name_too_long": "Çalma listesi adları en fazla 50 karakter uzunluğunda olabilir.",
-				"playlist_exists": "Bu isimde bir çalma listesi zaten var. Lütfen farklı bir isim kullanın.",
-				"playlist_created": "Çalma listesi **{name}** oluşturuldu."
-			}
-		},
-		"delete": {
-			"description": "Bir çalma listesini siler.",
-			"options": {
-				"playlist": "Silmek istediğiniz çalma listesi."
-			},
-			"messages": {
-				"playlist_not_found": "Bu çalma listesi mevcut değil.",
-				"playlist_deleted": "Çalma listesi **{playlistName}** silindi."
-			}
-		},
-		"list": {
-			"description": "Kullanıcının tüm çalma listelerini getirir.",
-			"options": {
-				"user": "Çalma listelerini görmek istediğiniz kullanıcı."
-			},
-			"messages": {
-				"no_playlists": "Bu kullanıcının çalma listesi yok.",
-				"your": "Sizin",
-				"playlists_title": "{username} adlı kullanıcının Çalma Listeleri",
-				"error": "Çalma listeleri alınırken bir hata oluştu."
-			}
-		},
-		"load": {
-			"description": "Bir çalma listesini yükler.",
-			"options": {
-				"playlist": "Yüklemek istediğiniz çalma listesi."
-			},
-			"messages": {
-				"playlist_not_exist": "Bu çalma listesi mevcut değil.",
-				"playlist_empty": "Bu çalma listesi boş.",
-				"playlist_loaded": "`{name}` yüklendi, `{count} şarkı içeriyor."
-			}
-		},
-		"removesong": {
-			"description": "Çalma listesinden bir şarkıyı kaldırır.",
-			"options": {
-				"playlist": "Kaldırmak istediğiniz çalma listesi.",
-				"song": "Kaldırmak istediğiniz şarkı."
-			},
-			"messages": {
-				"provide_playlist": "Lütfen bir çalma listesi belirtin.",
-				"provide_song": "Lütfen bir şarkı belirtin.",
-				"playlist_not_exist": "Bu çalma listesi mevcut değil.",
-				"song_not_found": "Eşleşen şarkı bulunamadı.",
-				"song_removed": "{playlist} çalma listesinden {song} kaldırıldı.",
-				"error_occurred": "Şarkı kaldırılırken bir hata oluştu."
-			}
-		},
-		"steal": {
-			"description": "Başka bir kullanıcıdan bir çalma listesini alır ve kendi çalma listelerinize ekler.",
-			"options": {
-				"playlist": "Almak istediğiniz çalma listesi.",
-				"user": "Çalma listesini almak istediğiniz kullanıcı."
-			},
-			"messages": {
-				"provide_playlist": "Lütfen bir çalma listesi adı belirtin",
-				"provide_user": "Lütfen bir kullanıcı etiketleyin.",
-				"playlist_not_exist": "Bu kullanıcı için belirtilen çalma listesi mevcut değil.",
-				"playlist_stolen": "`{playlist}` adlı çalma listesi {user} adlı kullanıcıdan başarıyla alındı.",
-				"error_occurred": "Çalma listesi alınırken bir hata oluştu."
-			}
-		},
-		"fairplay": {
-			"description": "Botu adil bir şekilde müzik çalması için ayarla",
-			"errors": {
-				"not_in_voice": "Bu komutu kullanmak için bir ses kanalında olmalısınız.",
-				"generic": "Bu komutu çalıştırırken bir hata oluştu."
-			},
-			"messages": {
-				"disabled": "`✅` | Adil oyun modu `DEVRE DIŞI BIRAKILDI`.",
-				"enabled": "`✅` | Adil oyun modu `ETKİNLEŞTİRİLDİ`."
-			}
-		},
-		"playlocal": {
-			"description": "Yerel ses dosyalarınızı çalar",
-			"options": {
-				"file": "Çalmak istediğiniz ses dosyası"
-			},
-			"loading": "Yükleniyor...",
-			"errors": {
-				"empty_query": "Lütfen çalmak için bir ses dosyası ekleyin.",
-				"invalid_format": "Sadece MP3, WAV, OGG, FLAC, AAC veya M4A dosyalarını çalabilirsiniz.",
-				"no_results": "Ses dosyası çalınamadı. Dosya bozuk olabilir."
-			},
-			"added_to_queue": "[{title}]({url}) sıraya eklendi"
-		},
-		"loop_current": {
-			"description": "Şu anda çalan şarkıyı tekrarla"
-		},
-		"loop_queue": {
-			"description": "Tüm kuyruğu tekrarla"
-		},
-		"vote": {
-			"description": "Müzik komutları için oylama sistemini yönet",
-			"options": {
-				"toggle": "Oylama sistemini aç veya kapat",
-				"status": "Oylama sisteminin mevcut durumunu kontrol et"
-			}
-		},
-		"livelyrics": {
-			"description": "Mevcut parça için karaoke modunda senkronize canlı şarkı sözlerini göster",
-			"aliases": "karaoke, syncedlyrics",
-			"errors": {
-				"no_player": "Şu anda çalan müzik yok.",
-				"no_synced": "Bu parça için senkronize şarkı sözleri bulunamadı."
-			}
-		}
-	},
-	"buttons": {
-		"invite": "Davet Et",
-		"support": "Destek Sunucusu",
-		"previous": "Önceki",
-		"resume": "Devam Et",
-		"stop": "Durdur",
-		"skip": "Geç",
-		"loop": "Tekrarla",
-		"errors": {
-			"not_author": "Bu butonu kullanamazsınız."
-		}
-	},
-	"player": {
-		"errors": {
-			"no_player": "Bu sunucuda aktif bir oynatıcı yok.",
-			"no_channel": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
-			"queue_empty": "Kuyruk boş.",
-			"no_previous": "Kuyrukta önceki şarkı yok.",
-			"no_song": "Kuyrukta şarkı yok.",
-			"already_paused": "Şarkı zaten duraklatılmış durumda."
-		},
-		"trackStart": {
-			"now_playing": "Şu An Çalıyor",
-			"requested_by": "İsteyen: {user}",
-			"duration": "Süre",
-			"author": "Yazar",
-			"not_connected_to_voice_channel": "Bu butonları kullanmak için <#{channel}> kanalına bağlı değilsiniz.",
-			"need_dj_role": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
-			"previous_by": "Önceki: {user}",
-			"no_previous_song": "Önceki şarkı yok.",
-			"paused_by": "Duraklatıldı: {user}",
-			"resumed_by": "Devam Ettirildi: {user}",
-			"skipped_by": "Geçildi: {user}",
-			"no_more_songs_in_queue": "Kuyrukta başka şarkı yok.",
-			"looping_by": "Tekrar: {user}",
-			"looping_queue_by": "Kuyruğu Tekrarla: {user}",
-			"looping_off_by": "Tekrar Kapalı: {user}"
-		},
-		"setupStart": {
-			"now_playing": "Şu An Çalıyor",
-			"description": "[{title}]({uri}) tarafından {author} • `[{length}]` - İsteyen <@{requester}>",
-			"error_searching": "Arama sırasında bir hata oluştu.",
-			"no_results": "Sonuç bulunamadı.",
-			"nothing_playing": "Şu anda hiçbir şey çalmıyor.",
-			"queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
-			"playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır.",
-			"added_to_queue": "Kuyruğa [{title}]({uri}) eklendi.",
-			"added_playlist_to_queue": "Kuyruğa [{length}] şarkı eklendi."
-		},
-		"lavaconfig": {
-			"description": "LavaSrc yapılandırmasını çalışma zamanında yönetin! Hizmetleri anında güncelleyin ⚙️",
-			"errors": {
-				"service_unavailable": "Lavalink hizmeti mevcut değil. Lavalink'in çalıştığından emin olun! 🔧",
-				"missing_subcommand": "Lütfen bir alt komut belirtin! Deneyin: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view veya nodes",
-				"missing_node": "Lütfen bir düğüm adı belirtin! Mevcut düğümleri görmek için 'nodes' kullanın 📋",
-				"unknown_subcommand": "Bilinmeyen alt komut! Deneyin: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view veya nodes"
-			},
-			"messages": {
-				"processing": "İsteğiniz işleniyor... ⚙️",
-				"config_updated_title": "✅ {source} Yapılandırması Güncellendi",
-				"config_updated_desc": "**{nodeId}** düğümü için {source} yapılandırması başarıyla güncellendi! Değişiklikler uygulandı ✅",
-				"updated_config": "Güncellenmiş Yapılandırma",
-				"view_title": "📋 LavaSrc Yapılandırması - {nodeId}",
-				"nodes_title": "Mevcut Lavalink Düğümleri",
-				"no_nodes": "Mevcut Lavalink düğümü yok! Lavalink'in bağlı olduğundan emin olun 🔌",
-				"total_nodes": "Toplam düğüm: {count}"
-			},
-			"fields": {
-				"client_id": "İstemci ID",
-				"client_secret": "İstemci Gizli Anahtarı",
-				"api_key": "API Anahtarı",
-				"decode_track": "Parçayı Çöz",
-				"country_code": "Ülke Kodu",
-				"playlist_limit": "Çalma Listesi Limiti",
-				"album_limit": "Albüm Limiti",
-				"search_limit": "Arama Limiti",
-				"isrc_search": "ISRC Araması",
-				"fallback_search": "Yedek Arama",
-				"load_timeout": "Yükleme Zaman Aşımı",
-				"spotify_enabled": "Spotify Açık",
-				"apple_enabled": "Apple Music Açık",
-				"deezer_enabled": "Deezer Açık"
-			},
-			"usage": {
-				"title": "Kullanım",
-				"value": "`/lavaconfig <altkomut> <düğüm> [seçenekler]`\nFarklı hizmetleri yapılandırmak için alt komutları kullanın."
-			}
-		},
-		"youtubeconfig": {
-			"description": "YouTube kaynağı yapılandırmasını çalışma zamanında yönetin! OAuth ve poToken ayarlarını kontrol edin 🎬",
-			"errors": {
-				"service_unavailable": "Lavalink hizmeti mevcut değil. Lavalink'in çalıştığından emin olun! 🔧",
-				"missing_subcommand": "Lütfen bir alt komut belirtin! Deneyin: oauth, potoken, view veya nodes",
-				"missing_node": "Lütfen bir düğüm adı belirtin! Mevcut düğümleri görmek için 'nodes' kullanın 📋",
-				"unknown_subcommand": "Bilinmeyen alt komut! Deneyin: oauth, potoken, view veya nodes",
-				"missing_oauth_option": "Lütfen bir OAuth seçeneği belirtin! Deneyin: email, authorization veya skip",
-				"missing_potoken_pair": "Pair seçeneği için hem poToken hem de visitorData belirtin!",
-				"missing_refresh_token": "Yenileme belirteci eksik! OAuth yapılandırması bir yenileme belirteci gerektirir."
-			},
-			"messages": {
-				"processing": "İsteğiniz işleniyor... ⚙️",
-				"oauth_updated_title": "✅ YouTube OAuth Yapılandırması Güncellendi",
-				"oauth_updated_desc": "**{nodeId}** düğümü için YouTube OAuth yapılandırması başarıyla güncellendi ✅",
-				"potoken_updated_title": "✅ YouTube poToken Yapılandırması Güncellendi",
-				"potoken_updated_desc": "**{nodeId}** düğümü için YouTube poToken yapılandırması başarıyla güncellendi ✅",
-				"token_refreshed_title": "✅ OAuth Belirteci Yenilendi",
-				"token_refreshed_desc": "**{nodeId}** düğümü için OAuth belirteci başarıyla yenilendi ✅",
-				"view_title": "📋 YouTube Kaynak Yapılandırması - {nodeId}",
-				"nodes_title": "📡 Lavalink Düğümleri",
-				"no_nodes": "Kullanılabilir düğüm yok.",
-				"total_nodes": "Toplam: {count} düğüm",
-				"not_set": "Ayarlanmadı",
-				"na": "Yok"
-			},
-			"fields": {
-				"refresh_token": "Yenileme Belirteci",
-				"skip_initialization": "Başlatmayı Atla",
-				"potoken": "poToken",
-				"visitor_data": "Ziyaretçi Verisi",
-				"po_token": "poToken",
-				"visitor_data_short": "Ziyaretçi Verisi",
-				"oauth_email": "OAuth E-posta",
-				"authorization": "Yetkilendirme",
-				"skip": "Atla",
-				"pair": "Çift",
-				"refresh": "Yenile",
-				"email": "E-posta",
-				"authorization_code": "Yetkilendirme Kodu",
-				"status": "Durum",
-				"enabled": "AÇIK",
-				"disabled": "KAPALI",
-				"last_updated": "Son Güncelleme",
-				"token_type": "Belirteç Türü",
-				"expires_in": "Sona Erme",
-				"scope": "Kapsam",
-				"access_token_truncated": "Access Token (kısaltılmış)",
-				"updated": "✅ Güncellendi",
-				"not_changed": "⚪ Değişmedi",
-				"yes": "✅ Evet",
-				"no": "❌ Hayır",
-				"important": "⚠️ Önemli",
-				"oauth_warning": "OAuth belirteçleri gizli tutulmalıdır. Yedek bir YouTube hesabı kullanmayı düşünün.",
-				"how_to_generate": "💡 Nasıl Oluşturulur",
-				"generator_link": "Bu değerleri almak için [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) kullanın.",
-				"note": "ℹ️ Not",
-				"api_note": "API yalnızca refresh token döndürür. poToken ve visitorData ifşa edilmez."
-			},
-			"usage": {
-				"title": "Kullanım",
-				"value": "`/youtubeconfig <altkomut> <düğüm> [seçenekler]`\nOAuth yapılandırması için oauth, poToken ayarları için potoken kullanın."
-			}
-		}
-	},
-	"will_leave": {
-		"no_listeners": "Ses kanalında dinleyici olmadığı için **{time}** içinde ayrılacağım.",
-		"no_songs": "Kuyruğa şarkı eklenmediği için **{time}** içinde ayrılacağım."
-	},
-	"event": {
-		"interaction": {
-			"setup_channel": "Bu komutu kurulum kanalında kullanamazsınız.",
-			"no_send_message": "**`Mesaj Gönder`**, **`Kanalı Gör`**, **`Embed Bağlantıları`** veya **`Mesaj Geçmişini Oku`** iznim yok.",
-			"no_permission": "{permissions} iznim yok.",
-			"no_user_permission": "Bu komutu kullanma izniniz yok.",
-			"no_voice_channel": "`{command}` komutunu kullanmak için bir ses kanalına bağlı olmalısınız.",
-			"no_connect_permission": "{command} komutunu kullanmak için `BAĞLAN` iznim yok.",
-			"no_speak_permission": "{command} komutunu kullanmak için `KONUŞ` iznim yok.",
-			"no_request_to_speak": "{command} komutunu kullanmak için `KONUŞMAYI TALEP ETME` iznim yok.",
-			"different_voice_channel": "`{command}` komutunu kullanmak için {channel} kanalında bağlı değilsiniz.",
-			"no_music_playing": "Şu anda çalan bir şey yok.",
-			"no_dj_role": "DJ rolü ayarlanmadı.",
-			"no_dj_permission": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
-			"cooldown": "`{command}` komutunu yeniden kullanmadan önce {time} saniye bekleyin.",
-			"error": "Bir hata oluştu: `{error}`",
-			"vote_button": "Oy Ver!",
-			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
-			"slash_deprecated": "Slash komutları kullanımdan kaldırıldı! Lütfen yerine `{prefix}{command}` kullanın. 🎵",
-			"periodic_message_vote_only": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Oyun büyümemize yardımcı olur! ❤️\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
-			"periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın"
-
-		},
-		"message": {
-			"prefix_mention": "Merhaba, bu sunucu için ön ekim `{prefix}`. Daha fazla bilgi mi istiyorsunuz? `{prefix}help` yapın\nGüvende kalın, harika kalın!",
-			"no_send_message": "**`Mesaj Gönder`**, **`Kanalı Gör`**, **`Embed Bağlantıları`** veya **`Mesaj Geçmişini Oku`** iznim yok.",
-			"no_permission": "{permissions} iznim yok.",
-			"no_user_permission": "Bu komutu kullanma izniniz yok.",
-			"no_voice_channel": "`{command}` komutunu kullanmak için bir ses kanalına bağlı olmalısınız.",
-			"no_connect_permission": "{command} komutunu kullanmak için `BAĞLAN` iznim yok.",
-			"no_speak_permission": "{command} komutunu kullanmak için `KONUŞ` iznim yok.",
-			"no_request_to_speak": "{command} komutunu kullanmak için `KONUŞMAYI TALEP ETME` iznim yok.",
-			"different_voice_channel": "`{command}` komutunu kullanmak için {channel} kanalında bağlı değilsiniz.",
-			"no_music_playing": "Şu anda çalan bir şey yok.",
-			"no_dj_role": "DJ rolü ayarlanmadı.",
-			"no_dj_permission": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
-			"missing_arguments": "Eksik Argümanlar",
-			"missing_arguments_description": "`{command}` komutu için gerekli argümanları belirtin.\n\nÖrnekler:\n{examples}",
-			"syntax_footer": "Sözdizimi: [] = isteğe bağlı, <> = zorunlu • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"cooldown": "`{command}` komutunu yeniden kullanmadan önce {time} saniye bekleyin.",
-			"no_mention_everyone": "Everyone veya here kullanımıyla bu komutu kullanamazsınız. Lütfen slash komutunu kullanın.",
-			"error": "Bir hata oluştu: `{error}`",
-			"no_voice_channel_queue": "Şarkıları kuyruğa almak için bir ses kanalına bağlı olmalısınız.",
-			"no_permission_connect_speak": "<#{channel}> kanalına bağlanma/konuşma iznim yok.",
-			"different_voice_channel_queue": "Şarkıları kuyruğa almak için <#{channel}> kanalına bağlı olmalısınız.",
-			"vote_button": "Oy Ver!",
-			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
-			"no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
-			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın."
-		},
-		"setupButton": {
-			"no_voice_channel_button": "Bu butonu kullanmak için bir ses kanalına bağlı olmalısınız.",
-			"different_voice_channel_button": "Bu butonları kullanmak için {channel} kanalında bağlı olmalısınız.",
-			"now_playing": "Şu An Çalıyor",
-			"live": "CANLI",
-			"requested_by": "İsteyen: <@{requester}>",
-			"no_dj_permission": "Bu butonu kullanmak için DJ rolüne sahip olmalısınız.",
-			"volume_set": "Ses seviyesi %{vol} olarak ayarlandı.",
-			"volume_footer": "Ses: %{vol} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"paused": "Duraklatıldı",
-			"resumed": "Devam Ettirildi",
-			"pause_resume": "Müziği {name}.",
-			"pause_resume_footer": "{displayName} tarafından {name} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"no_music_to_skip": "Geçilecek müzik yok.",
-			"skipped": "Müzik geçildi.",
-			"skipped_footer": "{displayName} tarafından geçildi • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"stopped": "Müzik durduruldu.",
-			"stopped_footer": "{displayName} tarafından durduruldu • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"nothing_playing": "Şu anda hiçbir şey çalmıyor.",
-			"loop_set": "Tekrar ayarlandı: {loop}.",
-			"loop_footer": "{displayName} tarafından tekrar ayarlandı: {loop} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"shuffled": "Kuyruk karıştırıldı.",
-			"no_previous_track": "Önceki parça yok.",
-			"playing_previous": "Önceki parça çalıyor.",
-			"previous_footer": "{displayName} tarafından önceki parça çalıyor • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"rewinded": "Müzik geri sarıldı",
-			"rewind_footer": "{displayName} tarafından geri sarıldı.",
-			"forward_limit": "Müzik uzunluğundan daha fazla ileriye saramazsınız • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"forwarded": "Müzik ileri sarıldı.",
-			"forward_footer": "{displayName} tarafından ileri sarıldı • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-			"button_not_available": "Bu buton kullanılamaz.",
-			"no_music_playing": "Bu sunucuda çalan müzik yok."
-		},
-		"voice_state_update": {
-			"kicked": "Bot ses kanalından atıldı. Oynatma durduruldu.",
-			"moved": "Bot başka bir ses kanalına taşındı. Oynatma durduruldu.",
-			"left_due_to_timeout_no_listeners": "Ses kanalında dinleyici olmadığı için ayrıldım.",
-			"left_due_to_timeout_no_songs": "Kuyruğa şarkı eklenmediği için ayrıldım."
-		}
-	},
-	"Evaluate code": "Kodu çalıştır.",
-	"Leave a guild": "Bir sunucudan çık.",
-	"List all guilds the bot is in": "Botun bulunduğu tüm sunucuları listele.",
-	"Restart the bot": "Botu yeniden başlat",
-	"The loop mode you want to set": "Ayarlamak istediğiniz döngü modu",
-	"Show current maintenance status": "Mevcut bakım durumunu göster",
-	"Show current maintenance status.": "Show current maintenance status.",
-	"Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
-	"Update Spotify configuration": "Update Spotify configuration",
-	"Update Apple Music configuration": "Update Apple Music configuration",
-	"Update Deezer configuration": "Update Deezer configuration",
-	"Update Yandex Music configuration": "Update Yandex Music configuration",
-	"Update VK Music configuration": "Update VK Music configuration",
-	"Update Qobuz configuration": "Update Qobuz configuration",
-	"Update yt-dlp configuration": "Update yt-dlp configuration",
-	"View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
-	"List all available Lavalink nodes": "List all available Lavalink nodes",
-	"The Lavalink node ID": "The Lavalink node ID",
-	"Spotify client ID": "Spotify client ID",
-	"Spotify client secret": "Spotify client secret",
-	"Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
-	"Prefer anonymous token": "Prefer anonymous token",
-	"Custom token endpoint URL": "Custom token endpoint URL",
-	"Apple Music media API token": "Apple Music media API token",
-	"Deezer ARL cookie value": "Deezer ARL cookie value",
-	"Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
-	"Yandex Music access token": "Yandex Music access token",
-	"VK Music user token": "VK Music user token",
-	"Qobuz user OAuth token": "Qobuz user OAuth token",
-	"Qobuz application ID": "Qobuz application ID",
-	"Qobuz application secret": "Qobuz application secret",
-	"Path to yt-dlp executable": "Path to yt-dlp executable",
-	"Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
-	"Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
-	"Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
-	"Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
-	"Update YouTube poToken configuration": "Update YouTube poToken configuration",
-	"View current YouTube source configuration": "View current YouTube source configuration",
-	"Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
-	"YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
-	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
-	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
-	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
-	"The refresh token to use": "The refresh token to use",
-	"LIVE_LYRICS": {
-		"NO_PLAYER": "Şu anda çalan müzik yok.",
-		"NO_LYRICS": "Bu parça için senkronize şarkı sözleri bulunamadı.",
-		"TITLE": "🎵 Canlı Şarkı Sözleri",
-		"CURRENT": "Şu anki",
-		"STOPPED": "Canlı şarkı sözleri durduruldu.",
-		"REFRESHED": "Canlı şarkı sözleri yenilendi!",
-		"ERROR": "Şarkı sözleri alınırken bir hata oluştu.",
-		"ENDED": "Canlı şarkı sözleri sona erdi.",
-		"PAUSED": "Canlı şarkı sözleri duraklatıldı.",
-		"SEARCHING": "Senkronize şarkı sözleri aranıyor...",
-		"NO_SYNCED_TITLE": "Senkronize Şarkı Sözleri Mevcut Değil",
-		"NO_SYNCED_DESCRIPTION": "Bu parçanın senkronize (zaman damgalı) şarkı sözleri yok. Düz metin şarkı sözleri için normal `{prefix}lyrics` komutunu deneyebilirsiniz.",
-		"ALREADY_RUNNING": "Canlı şarkı sözleri bu sunucu için zaten çalışıyor!",
-		"STARTED": "Canlı şarkı sözleri başladı! Görüntüleme şarkı çaldıkça otomatik olarak güncellenecek.",
-		"PROGRESS": "İlerleme",
-		"UPDATE_INTERVAL": "Her {seconds} saniyede bir güncellenir",
-		"CLICK_REFRESH": "Anında güncelleme için Yenile'ye tıklayın",
-		"NO_LYRICS_AVAILABLE": "Şarkı sözü mevcut değil",
-		"REFRESH_BUTTON": "Yenile",
-		"STOP_BUTTON": "Durdur"
-	}
+  "cmd": {
+    "247": {
+      "description": "Botun ses kanalında kalmasını sağlar.",
+      "errors": {
+        "not_in_voice": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
+        "generic": "Bu komutu çalıştırmaya çalışırken bir hata oluştu."
+      },
+      "messages": {
+        "disabled": "`✅` | 24/7 modu `KAPATILDI`.",
+        "enabled": "`✅` | 24/7 modu `AKTİFLEŞTİRİLDİ`."
+      }
+    },
+    "ping": {
+      "description": "Botun gecikmesini gösterir.",
+      "content": "Pingleniyor...",
+      "bot_latency": "Bot Gecikmesi",
+      "api_latency": "API Gecikmesi",
+      "requested_by": "{author} tarafından talep edildi."
+    },
+    "lavalink": {
+      "description": "Mevcut Lavalink istatistiklerini gösterir.",
+      "title": "Lavalink İstatistikleri",
+      "content": "Oynatıcı: {players}\nOynayan Oynatıcılar: {playingPlayers}\nÇalışma Süresi: {uptime}\nÇekirdekler: {cores} Çekirdek(ler)\nBellek Kullanımı: {used} / {reservable}\nSistem Yükü: {systemLoad}%\nLavalink Yükü: {lavalinkLoad}%",
+      "page_info": "Sayfa {index} / {total}"
+    },
+    "invite": {
+      "description": "Bot davet bağlantısını al.",
+      "content": "Beni davet etmek için aşağıdaki butona tıklayın. Herhangi bir hata veya kesinti mi var? Destek sunucusuna katılın!"
+    },
+    "help": {
+      "description": "Yardım menüsünü gösterir.",
+      "options": {
+        "command": "Hakkında bilgi almak istediğiniz komut."
+      },
+      "content": "Merhaba! Ben {bot}, [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) ve Discord.js ile yapılmış bir müzik botuyum. {prefix}help <command> yazarak bir komut hakkında daha fazla bilgi alabilirsiniz.",
+      "title": "Yardım Menüsü",
+      "not_found": "Bu {cmdName} komutu mevcut değil.",
+      "help_cmd": "**Açıklama**: {description}\n**Kullanım**: {usage}\n**Örnekler**: {examples}\n**Alternatifler**: {aliases}\n**Kategori**: {category}\n**Bekleme Süresi**: {cooldown} saniye\n**İzinler**: {premUser}\n**Bot İzinleri**: {premBot}\n**Sadece Geliştirici**: {dev}\n**Slash Komut**: {slash}\n**Argümanlar**: {args}\n**Oynatıcı**: {player}\n**DJ**: {dj}\n**DJ İzinleri**: {djPerm}\n**Ses**: {voice}",
+      "footer": "Bir komut hakkında daha fazla bilgi almak için {prefix}help <command> kullanın • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
+    },
+    "botinfo": {
+      "description": "Bot hakkında bilgi verir.",
+      "content": "Bot Bilgisi:\n- **İşletim Sistemi**: {osInfo}\n- **Çalışma Süresi**: {osUptime}\n- **Ana Bilgisayar Adı**: {osHostname}\n- **CPU Mimarisi**: {cpuInfo}\n- **CPU Kullanımı**: %{cpuUsed}\n- **Bellek Kullanımı**: {memUsed} / {memTotal}\n- **Node Versiyonu**: {nodeVersion}\n- **Discord.js Versiyonu**: {discordJsVersion}\n- {guilds} sunucuya, {channels} kanala ve {users} kullanıcıya bağlı\n- **Toplam Komutlar**: {commands}"
+    },
+    "about": {
+      "description": "Bot hakkında bilgi gösterir.",
+      "fields": {
+        "creator": "Oluşturucu",
+        "repository": "Depo",
+        "support": "Destek",
+        "description": "İlk açık kaynak projesini yapmak için gerçekten hevesliydi ve daha fazla kodlama deneyimi kazanmak istedi. Bu projede daha az hatalı bir proje oluşturma zorluğuyla karşılaştı. MultiBungoBot'i kullanmaktan keyif almanızı umuyorum!"
+      }
+    },
+    "dj": {
+      "description": "DJ modunu ve ilişkili rolleri yönetir.",
+      "errors": {
+        "provide_role": "Lütfen bir rol belirtin.",
+        "no_roles": "DJ rolü yok.",
+        "invalid_subcommand": "Lütfen geçerli bir alt komut belirtin."
+      },
+      "messages": {
+        "role_exists": "DJ rolü <@&{roleId}> zaten eklenmiş.",
+        "role_added": "DJ rolü <@&{roleId}> eklendi.",
+        "role_not_found": "DJ rolü <@&{roleId}> eklenmemiş.",
+        "role_removed": "DJ rolü <@&{roleId}> kaldırıldı.",
+        "all_roles_cleared": "Tüm DJ rolleri kaldırıldı.",
+        "toggle": "DJ modu {status} olarak değiştirildi."
+      },
+      "options": {
+        "add": "Eklemek istediğiniz DJ rolü",
+        "remove": "Kaldırmak istediğiniz DJ rolü.",
+        "clear": "Tüm DJ rollerini temizler.",
+        "toggle": "DJ rolünü durumunu değiştirir.",
+        "role": "DJ rolü."
+      },
+      "subcommands": "Alt komutlar"
+    },
+    "language": {
+      "description": "Botun dilini ayarlar.",
+      "invalid_language": "Lütfen geçerli bir dil belirtin. Örnek: `EnglishUS` İngilizce (ABD) için.\n\nDesteklenen dillerin listesine [buradan](https://discord.com/developers/docs/reference#locales) ulaşabilirsiniz.\n\nMevcut Diller:\n{languages}",
+      "already_set": "Dil zaten `{language}` olarak ayarlanmış.",
+      "not_set": "Dil ayarlanmamış.",
+      "set": "`✅` | Dil `{language}` olarak ayarlandı.",
+      "reset": "`✅` | Dil varsayılan dile sıfırlandı.",
+      "options": {
+        "set": "Botun dilini ayarlar.",
+        "language": "Ayarlamak istediğiniz dil.",
+        "reset": "Dili varsayılan olana sıfırlar."
+      }
+    },
+    "prefix": {
+      "description": "Botun ön ekini gösterir veya ayarlar.",
+      "errors": {
+        "prefix_too_long": "Ön ek 3 karakterden uzun olamaz."
+      },
+      "messages": {
+        "current_prefix": "Bu sunucu için ön ek `{prefix}`.",
+        "prefix_set": "Bu sunucu için ön ek şimdi `{prefix}`.",
+        "prefix_reset": "Bu sunucu için ön ek şimdi `{prefix}`."
+      },
+      "options": {
+        "set": "Ön eki ayarlar.",
+        "prefix": "Ayarlamak istediğiniz ön ek.",
+        "reset": "Ön eki varsayılana sıfırlar."
+      }
+    },
+    "setup": {
+      "description": "Botu kurar",
+      "errors": {
+        "channel_exists": "Şarkı isteği kanalı zaten mevcut.",
+        "channel_not_exists": "Şarkı isteği kanalı mevcut değil",
+        "channel_delete_fail": "Kurulum kanalı veritabanından silindi. Lütfen kanalı kendiniz silin."
+      },
+      "messages": {
+        "channel_created": "Şarkı isteği kanalı <#{channelId}> kanalında oluşturuldu.",
+        "channel_deleted": "Şarkı isteği kanalı silindi.",
+        "channel_info": "Şarkı isteği kanalı <#{channelId}>."
+      },
+      "options": {
+        "create": "Şarkı isteği kanalı oluşturur.",
+        "delete": "Şarkı isteği kanalını siler.",
+        "info": "Şarkı isteği kanalını gösterir."
+      }
+    },
+    "8d": {
+      "description": "8D filtresini açar/kapatır.",
+      "messages": {
+        "filter_enabled": "`✅` | 8D filtresi `AÇILDI`.",
+        "filter_disabled": "`✅` | 8D filtresi `KAPATILDI`."
+      }
+    },
+    "bassboost": {
+      "description": "Bassboost filtresini açar/kapatır.",
+      "options": {
+        "level": "Ayarlamak istediğiniz bassboost seviyesi."
+      },
+      "messages": {
+        "high": "`✅` | Yüksek bassboost filtresi `AÇILDI`.",
+        "low": "`✅` | Düşük bassboost filtresi `AÇILDI`.",
+        "medium": "`✅` | Orta bassboost filtresi `AÇILDI`.",
+        "off": "`✅` | Bassboost filtresi `KAPATILDI`."
+      }
+    },
+    "distortion": {
+      "description": "Distortion filtresini açar/kapatır.",
+      "messages": {
+        "filter_enabled": "`✅` | Distortion filtresi `AÇILDI`.",
+        "filter_disabled": "`✅` | Distortion filtresi `KAPATILDI`."
+      }
+    },
+    "karaoke": {
+      "description": "Karaoke filtresini açar/kapatır.",
+      "messages": {
+        "filter_enabled": "`✅` | Karaoke filtresi `AÇILDI`.",
+        "filter_disabled": "`✅` | Karaoke filtresi `KAPATILDI`."
+      }
+    },
+    "lowpass": {
+      "description": "Lowpass filtresini açar/kapatır.",
+      "messages": {
+        "filter_enabled": "`✅` | Lowpass filtresi `AÇILDI`.",
+        "filter_disabled": "`✅` | Lowpass filtresi `KAPATILDI`."
+      }
+    },
+    "nightcore": {
+      "description": "Nightcore filtresini açar/kapatır.",
+      "messages": {
+        "filter_enabled": "`✅` | Nightcore filtresi `AÇILDI`.",
+        "filter_disabled": "`✅` | Nightcore filtresi `KAPATILDI`."
+      }
+    },
+    "pitch": {
+      "description": "Pitch filtresini açar/kapatır.",
+      "options": {
+        "pitch": "Ayarlamak istediğiniz pitch değeri (0.5 ile 5 arasında)"
+      },
+      "errors": {
+        "invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin."
+      },
+      "messages": {
+        "pitch_set": "`✅` | Pitch **{pitch}** olarak ayarlandı."
+      }
+    },
+    "rate": {
+      "description": "Şarkının hızını değiştirir.",
+      "options": {
+        "rate": "Ayarlamak istediğiniz hız değeri (0.5 ile 5 arasında)"
+      },
+      "errors": {
+        "invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin."
+      },
+      "messages": {
+        "rate_set": "`✅` | Hız **{rate}** olarak ayarlandı.."
+      }
+    },
+    "reset": {
+      "description": "Aktif filtreleri sıfırlar",
+      "messages": {
+        "filters_reset": "`✅` | Filtreler sıfırlandı."
+      }
+    },
+    "rotation": {
+      "description": "Rotation filtresini açar/kapatır.",
+      "messages": {
+        "enabled": "`✅` | Rotation filtresi `AÇILDI`.",
+        "disabled": "`✅` | Rotation filtresi `KAPATILDI`."
+      }
+    },
+    "speed": {
+      "description": "Şarkının hızını değiştirir.",
+      "options": {
+        "speed": "Ayarlamak istediğiniz hız."
+      },
+      "messages": {
+        "invalid_number": "Lütfen 0.5 ile 5 arasında geçerli bir sayı girin.",
+        "set_speed": "`✅` | Hız **{speed}** olarak ayarlandı."
+      }
+    },
+    "tremolo": {
+      "description": "Tremolo filtresini açar/kapatır.",
+      "messages": {
+        "enabled": "`✅` | Tremolo filtresi `AÇILDI`.",
+        "disabled": "`✅` | Tremolo filtresi `KAPATILDI`."
+      }
+    },
+    "vibrato": {
+      "description": "Vibrato filtresini açar/kapatır.",
+      "messages": {
+        "enabled": "`✅` | Vibrato filtresi `AÇILDI`.",
+        "disabled": "`✅` | Vibrato filtresi `KAPATILDI`."
+      }
+    },
+    "autoplay": {
+      "description": "Otomatik çalmayı açar/kapatır.",
+      "messages": {
+        "enabled": "`✅` | Otomatik çalma `AÇILDI`.",
+        "disabled": "`✅` | Otomatik çalma `KAPATILDI`."
+      }
+    },
+    "clearqueue": {
+      "description": "Kuyruğu temizler",
+      "messages": {
+        "cleared": "Kuyruk temizlendi."
+      }
+    },
+    "grab": {
+      "description": "Çalan şarkıyı özel mesaj yoluyla gönderir.",
+      "loading": "Yükleniyor...",
+      "content": "**Süre**: {length}\n**Talep Eden**: <@{requester}>\n**Bağlantı**: [Buraya tıklayın]({uri})",
+      "check_dm": "Lütfen özel mesajlarınızı kontrol edin.",
+      "dm_failed": "Özel mesaj gönderemedim. Lütfen doğrudan mesajların açık olduğundan emin olun."
+    },
+    "join": {
+      "description": "Botun ses kanalına katılmasını sağlar.",
+      "already_connected": "Zaten <#{channelId}> kanalına bağlıyım.",
+      "no_voice_channel": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
+      "joined": "<#{channelId}> kanalına başarıyla katıldı."
+    },
+    "leave": {
+      "description": "Botu ses kanalından çıkartır.",
+      "left": "<#{channelId}> kanalından başarıyla ayrıldı.",
+      "not_in_channel": "Bir ses kanalında değilim."
+    },
+    "loop": {
+      "description": "Mevcut şarkıyı veya sırayı döngüye alır.",
+      "looping_song": "**Şarkı döngüde.**",
+      "looping_queue": "**Kuyruk döngüde.**",
+      "looping_off": "**Döngü kapatıldı.**"
+    },
+    "lyrics": {
+      "description": "Şu an çalan parçanın sözlerini alır.",
+      "lyrics_track": "### Sözler: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
+      "searching": "`🔍` {trackTitle} şarkı sözleri aranıyor...",
+      "errors": {
+        "no_results": "Mevcut parça için şarkı sözleri bulunamadı.",
+        "lyrics_error": "Şarkı sözlerini alırken bir hata oluştu."
+      }
+    },
+    "nowplaying": {
+      "description": "Şu an çalan şarkıyı gösterir.",
+      "now_playing": "Şu An Çalıyor",
+      "track_info": "[{title}]({uri})- İsteyen: <@{requester}>\n\n{bar}`"
+    },
+    "pause": {
+      "description": "Mevcut şarkıyı duraklatır.",
+      "successfully_paused": "Şarkı başarıyla duraklatıldı.",
+      "messages": {
+        "vote_embed": "Duraklatma için oy: **{votes}/{needed}**\n✅ durdurmak için, ❌ çalmaya devam etmek için",
+        "button_yes": "✅ Duraklat",
+        "button_no": "❌ Devam Et",
+        "already_voted": "Zaten oy kullandınız."
+      }
+    },
+    "play": {
+      "description": "YouTube, Spotify veya bir bağlantıdan şarkı çalar.",
+      "options": {
+        "song": "Çalmak istediğiniz şarkı."
+      },
+      "loading": "Yükleniyor...",
+      "errors": {
+        "search_error": "Arama sırasında bir hata oluştu.",
+        "no_results": "Sonuç bulunamadı.",
+        "queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
+        "playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır."
+      },
+      "added_to_queue": "Kuyruğa [{title}]({uri}) eklendi.",
+      "added_playlist_to_queue": "{length} şarkı kuyruğa eklendi.",
+      "warnings": {
+        "longtrack_warning": "⚠️ **Uyarı:** Arama sonuçlarındaki bir veya daha fazla parça 30 dakikadan uzun. Lütfen bu uzun parçaları çalmak istediğinizden emin olun çünkü dinleme deneyiminizi etkileyebilir."
+      }
+    },
+    "playnext": {
+      "description": "Sıradaki olarak çalınacak şarkıyı kuyruğa ekler.",
+      "options": {
+        "song": "Sıradaki olarak çalmak istediğiniz şarkı."
+      },
+      "loading": "Yükleniyor...",
+      "errors": {
+        "search_error": "Arama sırasında bir hata oluştu.",
+        "no_results": "Sonuç bulunamadı.",
+        "queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
+        "playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır."
+      },
+      "added_to_play_next": "Sıradaki olarak [{title}]({uri}) kuyruğa eklendi.",
+      "added_playlist_to_play_next": "{length} şarkı sıradaki olarak kuyruğa eklendi."
+    },
+    "queue": {
+      "description": "Mevcut kuyruğu gösterir.",
+      "now_playing": "[{title}]({uri}) - İsteyen: <@{requester}> - Süre: `{duration}`",
+      "live": "Canlı Yayın",
+      "track_info": "{index}. [{title}]({uri}) - İsteyen: <@{requester}> - Süre: `{duration}`",
+      "title": "Kuyruk",
+      "page_info": "Sayfa {index} / {total}",
+      "duration": "Kuyruk Süresi: `{totalDuration}`"
+    },
+    "remove": {
+      "description": "Kuyruktan bir şarkıyı kaldırır.",
+      "options": {
+        "song": "Kaldırmak istediğiniz şarkı numarası."
+      },
+      "errors": {
+        "no_songs": "Kuyrukta şarkı yok.",
+        "invalid_number": "Lütfen geçerli bir şarkı numarası girin."
+      },
+      "messages": {
+        "removed": "{songNumber} numaralı şarkı kuyruktan kaldırıldı."
+      }
+    },
+    "region": {
+      "description": "Daha iyi kalite için ses sunucusu bölgesini görüntüle veya değiştir 🌐",
+      "options": {
+        "region": "Geçiş yapılacak bölge (örn: EU, VN)"
+      },
+      "info_title": "🌐 Ses Sunucusu Bölgesi",
+      "current_region": "**Mevcut düğüm:** `{nodeId}`\n**Bölge:** {region}\n**Ping:** `{ping}ms`",
+      "available_regions": "Mevcut bölgeler",
+      "region_field": "{nodeCount} düğüm, {playerCount} oynatıcı\n{nodes}",
+      "current_indicator": " (mevcut)",
+      "switched": "{region} bölgesine geçildi!\n**Düğüm:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
+      "already_on_region": "Zaten {region} düğümündesiniz (`{nodeId}`)!",
+      "no_nodes_in_region": "{region} bölgesinde kullanılabilir düğüm yok!",
+      "invalid_region": "Bilinmeyen bölge `{region}`. Mevcut: {available}",
+      "switch_failed": "Bölge değiştirilemedi. Tekrar deneyin!"
+    },
+    "replay": {
+      "description": "Mevcut parçayı tekrar çalar.",
+      "errors": {
+        "not_seekable": "Bu parça tekrarlanamaz çünkü ileri/geri sarılamaz."
+      },
+      "messages": {
+        "replaying": "Mevcut parça tekrarlanıyor."
+      }
+    },
+    "resume": {
+      "description": "Mevcut şarkıyı devam ettirir.",
+      "errors": {
+        "not_paused": "Oynatıcı duraklatılmamış."
+      },
+      "messages": {
+        "resumed": "Oynatıcı devam ettiriliyor.",
+        "vote_embed": "Devam için oy: **{votes}/{needed}**\n✅ devam etmek için, ❌ duraklatılmış tutmak için",
+        "button_yes": "✅ Devam Et",
+        "button_no": "❌ Duraklatılmış Tut",
+        "already_voted": "Zaten oy kullandınız."
+      }
+    },
+    "search": {
+      "description": "Şarkı arar.",
+      "options": {
+        "song": "Aramak istediğiniz şarkı."
+      },
+      "select": "Lütfen çalmak istediğiniz şarkıyı seçin",
+      "errors": {
+        "no_results": "Sonuç bulunamadı.",
+        "search_error": "Arama sırasında bir hata oluştu."
+      },
+      "messages": {
+        "added_to_queue": "Kuyruğa {title}]({uri}) eklendi."
+      }
+    },
+    "seek": {
+      "description": "Şarkının belirli bir süresine gider.",
+      "options": {
+        "duration": "Gitmek istediğiniz süre."
+      },
+      "errors": {
+        "invalid_format": "Geçersiz zaman formatı. Örnekler: seek 1m, seek 1h 30m",
+        "not_seekable": "Bu parça ileri/geri sarılamaz",
+        "beyond_duration": "Şarkının süresi olan {length} süresini aşamazsınız."
+      },
+      "messages": {
+        "seeked_to": "{duration} süresine gidildi."
+      }
+    },
+    "shuffle": {
+      "description": "Kuyruğu karıştırır.",
+      "messages": {
+        "shuffled": "Kuyruk karıştırıldı."
+      },
+      "errors": {
+        "fairplay": "Adil oyun modu etkin. Kuyruğu karıştıramazsınız."
+      }
+    },
+    "skip": {
+      "description": "Mevcut şarkıyı geçer.",
+      "messages": {
+        "skipped": "[{title}]({uri}) şarkısı geçildi..",
+        "vote_embed": "Atla için oy: **{votes}/{needed}**\n✅ atlamak için, ❌ çalmaya devam etmek için",
+        "button_skip": "👍 Atla",
+        "button_keep": "👎 Devam Et",
+        "button_yes": "✅ Atla",
+        "button_no": "❌ Devam Et",
+        "already_voted": "Zaten oy kullandınız."
+      }
+    },
+    "skipto": {
+      "description": "Kuyrukta belirli bir şarkıya atlar.",
+      "options": {
+        "number": "Atlamak istediğiniz şarkının numarası."
+      },
+      "errors": {
+        "invalid_number": "Lütfen geçerli bir numara girin."
+      },
+      "messages": {
+        "skipped_to": "{number} numaralı şarkıya atlandı."
+      }
+    },
+    "stop": {
+      "description": "Müziği durdurur ve kuyruğu temizler.",
+      "messages": {
+        "stopped": "Müzik durduruldu ve kuyruk temizlendi.",
+        "vote_embed": "Durdurma için oy: **{votes}/{needed}**\n✅ durdurmak için, ❌ çalmaya devam etmek için",
+        "button_stop": "🛑 Durdur",
+        "button_keep": "👎 Devam Et",
+        "button_yes": "✅ Durdur",
+        "button_no": "❌ Devam Et",
+        "already_voted": "Zaten oy kullandınız."
+      }
+    },
+    "volume": {
+      "description": "Oynatıcının ses seviyesini ayarlar.",
+      "options": {
+        "number": "Ayarlamak istediğiniz ses seviyesi."
+      },
+      "messages": {
+        "invalid_number": "Lütfen geçerli bir sayı girin.",
+        "too_low": "Ses seviyesi 0'dan düşük olamaz.",
+        "too_high": "Ses seviyesi 200'den yüksek olamaz. İşitme veya hoparlörlerinize zarar vermek istemezsiniz, değil mi?",
+        "set": "Ses seviyesi {volume} olarak ayarlandı."
+      }
+    },
+    "addsong": {
+      "description": "Çalma listesine bir şarkı ekler.",
+      "options": {
+        "playlist": "Eklemek istediğiniz çalma listesi.",
+        "song": "Eklemek istediğiniz şarkı."
+      },
+      "messages": {
+        "no_playlist": "Lütfen bir çalma listesi belirtin.",
+        "no_song": "Lütfen bir şarkı belirtin.",
+        "playlist_not_found": "Bu çalma listesi mevcut değil.",
+        "no_songs_found": "Şarkı bulunamadı.",
+        "added": "{count} şarkı {playlist} çalma listesine eklendi."
+      }
+    },
+    "create": {
+      "description": "Bir çalma listesi oluşturur.",
+      "options": {
+        "name": "Çalma listesinin adı."
+      },
+      "messages": {
+        "name_too_long": "Çalma listesi adları en fazla 50 karakter uzunluğunda olabilir.",
+        "playlist_exists": "Bu isimde bir çalma listesi zaten var. Lütfen farklı bir isim kullanın.",
+        "playlist_created": "Çalma listesi **{name}** oluşturuldu."
+      }
+    },
+    "delete": {
+      "description": "Bir çalma listesini siler.",
+      "options": {
+        "playlist": "Silmek istediğiniz çalma listesi."
+      },
+      "messages": {
+        "playlist_not_found": "Bu çalma listesi mevcut değil.",
+        "playlist_deleted": "Çalma listesi **{playlistName}** silindi."
+      }
+    },
+    "list": {
+      "description": "Kullanıcının tüm çalma listelerini getirir.",
+      "options": {
+        "user": "Çalma listelerini görmek istediğiniz kullanıcı."
+      },
+      "messages": {
+        "no_playlists": "Bu kullanıcının çalma listesi yok.",
+        "your": "Sizin",
+        "playlists_title": "{username} adlı kullanıcının Çalma Listeleri",
+        "error": "Çalma listeleri alınırken bir hata oluştu."
+      }
+    },
+    "load": {
+      "description": "Bir çalma listesini yükler.",
+      "options": {
+        "playlist": "Yüklemek istediğiniz çalma listesi."
+      },
+      "messages": {
+        "playlist_not_exist": "Bu çalma listesi mevcut değil.",
+        "playlist_empty": "Bu çalma listesi boş.",
+        "playlist_loaded": "`{name}` yüklendi, `{count} şarkı içeriyor."
+      }
+    },
+    "removesong": {
+      "description": "Çalma listesinden bir şarkıyı kaldırır.",
+      "options": {
+        "playlist": "Kaldırmak istediğiniz çalma listesi.",
+        "song": "Kaldırmak istediğiniz şarkı."
+      },
+      "messages": {
+        "provide_playlist": "Lütfen bir çalma listesi belirtin.",
+        "provide_song": "Lütfen bir şarkı belirtin.",
+        "playlist_not_exist": "Bu çalma listesi mevcut değil.",
+        "song_not_found": "Eşleşen şarkı bulunamadı.",
+        "song_removed": "{playlist} çalma listesinden {song} kaldırıldı.",
+        "error_occurred": "Şarkı kaldırılırken bir hata oluştu."
+      }
+    },
+    "steal": {
+      "description": "Başka bir kullanıcıdan bir çalma listesini alır ve kendi çalma listelerinize ekler.",
+      "options": {
+        "playlist": "Almak istediğiniz çalma listesi.",
+        "user": "Çalma listesini almak istediğiniz kullanıcı."
+      },
+      "messages": {
+        "provide_playlist": "Lütfen bir çalma listesi adı belirtin",
+        "provide_user": "Lütfen bir kullanıcı etiketleyin.",
+        "playlist_not_exist": "Bu kullanıcı için belirtilen çalma listesi mevcut değil.",
+        "playlist_stolen": "`{playlist}` adlı çalma listesi {user} adlı kullanıcıdan başarıyla alındı.",
+        "error_occurred": "Çalma listesi alınırken bir hata oluştu."
+      }
+    },
+    "fairplay": {
+      "description": "Botu adil bir şekilde müzik çalması için ayarla",
+      "errors": {
+        "not_in_voice": "Bu komutu kullanmak için bir ses kanalında olmalısınız.",
+        "generic": "Bu komutu çalıştırırken bir hata oluştu."
+      },
+      "messages": {
+        "disabled": "`✅` | Adil oyun modu `DEVRE DIŞI BIRAKILDI`.",
+        "enabled": "`✅` | Adil oyun modu `ETKİNLEŞTİRİLDİ`."
+      }
+    },
+    "playlocal": {
+      "description": "Yerel ses dosyalarınızı çalar",
+      "options": {
+        "file": "Çalmak istediğiniz ses dosyası"
+      },
+      "loading": "Yükleniyor...",
+      "errors": {
+        "empty_query": "Lütfen çalmak için bir ses dosyası ekleyin.",
+        "invalid_format": "Sadece MP3, WAV, OGG, FLAC, AAC veya M4A dosyalarını çalabilirsiniz.",
+        "no_results": "Ses dosyası çalınamadı. Dosya bozuk olabilir."
+      },
+      "added_to_queue": "[{title}]({url}) sıraya eklendi"
+    },
+    "loop_current": {
+      "description": "Şu anda çalan şarkıyı tekrarla"
+    },
+    "loop_queue": {
+      "description": "Tüm kuyruğu tekrarla"
+    },
+    "vote": {
+      "description": "Müzik komutları için oylama sistemini yönet",
+      "options": {
+        "toggle": "Oylama sistemini aç veya kapat",
+        "status": "Oylama sisteminin mevcut durumunu kontrol et"
+      }
+    },
+    "livelyrics": {
+      "description": "Mevcut parça için karaoke modunda senkronize canlı şarkı sözlerini göster",
+      "aliases": "karaoke, syncedlyrics",
+      "errors": {
+        "no_player": "Şu anda çalan müzik yok.",
+        "no_synced": "Bu parça için senkronize şarkı sözleri bulunamadı."
+      }
+    }
+  },
+  "buttons": {
+    "invite": "Davet Et",
+    "support": "Destek Sunucusu",
+    "previous": "Önceki",
+    "resume": "Devam Et",
+    "stop": "Durdur",
+    "skip": "Geç",
+    "loop": "Tekrarla",
+    "errors": {
+      "not_author": "Bu butonu kullanamazsınız."
+    }
+  },
+  "player": {
+    "errors": {
+      "no_player": "Bu sunucuda aktif bir oynatıcı yok.",
+      "no_channel": "Bu komutu kullanmak için bir ses kanalında olmanız gerekiyor.",
+      "queue_empty": "Kuyruk boş.",
+      "no_previous": "Kuyrukta önceki şarkı yok.",
+      "no_song": "Kuyrukta şarkı yok.",
+      "already_paused": "Şarkı zaten duraklatılmış durumda."
+    },
+    "trackStart": {
+      "now_playing": "Şu An Çalıyor",
+      "requested_by": "İsteyen: {user}",
+      "duration": "Süre",
+      "author": "Yazar",
+      "not_connected_to_voice_channel": "Bu butonları kullanmak için <#{channel}> kanalına bağlı değilsiniz.",
+      "need_dj_role": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
+      "previous_by": "Önceki: {user}",
+      "no_previous_song": "Önceki şarkı yok.",
+      "paused_by": "Duraklatıldı: {user}",
+      "resumed_by": "Devam Ettirildi: {user}",
+      "skipped_by": "Geçildi: {user}",
+      "no_more_songs_in_queue": "Kuyrukta başka şarkı yok.",
+      "looping_by": "Tekrar: {user}",
+      "looping_queue_by": "Kuyruğu Tekrarla: {user}",
+      "looping_off_by": "Tekrar Kapalı: {user}"
+    },
+    "setupStart": {
+      "now_playing": "Şu An Çalıyor",
+      "description": "[{title}]({uri}) tarafından {author} • `[{length}]` - İsteyen <@{requester}>",
+      "error_searching": "Arama sırasında bir hata oluştu.",
+      "no_results": "Sonuç bulunamadı.",
+      "nothing_playing": "Şu anda hiçbir şey çalmıyor.",
+      "queue_too_long": "Kuyruk çok uzun. Maksimum uzunluk {maxQueueSize} şarkıdır.",
+      "playlist_too_long": "Çalma listesi çok uzun. Maksimum uzunluk {maxPlaylistSize} şarkıdır.",
+      "added_to_queue": "Kuyruğa [{title}]({uri}) eklendi.",
+      "added_playlist_to_queue": "Kuyruğa [{length}] şarkı eklendi."
+    },
+    "lavaconfig": {
+      "description": "LavaSrc yapılandırmasını çalışma zamanında yönetin! Hizmetleri anında güncelleyin ⚙️",
+      "errors": {
+        "service_unavailable": "Lavalink hizmeti mevcut değil. Lavalink'in çalıştığından emin olun! 🔧",
+        "missing_subcommand": "Lütfen bir alt komut belirtin! Deneyin: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view veya nodes",
+        "missing_node": "Lütfen bir düğüm adı belirtin! Mevcut düğümleri görmek için 'nodes' kullanın 📋",
+        "unknown_subcommand": "Bilinmeyen alt komut! Deneyin: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view veya nodes"
+      },
+      "messages": {
+        "processing": "İsteğiniz işleniyor... ⚙️",
+        "config_updated_title": "✅ {source} Yapılandırması Güncellendi",
+        "config_updated_desc": "**{nodeId}** düğümü için {source} yapılandırması başarıyla güncellendi! Değişiklikler uygulandı ✅",
+        "updated_config": "Güncellenmiş Yapılandırma",
+        "view_title": "📋 LavaSrc Yapılandırması - {nodeId}",
+        "nodes_title": "Mevcut Lavalink Düğümleri",
+        "no_nodes": "Mevcut Lavalink düğümü yok! Lavalink'in bağlı olduğundan emin olun 🔌",
+        "total_nodes": "Toplam düğüm: {count}"
+      },
+      "fields": {
+        "client_id": "İstemci ID",
+        "client_secret": "İstemci Gizli Anahtarı",
+        "api_key": "API Anahtarı",
+        "decode_track": "Parçayı Çöz",
+        "country_code": "Ülke Kodu",
+        "playlist_limit": "Çalma Listesi Limiti",
+        "album_limit": "Albüm Limiti",
+        "search_limit": "Arama Limiti",
+        "isrc_search": "ISRC Araması",
+        "fallback_search": "Yedek Arama",
+        "load_timeout": "Yükleme Zaman Aşımı",
+        "spotify_enabled": "Spotify Açık",
+        "apple_enabled": "Apple Music Açık",
+        "deezer_enabled": "Deezer Açık"
+      },
+      "usage": {
+        "title": "Kullanım",
+        "value": "`/lavaconfig <altkomut> <düğüm> [seçenekler]`\nFarklı hizmetleri yapılandırmak için alt komutları kullanın."
+      }
+    },
+    "youtubeconfig": {
+      "description": "YouTube kaynağı yapılandırmasını çalışma zamanında yönetin! OAuth ve poToken ayarlarını kontrol edin 🎬",
+      "errors": {
+        "service_unavailable": "Lavalink hizmeti mevcut değil. Lavalink'in çalıştığından emin olun! 🔧",
+        "missing_subcommand": "Lütfen bir alt komut belirtin! Deneyin: oauth, potoken, view veya nodes",
+        "missing_node": "Lütfen bir düğüm adı belirtin! Mevcut düğümleri görmek için 'nodes' kullanın 📋",
+        "unknown_subcommand": "Bilinmeyen alt komut! Deneyin: oauth, potoken, view veya nodes",
+        "missing_oauth_option": "Lütfen bir OAuth seçeneği belirtin! Deneyin: email, authorization veya skip",
+        "missing_potoken_pair": "Pair seçeneği için hem poToken hem de visitorData belirtin!",
+        "missing_refresh_token": "Yenileme belirteci eksik! OAuth yapılandırması bir yenileme belirteci gerektirir."
+      },
+      "messages": {
+        "processing": "İsteğiniz işleniyor... ⚙️",
+        "oauth_updated_title": "✅ YouTube OAuth Yapılandırması Güncellendi",
+        "oauth_updated_desc": "**{nodeId}** düğümü için YouTube OAuth yapılandırması başarıyla güncellendi ✅",
+        "potoken_updated_title": "✅ YouTube poToken Yapılandırması Güncellendi",
+        "potoken_updated_desc": "**{nodeId}** düğümü için YouTube poToken yapılandırması başarıyla güncellendi ✅",
+        "token_refreshed_title": "✅ OAuth Belirteci Yenilendi",
+        "token_refreshed_desc": "**{nodeId}** düğümü için OAuth belirteci başarıyla yenilendi ✅",
+        "view_title": "📋 YouTube Kaynak Yapılandırması - {nodeId}",
+        "nodes_title": "📡 Lavalink Düğümleri",
+        "no_nodes": "Kullanılabilir düğüm yok.",
+        "total_nodes": "Toplam: {count} düğüm",
+        "not_set": "Ayarlanmadı",
+        "na": "Yok"
+      },
+      "fields": {
+        "refresh_token": "Yenileme Belirteci",
+        "skip_initialization": "Başlatmayı Atla",
+        "potoken": "poToken",
+        "visitor_data": "Ziyaretçi Verisi",
+        "po_token": "poToken",
+        "visitor_data_short": "Ziyaretçi Verisi",
+        "oauth_email": "OAuth E-posta",
+        "authorization": "Yetkilendirme",
+        "skip": "Atla",
+        "pair": "Çift",
+        "refresh": "Yenile",
+        "email": "E-posta",
+        "authorization_code": "Yetkilendirme Kodu",
+        "status": "Durum",
+        "enabled": "AÇIK",
+        "disabled": "KAPALI",
+        "last_updated": "Son Güncelleme",
+        "token_type": "Belirteç Türü",
+        "expires_in": "Sona Erme",
+        "scope": "Kapsam",
+        "access_token_truncated": "Access Token (kısaltılmış)",
+        "updated": "✅ Güncellendi",
+        "not_changed": "⚪ Değişmedi",
+        "yes": "✅ Evet",
+        "no": "❌ Hayır",
+        "important": "⚠️ Önemli",
+        "oauth_warning": "OAuth belirteçleri gizli tutulmalıdır. Yedek bir YouTube hesabı kullanmayı düşünün.",
+        "how_to_generate": "💡 Nasıl Oluşturulur",
+        "generator_link": "Bu değerleri almak için [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) kullanın.",
+        "note": "ℹ️ Not",
+        "api_note": "API yalnızca refresh token döndürür. poToken ve visitorData ifşa edilmez."
+      },
+      "usage": {
+        "title": "Kullanım",
+        "value": "`/youtubeconfig <altkomut> <düğüm> [seçenekler]`\nOAuth yapılandırması için oauth, poToken ayarları için potoken kullanın."
+      }
+    }
+  },
+  "will_leave": {
+    "no_listeners": "Ses kanalında dinleyici olmadığı için **{time}** içinde ayrılacağım.",
+    "no_songs": "Kuyruğa şarkı eklenmediği için **{time}** içinde ayrılacağım."
+  },
+  "event": {
+    "interaction": {
+      "setup_channel": "Bu komutu kurulum kanalında kullanamazsınız.",
+      "no_send_message": "**`Mesaj Gönder`**, **`Kanalı Gör`**, **`Embed Bağlantıları`** veya **`Mesaj Geçmişini Oku`** iznim yok.",
+      "no_permission": "{permissions} iznim yok.",
+      "no_user_permission": "Bu komutu kullanma izniniz yok.",
+      "no_voice_channel": "`{command}` komutunu kullanmak için bir ses kanalına bağlı olmalısınız.",
+      "no_connect_permission": "{command} komutunu kullanmak için `BAĞLAN` iznim yok.",
+      "no_speak_permission": "{command} komutunu kullanmak için `KONUŞ` iznim yok.",
+      "no_request_to_speak": "{command} komutunu kullanmak için `KONUŞMAYI TALEP ETME` iznim yok.",
+      "different_voice_channel": "`{command}` komutunu kullanmak için {channel} kanalında bağlı değilsiniz.",
+      "no_music_playing": "Şu anda çalan bir şey yok.",
+      "no_dj_role": "DJ rolü ayarlanmadı.",
+      "no_dj_permission": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
+      "cooldown": "`{command}` komutunu yeniden kullanmadan önce {time} saniye bekleyin.",
+      "error": "Bir hata oluştu: `{error}`",
+      "vote_button": "Oy Ver!",
+      "vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
+      "slash_deprecated": "Slash komutları kullanımdan kaldırıldı! Lütfen yerine `{prefix}{command}` kullanın. 🎵",
+      "periodic_message_vote_only": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Oyun büyümemize yardımcı olur! ❤️\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
+      "periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
+      "voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+      "no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın.",
+      "no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
+      "maintenance": "The bot is under maintenance! Check back soon 🔧",
+      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+    },
+    "message": {
+      "prefix_mention": "Merhaba, bu sunucu için ön ekim `{prefix}`. Daha fazla bilgi mi istiyorsunuz? `{prefix}help` yapın\nGüvende kalın, harika kalın!",
+      "no_send_message": "**`Mesaj Gönder`**, **`Kanalı Gör`**, **`Embed Bağlantıları`** veya **`Mesaj Geçmişini Oku`** iznim yok.",
+      "no_permission": "{permissions} iznim yok.",
+      "no_user_permission": "Bu komutu kullanma izniniz yok.",
+      "no_voice_channel": "`{command}` komutunu kullanmak için bir ses kanalına bağlı olmalısınız.",
+      "no_connect_permission": "{command} komutunu kullanmak için `BAĞLAN` iznim yok.",
+      "no_speak_permission": "{command} komutunu kullanmak için `KONUŞ` iznim yok.",
+      "no_request_to_speak": "{command} komutunu kullanmak için `KONUŞMAYI TALEP ETME` iznim yok.",
+      "different_voice_channel": "`{command}` komutunu kullanmak için {channel} kanalında bağlı değilsiniz.",
+      "no_music_playing": "Şu anda çalan bir şey yok.",
+      "no_dj_role": "DJ rolü ayarlanmadı.",
+      "no_dj_permission": "Bu komutu kullanmak için DJ rolüne sahip olmalısınız.",
+      "missing_arguments": "Eksik Argümanlar",
+      "missing_arguments_description": "`{command}` komutu için gerekli argümanları belirtin.\n\nÖrnekler:\n{examples}",
+      "syntax_footer": "Sözdizimi: [] = isteğe bağlı, <> = zorunlu • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "cooldown": "`{command}` komutunu yeniden kullanmadan önce {time} saniye bekleyin.",
+      "no_mention_everyone": "Everyone veya here kullanımıyla bu komutu kullanamazsınız. Lütfen slash komutunu kullanın.",
+      "error": "Bir hata oluştu: `{error}`",
+      "no_voice_channel_queue": "Şarkıları kuyruğa almak için bir ses kanalına bağlı olmalısınız.",
+      "no_permission_connect_speak": "<#{channel}> kanalına bağlanma/konuşma iznim yok.",
+      "different_voice_channel_queue": "Şarkıları kuyruğa almak için <#{channel}> kanalına bağlı olmalısınız.",
+      "vote_button": "Oy Ver!",
+      "vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
+      "no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
+      "no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın."
+    },
+    "setupButton": {
+      "no_voice_channel_button": "Bu butonu kullanmak için bir ses kanalına bağlı olmalısınız.",
+      "different_voice_channel_button": "Bu butonları kullanmak için {channel} kanalında bağlı olmalısınız.",
+      "now_playing": "Şu An Çalıyor",
+      "live": "CANLI",
+      "requested_by": "İsteyen: <@{requester}>",
+      "no_dj_permission": "Bu butonu kullanmak için DJ rolüne sahip olmalısınız.",
+      "volume_set": "Ses seviyesi %{vol} olarak ayarlandı.",
+      "volume_footer": "Ses: %{vol} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "paused": "Duraklatıldı",
+      "resumed": "Devam Ettirildi",
+      "pause_resume": "Müziği {name}.",
+      "pause_resume_footer": "{displayName} tarafından {name} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "no_music_to_skip": "Geçilecek müzik yok.",
+      "skipped": "Müzik geçildi.",
+      "skipped_footer": "{displayName} tarafından geçildi • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "stopped": "Müzik durduruldu.",
+      "stopped_footer": "{displayName} tarafından durduruldu • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "nothing_playing": "Şu anda hiçbir şey çalmıyor.",
+      "loop_set": "Tekrar ayarlandı: {loop}.",
+      "loop_footer": "{displayName} tarafından tekrar ayarlandı: {loop} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "shuffled": "Kuyruk karıştırıldı.",
+      "no_previous_track": "Önceki parça yok.",
+      "playing_previous": "Önceki parça çalıyor.",
+      "previous_footer": "{displayName} tarafından önceki parça çalıyor • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "rewinded": "Müzik geri sarıldı",
+      "rewind_footer": "{displayName} tarafından geri sarıldı.",
+      "forward_limit": "Müzik uzunluğundan daha fazla ileriye saramazsınız • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "forwarded": "Müzik ileri sarıldı.",
+      "forward_footer": "{displayName} tarafından ileri sarıldı • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+      "button_not_available": "Bu buton kullanılamaz.",
+      "no_music_playing": "Bu sunucuda çalan müzik yok."
+    },
+    "voice_state_update": {
+      "kicked": "Bot ses kanalından atıldı. Oynatma durduruldu.",
+      "moved": "Bot başka bir ses kanalına taşındı. Oynatma durduruldu.",
+      "left_due_to_timeout_no_listeners": "Ses kanalında dinleyici olmadığı için ayrıldım.",
+      "left_due_to_timeout_no_songs": "Kuyruğa şarkı eklenmediği için ayrıldım."
+    }
+  },
+  "Evaluate code": "Kodu çalıştır.",
+  "Leave a guild": "Bir sunucudan çık.",
+  "List all guilds the bot is in": "Botun bulunduğu tüm sunucuları listele.",
+  "Restart the bot": "Botu yeniden başlat",
+  "The loop mode you want to set": "Ayarlamak istediğiniz döngü modu",
+  "Show current maintenance status": "Mevcut bakım durumunu göster",
+  "Show current maintenance status.": "Show current maintenance status.",
+  "Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
+  "Update Spotify configuration": "Update Spotify configuration",
+  "Update Apple Music configuration": "Update Apple Music configuration",
+  "Update Deezer configuration": "Update Deezer configuration",
+  "Update Yandex Music configuration": "Update Yandex Music configuration",
+  "Update VK Music configuration": "Update VK Music configuration",
+  "Update Qobuz configuration": "Update Qobuz configuration",
+  "Update yt-dlp configuration": "Update yt-dlp configuration",
+  "View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
+  "List all available Lavalink nodes": "List all available Lavalink nodes",
+  "The Lavalink node ID": "The Lavalink node ID",
+  "Spotify client ID": "Spotify client ID",
+  "Spotify client secret": "Spotify client secret",
+  "Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
+  "Prefer anonymous token": "Prefer anonymous token",
+  "Custom token endpoint URL": "Custom token endpoint URL",
+  "Apple Music media API token": "Apple Music media API token",
+  "Deezer ARL cookie value": "Deezer ARL cookie value",
+  "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
+  "Yandex Music access token": "Yandex Music access token",
+  "VK Music user token": "VK Music user token",
+  "Qobuz user OAuth token": "Qobuz user OAuth token",
+  "Qobuz application ID": "Qobuz application ID",
+  "Qobuz application secret": "Qobuz application secret",
+  "Path to yt-dlp executable": "Path to yt-dlp executable",
+  "Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
+  "Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
+  "Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
+  "Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
+  "Update YouTube poToken configuration": "Update YouTube poToken configuration",
+  "View current YouTube source configuration": "View current YouTube source configuration",
+  "Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
+  "YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
+  "Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
+  "Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
+  "Visitor data associated with the poToken": "Visitor data associated with the poToken",
+  "The refresh token to use": "The refresh token to use",
+  "LIVE_LYRICS": {
+    "NO_PLAYER": "Şu anda çalan müzik yok.",
+    "NO_LYRICS": "Bu parça için senkronize şarkı sözleri bulunamadı.",
+    "TITLE": "🎵 Canlı Şarkı Sözleri",
+    "CURRENT": "Şu anki",
+    "STOPPED": "Canlı şarkı sözleri durduruldu.",
+    "REFRESHED": "Canlı şarkı sözleri yenilendi!",
+    "ERROR": "Şarkı sözleri alınırken bir hata oluştu.",
+    "ENDED": "Canlı şarkı sözleri sona erdi.",
+    "PAUSED": "Canlı şarkı sözleri duraklatıldı.",
+    "SEARCHING": "Senkronize şarkı sözleri aranıyor...",
+    "NO_SYNCED_TITLE": "Senkronize Şarkı Sözleri Mevcut Değil",
+    "NO_SYNCED_DESCRIPTION": "Bu parçanın senkronize (zaman damgalı) şarkı sözleri yok. Düz metin şarkı sözleri için normal `{prefix}lyrics` komutunu deneyebilirsiniz.",
+    "ALREADY_RUNNING": "Canlı şarkı sözleri bu sunucu için zaten çalışıyor!",
+    "STARTED": "Canlı şarkı sözleri başladı! Görüntüleme şarkı çaldıkça otomatik olarak güncellenecek.",
+    "PROGRESS": "İlerleme",
+    "UPDATE_INTERVAL": "Her {seconds} saniyede bir güncellenir",
+    "CLICK_REFRESH": "Anında güncelleme için Yenile'ye tıklayın",
+    "NO_LYRICS_AVAILABLE": "Şarkı sözü mevcut değil",
+    "REFRESH_BUTTON": "Yenile",
+    "STOP_BUTTON": "Durdur"
+  }
 }

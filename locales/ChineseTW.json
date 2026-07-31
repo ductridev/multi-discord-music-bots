@@ -1,938 +1,935 @@
 {
-	"cmd": {
-		"247": {
-			"description": "設定機器人停留在語音頻道",
-			"errors": {
-				"not_in_voice": "您需要在語音頻道中才能使用此指令。",
-				"generic": "執行此指令時出錯。"
-			},
-			"messages": {
-				"disabled": "`✅` | 24/7 模式已`停用`",
-				"enabled": "`✅` | 24/7 模式已`啟用`。\n**即使語音頻道中沒有人，機器人也不會離開語音頻道。**"
-			}
-		},
-		"ping": {
-			"description": "顯示機器人的延遲。",
-			"content": "正在測試延遲...",
-			"bot_latency": "機器人延遲",
-			"api_latency": "API 延遲",
-			"vc_latency": "語音頻道延遲",
-			"vc_region": "語音頻道區域",
-			"requested_by": "由 {author} 請求"
-		},
-		"lavalink": {
-			"description": "顯示當前 Lavalink 狀態。",
-			"title": "Lavalink 狀態",
-			"content": "播放器: {players}\n正在播放的播放器: {playingPlayers}\n正常運行時間: {uptime}\n核心: {cores} 個核心\n記憶體使用量: {used} / {reservable}\n系統負載: {systemLoad}%\nLavalink 負載: {lavalinkLoad}%\n插件: {plugins}",
-			"page_info": "第 {index} 頁，共 {total} 頁"
-		},
-		"invite": {
-			"description": "取得機器人邀請連結。",
-			"content": "您可以通過點擊下面的按鈕邀請我。有任何錯誤或故障？加入支援伺服器！"
-		},
-		"help": {
-			"description": "顯示幫助選單。",
-			"options": {
-				"command": "您想取得資訊的指令"
-			},
-			"content": "大家好！我是 {bot}，一個使用 [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) 和 Discord 製作的音樂機器人。您可以使用 `{prefix}help <command>` 取得有關指令的更多資訊。",
-			"title": "幫助選單",
-			"not_found": "此 `{cmdName}` 指令不存在。",
-			"help_cmd": "**描述:** {description}\n**用法:** {usage}\n**示例:** {examples}\n**別名:** {aliases}\n**類別:** {category}\n**冷卻時間:** {cooldown} 秒\n**權限:** {premUser}\n**機器人權限:** {premBot}\n**僅限開發者:** {dev}\n**斜線指令:** {slash}\n**參數:** {args}\n**播放器:** {player}\n**DJ:** {dj}\n**DJ 權限:** {djPerm}\n**語音:** {voice}",
-			"footer": "使用 {prefix}help <command> 取得有關指令的更多資訊 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️"
-		},
-		"botinfo": {
-			"description": "關於機器人的資訊",
-			"content": "機器人資訊：\n- **操作系統**: {osInfo}\n- **正常運行時間**: {osUptime}\n- **主機名**: {osHostname}\n- **CPU 架構**: {cpuInfo}\n- **CPU 使用率**: {cpuUsed}%\n- **記憶體使用量**: {memUsed} / {memTotal}\n- **節點版本**: {nodeVersion}\n- **Discord 版本**: {discordJsVersion}\n- **已連接到** {guilds} 個伺服器，{channels} 個頻道和 {users} 個使用者\n- **指令總數**: {commands}"
-		},
-		"about": {
-			"description": "顯示關於機器人的資訊",
-			"fields": {
-				"creator": "創建者",
-				"repository": "倉庫",
-				"support": "支援",
-				"description": "他真的很想為了獲得更多程式經驗而製作他的第一個開源項目。在這個項目中，他面臨著製作一個錯誤更少的項目的挑戰。希望您喜歡使用 MultiBungoBot！"
-			}
-		},
-		"dj": {
-			"description": "管理 DJ 模式和相關身份組",
-			"errors": {
-				"provide_role": "請提供一個身份組。",
-				"no_roles": "DJ 身份組為空。",
-				"invalid_subcommand": "請提供有效的副指令。"
-			},
-			"messages": {
-				"role_exists": "DJ 身份組 <@&{roleId}> 已新增。",
-				"role_added": "DJ 身份組 <@&{roleId}> 已新增。",
-				"role_not_found": "未新增 DJ 身份組 <@&{roleId}>。",
-				"role_removed": "DJ 身份組 <@&{roleId}> 已刪除。",
-				"all_roles_cleared": "所有 DJ 身份組都已刪除。",
-				"toggle": "DJ 模式已切換為 {status}。"
-			},
-			"options": {
-				"add": "您要新增的 DJ 身份組",
-				"remove": "您要刪除的 DJ 身份組",
-				"clear": "清除所有 DJ 身份組",
-				"toggle": "切換 DJ 身份組",
-				"role": "DJ 身份組"
-			},
-			"subcommands": "副指令"
-		},
-		"language": {
-			"description": "設定機器人的語言",
-			"invalid_language": "請提供有效的語言。例如: `EnglishUS` 代表英語（美國）\n\n您可以在[此處](https://discord.com/developers/docs/reference#locales)找到支援的語言清單\n\n**可用語言:**\n{languages}",
-			"already_set": "語言已設定為 `{language}`",
-			"not_set": "未設定語言。",
-			"set": "`✅` | 語言已設定為 `{language}`",
-			"reset": "`✅` | 語言已重置為預設語言。",
-			"options": {
-				"set": "設定機器人的語言",
-				"language": "您要設定的語言",
-				"reset": "將語言更改回預設語言"
-			}
-		},
-		"prefix": {
-			"description": "顯示或設定機器人的前綴",
-			"errors": {
-				"prefix_too_long": "前綴不能超過 3 個字元。"
-			},
-			"messages": {
-				"current_prefix": "此伺服器的前綴是 `{prefix}`",
-				"prefix_set": "此伺服器的前綴現在是 `{prefix}`",
-				"prefix_reset": "此伺服器的前綴現在是 `{prefix}`"
-			},
-			"options": {
-				"set": "設定前綴",
-				"prefix": "您要設定的前綴",
-				"reset": "將前綴重置為預設前綴"
-			}
-		},
-		"setup": {
-			"description": "設定機器人",
-			"errors": {
-				"channel_exists": "點歌頻道已存在。",
-				"channel_not_exists": "點歌頻道不存在。",
-				"channel_delete_fail": "點歌頻道已刪除。如果頻道未正常刪除，請自行刪除。"
-			},
-			"messages": {
-				"channel_created": "點歌頻道已在 <#{channelId}> 中創建。",
-				"channel_deleted": "點歌頻道已刪除。",
-				"channel_info": "點歌頻道是 <#{channelId}>。"
-			},
-			"options": {
-				"create": "創建點歌頻道",
-				"delete": "刪除點歌頻道",
-				"info": "顯示點歌頻道"
-			}
-		},
-		"8d": {
-			"description": "啟用/關閉 8D 等化器",
-			"messages": {
-				"filter_enabled": "`✅` | 8D 等化器已`啟用`。",
-				"filter_disabled": "`✅` | 8D 等化器已`停用`。"
-			}
-		},
-		"bassboost": {
-			"description": "啟用/關閉低音增強等化器",
-			"messages": {
-				"filter_enabled": "`✅` | 低音增強等化器已`啟用`。\n**請注意，音量過大會損害您的聽力！**",
-				"filter_disabled": "`✅` | 低音增強等化器已`停用`。",
-				"high": "`✅` | 高低音增強等化器已`啟用`。",
-				"low": "`✅` | 低低音增強等化器已`啟用`。",
-				"medium": "`✅` | 中低音增強等化器已`啟用`。",
-				"off": "`✅` | 低音增強等化器已`停用`。"
-			},
-			"options": {
-				"level": "您要設定的低音增強級別"
-			}
-		},
-		"distortion": {
-			"description": "啟用/關閉失真等化器",
-			"messages": {
-				"filter_enabled": "`✅` | 失真等化器已`啟用`。",
-				"filter_disabled": "`✅` | 失真等化器已`停用`。"
-			}
-		},
-		"karaoke": {
-			"description": "啟用/關閉卡拉 OK 等化器",
-			"messages": {
-				"filter_enabled": "`✅` | 卡拉 OK 等化器已`啟用`。",
-				"filter_disabled": "`✅` | 卡拉 OK 等化器已`停用`。"
-			}
-		},
-		"lowpass": {
-			"description": "啟用/關閉低通等化器",
-			"messages": {
-				"filter_enabled": "`✅` | 低通等化器已`啟用`。",
-				"filter_disabled": "`✅` | 低通等化器已`停用`。"
-			}
-		},
-		"nightcore": {
-			"description": "啟用/關閉 Nightcore 等化器",
-			"messages": {
-				"filter_enabled": "`✅` | Nightcore 等化器已`啟用`。",
-				"filter_disabled": "`✅` | Nightcore 等化器已`停用`。"
-			}
-		},
-		"pitch": {
-			"description": "啟用/關閉音調等化器",
-			"options": {
-				"pitch": "您要將音調設定為的數字（介於 0.5 和 5 之間）"
-			},
-			"errors": {
-				"invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。"
-			},
-			"messages": {
-				"pitch_set": "`✅` | 音調已設定為 **{pitch}**。"
-			}
-		},
-		"rate": {
-			"description": "更改歌曲的速度",
-			"options": {
-				"rate": "您要將速度設定到的數字（介於 0.5 和 5 之間）"
-			},
-			"errors": {
-				"invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。"
-			},
-			"messages": {
-				"rate_set": "`✅` | 速度已設定為 **{rate}**。"
-			}
-		},
-		"reset": {
-			"description": "重置使用中的等化器",
-			"messages": {
-				"filters_reset": "`✅` | 等化器已重置。"
-			}
-		},
-		"rotation": {
-			"description": "啟用/關閉旋轉等化器",
-			"messages": {
-				"enabled": "`✅` | 旋轉等化器已`啟用`。",
-				"disabled": "`✅` | 旋轉等化器已`停用`。"
-			}
-		},
-		"speed": {
-			"description": "更改歌曲的速度",
-			"options": {
-				"speed": "您要設定的速度"
-			},
-			"messages": {
-				"invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。",
-				"set_speed": "`✅` | 速度已設定為 **{speed}**。"
-			}
-		},
-		"tremolo": {
-			"description": "啟用/關閉顫音等化器",
-			"messages": {
-				"enabled": "`✅` | 顫音等化器已`啟用`。",
-				"disabled": "`✅` | 顫音等化器已`停用`。"
-			}
-		},
-		"vibrato": {
-			"description": "啟用/關閉震音等化器",
-			"messages": {
-				"enabled": "`✅` | 震音等化器已`啟用`。",
-				"disabled": "`✅` | 震音等化器已`停用`。"
-			}
-		},
-		"announce": {
-			"messages": {
-				"default_content": "機器人正在維護中，我們可能會重啟機器人。因此，請在維護完成後使用 bresumesesssion 指令繼續收聽。"
-			}
-		},
-		"autoplay": {
-			"description": "切換自動播放",
-			"messages": {
-				"enabled": "`✅` | 自動播放已`啟用`。",
-				"disabled": "`✅` | 自動播放已`停用`。"
-			}
-		},
-		"clearqueue": {
-			"description": "清除佇列",
-			"messages": {
-				"cleared": "佇列已清除。"
-			}
-		},
-		"grab": {
-			"description": "取得您 DM 上當前播放的歌曲",
-			"loading": "正在載入...",
-			"content": "**時長:** {length}\n**請求者:** <@{requester}>\n**連結:** [點擊此處]({uri})",
-			"check_dm": "請查看您的私訊。",
-			"dm_failed": "我無法向您發送私訊。請確保已開啟允許接收直接訊息。"
-		},
-		"join": {
-			"description": "加入語音頻道",
-			"already_connected": "我已經連接到 <#{channelId}>。",
-			"no_voice_channel": "您需要在語音頻道中才能使用此指令。",
-			"joined": "已成功加入 <#{channelId}>。"
-		},
-		"leave": {
-			"description": "離開語音頻道",
-			"left": "已成功離開 <#{channelId}>。",
-			"not_in_channel": "我不在語音頻道中。"
-		},
-		"loop": {
-			"description": "循環當前歌曲或佇列",
-			"looping_song": "**正在循環播放歌曲。**",
-			"looping_queue": "**正在循環播放佇列。**",
-			"looping_off": "**循環播放已關閉。**"
-		},
-		"nowplaying": {
-			"description": "顯示當前播放的歌曲",
-			"now_playing": "正在播放",
-			"track_info": "[{title}]({uri}) - 請求者: <@{requester}>\n\n`{bar}`"
-		},
-		"pause": {
-			"description": "暫停當前歌曲",
-			"successfully_paused": "已成功暫停歌曲。",
-			"messages": {
-				"vote_embed": "投票暫停: **{votes}/{needed}**\n✅ 暫停，❌ 繼續播放。",
-				"button_yes": "✅ 暫停",
-				"button_no": "❌ 繼續",
-				"already_voted": "您已經投過票了。"
-			}
-		},
-		"play": {
-			"description": "播放來自 YouTube、Spotify 或 http 的歌曲",
-			"options": {
-				"song": "您要播放的歌曲"
-			},
-			"loading": "正在載入...",
-			"warnings": {
-				"longtrack_warning": "⚠️ **警告:** 搜尋結果中的一首或多首曲目時長超過 30 分鐘。請確保您想要播放這些長曲目，因為它們可能會影響您的聆聽體驗。"
-			},
-			"errors": {
-				"search_error": "搜尋時出錯。",
-				"no_results": "未找到結果。",
-				"queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
-				"playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。"
-			},
-			"added_to_queue": "已將 [{title}]({uri}) 新增到佇列。",
-			"added_playlist_to_queue": "已將 {length} 首歌曲新增到佇列。"
-		},
-		"playnext": {
-			"description": "新增歌曲以在佇列中接下來播放",
-			"options": {
-				"song": "您要播放的歌曲"
-			},
-			"loading": "正在載入...",
-			"errors": {
-				"search_error": "搜尋時出錯。",
-				"no_results": "未找到結果。",
-				"queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
-				"playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。"
-			},
-			"added_to_play_next": "已將 [{title}]({uri}) 新增到佇列中接下來播放。",
-			"added_playlist_to_play_next": "已將 {length} 首歌曲新增到佇列中接下來播放。"
-		},
-		"queue": {
-			"description": "顯示當前佇列",
-			"now_playing": "正在播放: [{title}]({uri}) - 請求者: <@{requester}> - 時長: `{duration}`",
-			"live": "直播",
-			"track_info": "{index}. [{title}]({uri}) - 請求者: <@{requester}> - 時長: `{duration}`",
-			"title": "佇列",
-			"page_info": "第 {index} 頁，共 {total} 頁",
-			"duration": "佇列時長: `{totalDuration}`"
-		},
-		"remove": {
-			"description": "從佇列中刪除歌曲",
-			"options": {
-				"song": "您要刪除的歌曲編號"
-			},
-			"errors": {
-				"no_songs": "佇列中沒有歌曲。",
-				"invalid_number": "請提供有效的歌曲編號。"
-			},
-			"messages": {
-				"removed": "已從佇列中刪除歌曲編號 {songNumber}。"
-			}
-		},
-		"region": {
-			"description": "查看或切換音訊伺服器區域，選擇最近的節點獲得最佳音質 🌐",
-			"options": {
-				"region": "要切換的區域（例如：EU、VN）"
-			},
-			"info_title": "🌐 音訊伺服器區域",
-			"current_region": "**目前節點：** `{nodeId}`\n**區域：** {region}\n**延遲：** `{ping}ms`",
-			"available_regions": "可用區域",
-			"region_field": "{nodeCount} 個節點，{playerCount} 個播放器\n{nodes}",
-			"current_indicator": "（目前）",
-			"switched": "已切換到 {region} 區域！\n**節點：** `{oldNode}` → `{newNode}`\n**延遲：** `{oldPing}ms` → `{newPing}ms`",
-			"already_on_region": "你已經在 {region} 區域了（`{nodeId}`）！",
-			"no_nodes_in_region": "{region} 區域目前沒有可用節點！",
-			"invalid_region": "未知區域 `{region}`。可用區域：{available}",
-			"switch_failed": "切換區域失敗，請重試！"
-		},
-		"replay": {
-			"description": "重播當前曲目",
-			"errors": {
-				"not_seekable": "無法重播此曲目，因為它不可搜尋。"
-			},
-			"messages": {
-				"replaying": "正在重播當前曲目。"
-			}
-		},
-		"resume": {
-			"description": "恢復當前歌曲",
-			"errors": {
-				"not_paused": "播放器未暫停。"
-			},
-			"messages": {
-				"resumed": "已恢復播放器。",
-				"vote_embed": "投票恢復: **{votes}/{needed}**\n✅ 恢復，❌ 保持暫停。",
-				"button_yes": "✅ 恢復",
-				"button_no": "❌ 保持暫停",
-				"already_voted": "您已經投過票了。"
-			}
-		},
-		"search": {
-			"description": "搜尋歌曲",
-			"options": {
-				"song": "您要搜尋的歌曲"
-			},
-			"select": "請選擇您要播放的歌曲",
-			"errors": {
-				"no_results": "未找到結果。",
-				"search_error": "搜尋時出錯。"
-			},
-			"messages": {
-				"added_to_queue": "已將 [{title}]({uri}) 新增到佇列。"
-			}
-		},
-		"seek": {
-			"description": "跳轉到歌曲中的某個時間點",
-			"options": {
-				"duration": "要跳轉到的時長"
-			},
-			"errors": {
-				"invalid_format": "無效的時間格式。示例: seek 1m, seek 1h 30m",
-				"not_seekable": "此曲目不可搜尋。",
-				"beyond_duration": "無法跳轉到歌曲時長 {length} 之後。"
-			},
-			"messages": {
-				"seeked_to": "已跳轉到 {duration}"
-			}
-		},
-		"shuffle": {
-			"description": "隨機播放佇列",
-			"errors": {
-				"fairplay": "公平播放模式已啟用。您不能隨機播放佇列。"
-			},
-			"messages": {
-				"shuffled": "已隨機播放佇列。"
-			}
-		},
-		"skip": {
-			"description": "跳過當前歌曲",
-			"messages": {
-				"skipped": "已跳過 [{title}]({uri})。",
-				"vote_embed": "投票跳過: **{votes}/{needed}**\n✅ 跳過，❌ 繼續播放。",
-				"button_skip": "👍 跳過",
-				"button_keep": "👎 保留",
-				"button_yes": "✅ 跳過",
-				"button_no": "❌ 保留",
-				"already_voted": "您已經投過票了。"
-			}
-		},
-		"skipto": {
-			"description": "跳至佇列中的特定歌曲",
-			"options": {
-				"number": "您要跳至的歌曲編號"
-			},
-			"errors": {
-				"invalid_number": "請提供有效的編號。"
-			},
-			"messages": {
-				"skipped_to": "已跳至歌曲編號 {number}。"
-			}
-		},
-		"stop": {
-			"description": "停止音樂並清除佇列",
-			"messages": {
-				"stopped": "已停止音樂並清除佇列。",
-				"vote_embed": "投票停止: **{votes}/{needed}**\n✅ 停止，❌ 繼續播放。",
-				"button_stop": "🛑 停止",
-				"button_keep": "👎 保留",
-				"button_yes": "✅ 停止",
-				"button_no": "❌ 繼續",
-				"already_voted": "您已經投過票了。"
-			}
-		},
-		"volume": {
-			"description": "設定播放器的音量",
-			"options": {
-				"number": "您要設定的音量"
-			},
-			"messages": {
-				"invalid_number": "請提供有效的數字。",
-				"too_low": "音量不能低於 0。",
-				"too_high": "音量不能高於 200。您想損害您的聽力或喇叭嗎？嗯，我認為這不是一個好主意。",
-				"set": "已將音量設定為 {volume}"
-			}
-		},
-		"addsong": {
-			"description": "將歌曲新增到播放清單",
-			"options": {
-				"playlist": "您要新增到的播放清單",
-				"song": "您要新增的歌曲"
-			},
-			"messages": {
-				"no_playlist": "請提供一個播放清單",
-				"no_song": "請提供一首歌曲",
-				"playlist_not_found": "該播放清單不存在",
-				"no_songs_found": "未找到歌曲",
-				"added": "已將 {count} 首歌曲新增到 {playlist}"
-			}
-		},
-		"create": {
-			"description": "創建播放清單",
-			"options": {
-				"name": "播放清單的名稱"
-			},
-			"messages": {
-				"name_too_long": "播放清單名稱只能包含 50 個字元。",
-				"playlist_exists": "具有該名稱的播放清單已存在。請使用其他名稱。",
-				"playlist_created": "播放清單 **{name}** 已創建。"
-			}
-		},
-		"delete": {
-			"description": "刪除播放清單",
-			"options": {
-				"playlist": "您要刪除的播放清單"
-			},
-			"messages": {
-				"playlist_not_found": "該播放清單不存在。",
-				"playlist_deleted": "已刪除播放清單 **{playlistName}**。"
-			}
-		},
-		"list": {
-			"description": "查詢使用者的所有播放清單",
-			"options": {
-				"user": "您要查詢其播放清單的使用者"
-			},
-			"messages": {
-				"no_playlists": "此使用者沒有播放清單。",
-				"your": "您的",
-				"playlists_title": "{username} 的播放清單",
-				"error": "查詢播放清單時出錯。"
-			}
-		},
-		"load": {
-			"description": "載入播放清單",
-			"options": {
-				"playlist": "您要載入的播放清單"
-			},
-			"messages": {
-				"playlist_not_exist": "該播放清單不存在。",
-				"playlist_empty": "該播放清單為空。",
-				"playlist_loaded": "已載入包含 {count} 首歌曲的 `{name}`。"
-			}
-		},
-		"removesong": {
-			"description": "從播放清單中刪除歌曲",
-			"options": {
-				"playlist": "您要從中刪除的播放清單",
-				"song": "您要刪除的歌曲"
-			},
-			"messages": {
-				"provide_playlist": "請提供一個播放清單。",
-				"provide_song": "請提供一首歌曲。",
-				"playlist_not_exist": "該播放清單不存在。",
-				"song_not_found": "未找到匹配的歌曲。",
-				"song_removed": "已從 {playlist} 中刪除 {song}。",
-				"error_occurred": "刪除歌曲時出錯。"
-			}
-		},
-		"steal": {
-			"description": "從另一個使用者那里竊取播放清單並將其新增到您的播放清單中",
-			"options": {
-				"playlist": "您要竊取的播放清單",
-				"user": "您要從其竊取播放清單的使用者"
-			},
-			"messages": {
-				"provide_playlist": "請提供播放清單名稱。",
-				"provide_user": "請@一個使用者。",
-				"playlist_not_exist": "所提及的使用者沒有該播放清單。",
-				"playlist_stolen": "已成功從 {user} 竊取播放清單 `{playlist}`。",
-				"error_occurred": "竊取播放清單時出錯。"
-			}
-		},
-		"lyrics": {
-			"description": "取得當前播放曲目的歌詞",
-			"lyrics_track": "### 歌詞: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
-			"searching": "`🔍` 正在搜尋 **{trackTitle}** 的歌詞...",
-			"errors": {
-				"no_results": "未找到當前曲目的歌詞。",
-				"lyrics_error": "取得歌詞時出錯。"
-			}
-		},
-		"livelyrics": {
-			"description": "顯示當前曲目的即時同步歌詞！卡拉OK模式 🎤",
-			"errors": {
-				"no_player": "目前沒有播放音樂。",
-				"no_synced": "這首歌沒有找到同步歌詞。"
-			}
-		},
-		"fairplay": {
-			"description": "設定機器人公平播放音樂",
-			"errors": {
-				"not_in_voice": "您需要在語音頻道中才能使用此指令。",
-				"generic": "執行此指令時出錯。"
-			},
-			"messages": {
-				"disabled": "`✅` | 公平播放模式已`停用`。",
-				"enabled": "`✅` | 公平播放模式已`啟用`。",
-				"added_to_queue": "已將 [{title}]({url}) 新增到佇列。",
-				"errors": {
-					"empty_query": "請附加音訊檔案以播放。",
-					"invalid_format": "您只能播放 MP3、WAV、OGG、FLAC、AAC 或 M4A 檔案。",
-					"no_results": "播放音訊檔案失敗。它可能已損壞。"
-				}
-			}
-		},
-		"playlocal": {
-			"description": "播放您的本機音訊檔案",
-			"options": {
-				"file": "您要播放的音訊檔案"
-			},
-			"loading": "正在載入...",
-			"errors": {
-				"empty_query": "請附加音訊檔案以播放。",
-				"invalid_format": "您只能播放 MP3、WAV、OGG、FLAC、AAC 或 M4A 檔案。",
-				"no_results": "播放音訊檔案失敗。它可能已損壞。"
-			},
-			"added_to_queue": "已將 [{title}]({url}) 新增到佇列"
-		},
-		"loop_current": {
-			"description": "切換循環播放當前歌曲。"
-		},
-		"loop_queue": {
-			"description": "切換循環播放佇列。"
-		},
-		"resume_session": {
-			"no_session_found": "未找到上一個會話。",
-			"resume_failed": "出現錯誤。無法恢復會話。",
-			"resumed": "已成功恢復會話。"
-		},
-		"save_session": {
-			"saved": "成功儲存 {saved} 個會話。無法儲存 {failed} 個會話。"
-		},
-		"vote": {
-			"description": "管理音樂指令的投票系統",
-			"options": {
-				"toggle": "開啟或關閉投票系統",
-				"status": "檢查投票系統的目前狀態"
-			}
-		},
-		"lavaconfig": {
-			"description": "執行時管理 LavaSrc 配置 🎵",
-			"errors": {
-				"service_unavailable": "LavaSrc 配置服務不可用。",
-				"missing_subcommand": "請提供子命令。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
-				"missing_node": "缺少必要參數: `node`。示例: `!lavaconfig {subcommand} node:main`",
-				"unknown_subcommand": "未知子命令: `{subcommand}`。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
-			},
-			"messages": {
-				"processing": "處理中...",
-				"config_updated_title": "✅ {source} 配置已更新",
-				"config_updated_desc": "已成功更新節點 **{nodeId}** 的 {source} 配置",
-				"updated_config": "已更新配置",
-				"view_title": "📋 LavaSrc 配置 - {nodeId}",
-				"nodes_title": "📡 Lavalink 節點",
-				"no_nodes": "沒有可用節點。",
-				"total_nodes": "共 {count} 個節點"
-			},
-			"usage": {
-				"title": "用法",
-				"value": "`!lavaconfig <子命令> [選項]`\n示例: `!lavaconfig spotify node:main clientId:xxx`"
-			}
-		},
-		"youtubeconfig": {
-			"description": "執行時管理 YouTube 來源配置 🎵",
-			"errors": {
-				"service_unavailable": "YouTube 配置服務不可用。",
-				"missing_subcommand": "請提供子命令。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_node": "缺少必要參數: `node`。示例: `!youtubeconfig {subcommand} node:main`",
-				"unknown_subcommand": "未知子命令: `{subcommand}`。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
-				"missing_oauth_option": "請提供至少一個選項: `refreshToken` 或 `skipInitialization`",
-				"missing_potoken_pair": "為了獲得最佳效果，`poToken` 和 `visitorData` 應該一起提供",
-				"missing_refresh_token": "缺少必要參數: `refreshToken`。示例: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
-			},
-			"messages": {
-				"processing": "處理中...",
-				"oauth_updated_title": "✅ YouTube OAuth 配置已更新",
-				"oauth_updated_desc": "已成功更新節點 **{nodeId}** 的 YouTube OAuth 配置",
-				"potoken_updated_title": "✅ YouTube poToken 配置已更新",
-				"potoken_updated_desc": "已成功更新節點 **{nodeId}** 的 YouTube poToken 配置",
-				"token_refreshed_title": "✅ OAuth 權杖已刷新",
-				"token_refreshed_desc": "已成功刷新節點 **{nodeId}** 的 OAuth 權杖",
-				"view_title": "📋 YouTube 來源配置 - {nodeId}",
-				"nodes_title": "📡 Lavalink 節點",
-				"no_nodes": "沒有可用節點。",
-				"total_nodes": "共 {count} 個節點",
-				"not_set": "未設定",
-				"na": "不適用"
-			},
-			"fields": {
-				"refresh_token": "刷新權杖",
-				"skip_initialization": "跳過初始化",
-				"potoken": "poToken",
-				"visitor_data": "訪客資料",
-				"token_type": "權杖類型",
-				"expires_in": "過期時間",
-				"scope": "範圍",
-				"access_token_truncated": "存取權杖（已截斷）",
-				"updated": "✅ 已更新",
-				"not_changed": "⚪ 未變更",
-				"yes": "✅ 是",
-				"no": "❌ 否",
-				"important": "⚠️ 重要",
-				"oauth_warning": "OAuth 權杖應該保密。建議使用臨時 YouTube 帳號。",
-				"how_to_generate": "💡 如何產生",
-				"generator_link": "使用 [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) 取得這些值。",
-				"note": "ℹ️ 注意",
-				"api_note": "API 只返回刷新權杖。poToken 和 visitorData 不會暴露。"
-			},
-			"usage": {
-				"title": "用法",
-				"value": "`!youtubeconfig <子命令> [選項]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
-			}
-		},
-		"livelyrics": {
-			"description": "啟用或停用即時歌詞同步"
-		}
-	},
-	"buttons": {
-		"invite": "邀請",
-		"support": "支援伺服器",
-		"previous": "上一首",
-		"resume": "恢復",
-		"stop": "停止",
-		"skip": "跳過",
-		"loop": "循環",
-		"errors": {
-			"not_author": "您不能使用此按鈕。"
-		}
-	},
-	"player": {
-		"errors": {
-			"no_player": "此伺服器中沒有活動的播放器。",
-			"no_channel": "您需要在語音頻道中才能使用此指令。",
-			"queue_empty": "佇列為空。",
-			"no_previous": "佇列中沒有上一首歌曲。",
-			"no_song": "佇列中沒有歌曲。",
-			"already_paused": "歌曲已暫停。"
-		},
-		"trackStart": {
-			"now_playing": "正在播放",
-			"requested_by": "由 {user} 請求",
-			"duration": "時長",
-			"author": "作者",
-			"not_connected_to_voice_channel": "您未連接到 <#{channel}> 以使用這些按鈕。",
-			"need_dj_role": "您需要擁有 DJ 身份組才能使用此指令。",
-			"previous_by": "由 {user} 上一首",
-			"no_previous_song": "沒有上一首歌曲。",
-			"paused_by": "由 {user} 暫停",
-			"resumed_by": "由 {user} 恢復",
-			"skipped_by": "由 {user} 跳過",
-			"no_more_songs_in_queue": "佇列中沒有更多歌曲。",
-			"looping_by": "由 {user} 循環播放",
-			"looping_queue_by": "由 {user} 循環播放佇列",
-			"looping_off_by": "由 {user} 關閉循環播放"
-		},
-		"setupStart": {
-			"now_playing": "正在播放",
-			"description": "[{title}]({uri}) 作者: {author} • `[{length}]` - 請求者: <@{requester}>",
-			"error_searching": "搜尋時出錯。",
-			"no_results": "未找到結果。",
-			"nothing_playing": "現在沒有播放任何內容。",
-			"queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
-			"playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。",
-			"added_to_queue": "已將 [{title}]({uri}) 新增到佇列。",
-			"added_playlist_to_queue": "已將播放清單中的 [{length}] 首歌曲新增到佇列。"
-		}
-	},
-	"event": {
-		"interaction": {
-			"setup_channel": "您不能在設定頻道中使用此指令。",
-			"no_send_message": "我在 `{guild}`\n頻道: {channel} 中沒有 **`發送訊息`** 權限。",
-			"no_embed_links": "我沒有 **`嵌入連結`** 權限。",
-			"no_permission": "我沒有足夠的權限來執行此指令。",
-			"no_user_permission": "您沒有足夠的權限來使用此指令。",
-			"no_voice_channel": "您必須連接到語音頻道才能使用此 `{command}` 指令。",
-			"no_connect_permission": "我沒有 `連接` 權限來執行此 `{command}` 指令。",
-			"no_speak_permission": "我沒有 `說話` 權限來執行此 `{command}` 指令。",
-			"no_request_to_speak": "我沒有 `請求發言` 權限來執行此 `{command}` 指令。",
-			"different_voice_channel": "您未連接到 {channel} 以使用此 `{command}` 指令。",
-			"no_music_playing": "現在沒有播放任何內容。",
-			"no_dj_role": "未設定 DJ 身份組。",
-			"no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
-			"cooldown": "請等待 {time} 秒後再使用 `{command}` 指令。",
-			"error": "發生錯誤: `{error}`",
-			"vote_button": "為我投票！",
-			"vote_message": "等等！您需要在 top.gg 上為機器人投票才能使用此指令。謝謝。",
-			"slash_deprecated": "斜線指令已棄用！請改用 `{prefix}{command}`。🎵",
-			"periodic_message_vote_only": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票吧！您的支持讓我們更強大！❤️\n音訊不穩定？使用 `bregion` 切換到離你更近的地區",
-			"periodic_message_with_bots": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票！想在多個房間播放音樂？添加更多機器人吧！🎶\n音訊不穩定？使用 `bregion` 切換到離你更近的地區"
-
-		},
-		"message": {
-			"prefix_mention": "嘿，我這個伺服器的前綴是 `{prefix}`。想要了解更多資訊？請執行 `{prefix}help`\n注意安全，保持出色！",
-			"no_send_message": "我在 `{guild}`\n頻道: {channel} 中沒有 **`發送訊息`** 權限。",
-			"no_embed_links": "我沒有 **`嵌入連結`** 權限。",
-			"no_permission": "我沒有足夠的權限來執行此指令。",
-			"no_user_permission": "您沒有足夠的權限來使用此指令。",
-			"no_voice_channel": "您必須連接到語音頻道才能使用此 `{command}` 指令。",
-			"no_connect_permission": "我沒有 `連接` 權限來執行此 `{command}` 指令。",
-			"no_speak_permission": "我沒有 `說話` 權限來執行此 `{command}` 指令。",
-			"no_request_to_speak": "我沒有 `請求發言` 權限來執行此 `{command}` 指令。",
-			"different_voice_channel": "您未連接到 {channel} 以使用此 `{command}` 指令。",
-			"no_music_playing": "現在沒有播放任何內容。",
-			"no_dj_role": "未設定 DJ 身份組。",
-			"no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
-			"missing_arguments": "缺少參數",
-			"missing_arguments_description": "請為 `{command}` 指令提供所需的 參數。\n\n示例:\n{examples}",
-			"syntax_footer": "語法: [] = 可選，<> = 必需 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"cooldown": "請等待 {time} 秒後再使用 `{command}` 指令。",
-			"no_mention_everyone": "您不能對所有人或此處使用此指令。",
-			"error": "發生錯誤: `{error}`",
-			"no_voice_channel_queue": "您未連接到語音頻道以將歌曲排入佇列。",
-			"no_permission_connect_speak": "我在 <#{channel}> 中沒有足夠的權限連接/說話。",
-			"different_voice_channel_queue": "您未連接到 <#{channel}> 以將歌曲排入佇列。",
-			"maintenance": "機器人正在維護中。請稍後再試。",
-			"no_free_bots": "目前沒有可用的機器人。您可能需要向此伺服器新增更多機器人。",
-			"no_bots_configured": "此伺服器尚未新增任何音樂機器人。請先邀請機器人！",
-			"voice_channel_full": "語音頻道 <#{channel}> 已滿。請切換到其他頻道或增加成員限制。",
-			"vote_button": "為我投票！",
-			"vote_message": "等等！您需要在 top.gg 上為機器人投票才能使用此指令。謝謝。"
-		},
-		"setupButton": {
-			"no_voice_channel_button": "您未連接到語音頻道以使用此按鈕。",
-			"different_voice_channel_button": "您未連接到 {channel} 以使用這些按鈕。",
-			"now_playing": "正在播放",
-			"live": "直播",
-			"requested_by": "由 <@{requester}> 請求",
-			"no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
-			"volume_set": "音量已設定為 {vol}%",
-			"volume_footer": "音量: {vol}% • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"paused": "已暫停",
-			"resumed": "已恢復",
-			"pause_resume": "{name} 音樂。",
-			"pause_resume_footer": "由 {displayName} {name} • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"no_music_to_skip": "沒有可跳過的音樂。",
-			"skipped": "已跳過音樂。",
-			"skipped_footer": "由 {displayName} 跳過 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"stopped": "已停止音樂。",
-			"stopped_footer": "由 {displayName} 停止 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"nothing_playing": "現在沒有播放任何內容",
-			"loop_set": "循環已設定為 {loop}。",
-			"loop_footer": "由 {displayName} 將循環設定為 {loop} • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"shuffled": "已隨機播放佇列。",
-			"no_previous_track": "沒有上一首曲目。",
-			"playing_previous": "正在播放上一首曲目。",
-			"previous_footer": "由 {displayName} 播放上一首曲目 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"rewinded": "已倒帶音樂。",
-			"rewind_footer": "由 {displayName} 資訊 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"forward_limit": "您不能將音樂快轉到超過歌曲長度的位置。",
-			"forwarded": "已快轉音樂。",
-			"forward_footer": "由 {displayName} 快轉 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-			"button_not_available": "此按鈕不可用。",
-			"no_music_playing": "此伺服器中沒有正在播放的音樂。"
-		},
-		"voice_state_update": {
-			"kicked": "機器人已從語音頻道 <#{channelId}> 中被踢出。",
-			"moved": "機器人已移至 <#{channelId}>。",
-			"left_due_to_timeout_no_listeners": "機器人已因不活動（無聽眾）而離開語音頻道 <#{channelId}>。",
-			"left_due_to_timeout_no_songs": "機器人已因不活動（無歌曲）而離開語音頻道 <#{channelId}>。"
-		}
-	},
-	"will_leave": {
-		"no_listeners": "由於沒有聽眾，機器人將在 {time} 分鐘後離開。",
-		"no_songs": "由於沒有歌曲，機器人將在 {time} 分鐘後離開。"
-	},
-	"LIVE_LYRICS": {
-		"NO_PLAYER": "目前沒有播放音樂。",
-		"NO_LYRICS": "這首歌沒有找到同步歌詞。",
-		"TITLE": "即時歌詞 - {track}",
-		"CURRENT": "🎵 正在播放",
-		"STOPPED": "即時歌詞已停止。",
-		"REFRESHED": "歌詞已刷新！",
-		"ERROR": "取得歌詞時發生錯誤。",
-		"ENDED": "歌曲已結束。即時歌詞已停止。",
-		"PAUSED": "播放已暫停。歌詞將在繼續播放時恢復。",
-		"SEARCHING": "正在搜尋同步歌詞...",
-		"NO_SYNCED_TITLE": "⚠️ 同步歌詞不可用",
-		"NO_SYNCED_DESCRIPTION": "找不到 **{trackTitle}** 的同步歌詞。\n\n**替代方案：**\n• 使用 `/lyrics` 查看靜態歌詞\n• 嘗試其他歌曲\n\n同步歌詞最適用於 Spotify、Deezer 或 YouTube Music 上的熱門歌曲。",
-		"ALREADY_RUNNING": "即時歌詞已在執行！請先使用停止按鈕結束它。",
-		"STARTED": "🎤 即時歌詞已開始！請查看下方的訊息。",
-		"PROGRESS": "進度",
-		"UPDATE_INTERVAL": "每 {seconds} 秒更新",
-		"CLICK_REFRESH": "點擊刷新立即更新",
-		"NO_LYRICS_AVAILABLE": "暫無歌詞",
-		"REFRESH_BUTTON": "刷新",
-		"STOP_BUTTON": "停止"
-	},
-	"will_restart_after": "機器人將在 {time} 後重啟",
-	"maintenance": {
-		"title": "維護模式",
-		"enabled_title": "🛠️ 已啟用維護模式",
-		"enabled_desc": "機器人當前處於**維護模式**。音樂指令已停用。",
-		"disabled_title": "✅ 已停用維護模式",
-		"disabled_desc": "機器人已**恢復正常運行**。",
-		"field_title": "🔧 維護",
-		"status_title": "🛠️ 維護狀態",
-		"status_value": "正在維護中",
-		"affected_title": "🕒 受影響的功能",
-		"affected_value": "音樂和佇列指令暫時停用。",
-		"requested_by": "由 {author} 請求",
-		"global_field_value_enabled": "```diff\n+ {count}/{total} 正在維護中\n```",
-		"global_field_value_disabled": "```diff\n- 全部正常運行\n```",
-		"global_field_fetch_failed": "⚠️ 無法取得資料。",
-		"local_field_enabled": "```diff\n+ 正在維護中\n```",
-		"local_field_disabled": "```diff\n- 正常運行\n```"
-	},
-	"Evaluate code": "評估代碼",
-	"Leave a guild": "離開伺服器",
-	"List all guilds the bot is in": "列出機器人所在的所有伺服器",
-	"Restart the bot": "重啟機器人",
-	"The loop mode you want to set": "您想設置的循環模式",
-	"Show current maintenance status": "顯示當前維護狀態",
-	"Show current maintenance status.": "Show current maintenance status.",
-	"Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
-	"Update Spotify configuration": "Update Spotify configuration",
-	"Update Apple Music configuration": "Update Apple Music configuration",
-	"Update Deezer configuration": "Update Deezer configuration",
-	"Update Yandex Music configuration": "Update Yandex Music configuration",
-	"Update VK Music configuration": "Update VK Music configuration",
-	"Update Qobuz configuration": "Update Qobuz configuration",
-	"Update yt-dlp configuration": "Update yt-dlp configuration",
-	"View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
-	"List all available Lavalink nodes": "List all available Lavalink nodes",
-	"The Lavalink node ID": "The Lavalink node ID",
-	"Spotify client ID": "Spotify client ID",
-	"Spotify client secret": "Spotify client secret",
-	"Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
-	"Prefer anonymous token": "Prefer anonymous token",
-	"Custom token endpoint URL": "Custom token endpoint URL",
-	"Apple Music media API token": "Apple Music media API token",
-	"Deezer ARL cookie value": "Deezer ARL cookie value",
-	"Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
-	"Yandex Music access token": "Yandex Music access token",
-	"VK Music user token": "VK Music user token",
-	"Qobuz user OAuth token": "Qobuz user OAuth token",
-	"Qobuz application ID": "Qobuz application ID",
-	"Qobuz application secret": "Qobuz application secret",
-	"Path to yt-dlp executable": "Path to yt-dlp executable",
-	"Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
-	"Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
-	"Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
-	"Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
-	"Update YouTube poToken configuration": "Update YouTube poToken configuration",
-	"View current YouTube source configuration": "View current YouTube source configuration",
-	"Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
-	"YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
-	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
-	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
-	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
-	"The refresh token to use": "The refresh token to use"
+  "cmd": {
+    "247": {
+      "description": "設定機器人停留在語音頻道",
+      "errors": {
+        "not_in_voice": "您需要在語音頻道中才能使用此指令。",
+        "generic": "執行此指令時出錯。"
+      },
+      "messages": {
+        "disabled": "`✅` | 24/7 模式已`停用`",
+        "enabled": "`✅` | 24/7 模式已`啟用`。\n**即使語音頻道中沒有人，機器人也不會離開語音頻道。**"
+      }
+    },
+    "ping": {
+      "description": "顯示機器人的延遲。",
+      "content": "正在測試延遲...",
+      "bot_latency": "機器人延遲",
+      "api_latency": "API 延遲",
+      "vc_latency": "語音頻道延遲",
+      "vc_region": "語音頻道區域",
+      "requested_by": "由 {author} 請求"
+    },
+    "lavalink": {
+      "description": "顯示當前 Lavalink 狀態。",
+      "title": "Lavalink 狀態",
+      "content": "播放器: {players}\n正在播放的播放器: {playingPlayers}\n正常運行時間: {uptime}\n核心: {cores} 個核心\n記憶體使用量: {used} / {reservable}\n系統負載: {systemLoad}%\nLavalink 負載: {lavalinkLoad}%\n插件: {plugins}",
+      "page_info": "第 {index} 頁，共 {total} 頁"
+    },
+    "invite": {
+      "description": "取得機器人邀請連結。",
+      "content": "您可以通過點擊下面的按鈕邀請我。有任何錯誤或故障？加入支援伺服器！"
+    },
+    "help": {
+      "description": "顯示幫助選單。",
+      "options": {
+        "command": "您想取得資訊的指令"
+      },
+      "content": "大家好！我是 {bot}，一個使用 [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) 和 Discord 製作的音樂機器人。您可以使用 `{prefix}help <command>` 取得有關指令的更多資訊。",
+      "title": "幫助選單",
+      "not_found": "此 `{cmdName}` 指令不存在。",
+      "help_cmd": "**描述:** {description}\n**用法:** {usage}\n**示例:** {examples}\n**別名:** {aliases}\n**類別:** {category}\n**冷卻時間:** {cooldown} 秒\n**權限:** {premUser}\n**機器人權限:** {premBot}\n**僅限開發者:** {dev}\n**斜線指令:** {slash}\n**參數:** {args}\n**播放器:** {player}\n**DJ:** {dj}\n**DJ 權限:** {djPerm}\n**語音:** {voice}",
+      "footer": "使用 {prefix}help <command> 取得有關指令的更多資訊 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️"
+    },
+    "botinfo": {
+      "description": "關於機器人的資訊",
+      "content": "機器人資訊：\n- **操作系統**: {osInfo}\n- **正常運行時間**: {osUptime}\n- **主機名**: {osHostname}\n- **CPU 架構**: {cpuInfo}\n- **CPU 使用率**: {cpuUsed}%\n- **記憶體使用量**: {memUsed} / {memTotal}\n- **節點版本**: {nodeVersion}\n- **Discord 版本**: {discordJsVersion}\n- **已連接到** {guilds} 個伺服器，{channels} 個頻道和 {users} 個使用者\n- **指令總數**: {commands}"
+    },
+    "about": {
+      "description": "顯示關於機器人的資訊",
+      "fields": {
+        "creator": "創建者",
+        "repository": "倉庫",
+        "support": "支援",
+        "description": "他真的很想為了獲得更多程式經驗而製作他的第一個開源項目。在這個項目中，他面臨著製作一個錯誤更少的項目的挑戰。希望您喜歡使用 MultiBungoBot！"
+      }
+    },
+    "dj": {
+      "description": "管理 DJ 模式和相關身份組",
+      "errors": {
+        "provide_role": "請提供一個身份組。",
+        "no_roles": "DJ 身份組為空。",
+        "invalid_subcommand": "請提供有效的副指令。"
+      },
+      "messages": {
+        "role_exists": "DJ 身份組 <@&{roleId}> 已新增。",
+        "role_added": "DJ 身份組 <@&{roleId}> 已新增。",
+        "role_not_found": "未新增 DJ 身份組 <@&{roleId}>。",
+        "role_removed": "DJ 身份組 <@&{roleId}> 已刪除。",
+        "all_roles_cleared": "所有 DJ 身份組都已刪除。",
+        "toggle": "DJ 模式已切換為 {status}。"
+      },
+      "options": {
+        "add": "您要新增的 DJ 身份組",
+        "remove": "您要刪除的 DJ 身份組",
+        "clear": "清除所有 DJ 身份組",
+        "toggle": "切換 DJ 身份組",
+        "role": "DJ 身份組"
+      },
+      "subcommands": "副指令"
+    },
+    "language": {
+      "description": "設定機器人的語言",
+      "invalid_language": "請提供有效的語言。例如: `EnglishUS` 代表英語（美國）\n\n您可以在[此處](https://discord.com/developers/docs/reference#locales)找到支援的語言清單\n\n**可用語言:**\n{languages}",
+      "already_set": "語言已設定為 `{language}`",
+      "not_set": "未設定語言。",
+      "set": "`✅` | 語言已設定為 `{language}`",
+      "reset": "`✅` | 語言已重置為預設語言。",
+      "options": {
+        "set": "設定機器人的語言",
+        "language": "您要設定的語言",
+        "reset": "將語言更改回預設語言"
+      }
+    },
+    "prefix": {
+      "description": "顯示或設定機器人的前綴",
+      "errors": {
+        "prefix_too_long": "前綴不能超過 3 個字元。"
+      },
+      "messages": {
+        "current_prefix": "此伺服器的前綴是 `{prefix}`",
+        "prefix_set": "此伺服器的前綴現在是 `{prefix}`",
+        "prefix_reset": "此伺服器的前綴現在是 `{prefix}`"
+      },
+      "options": {
+        "set": "設定前綴",
+        "prefix": "您要設定的前綴",
+        "reset": "將前綴重置為預設前綴"
+      }
+    },
+    "setup": {
+      "description": "設定機器人",
+      "errors": {
+        "channel_exists": "點歌頻道已存在。",
+        "channel_not_exists": "點歌頻道不存在。",
+        "channel_delete_fail": "點歌頻道已刪除。如果頻道未正常刪除，請自行刪除。"
+      },
+      "messages": {
+        "channel_created": "點歌頻道已在 <#{channelId}> 中創建。",
+        "channel_deleted": "點歌頻道已刪除。",
+        "channel_info": "點歌頻道是 <#{channelId}>。"
+      },
+      "options": {
+        "create": "創建點歌頻道",
+        "delete": "刪除點歌頻道",
+        "info": "顯示點歌頻道"
+      }
+    },
+    "8d": {
+      "description": "啟用/關閉 8D 等化器",
+      "messages": {
+        "filter_enabled": "`✅` | 8D 等化器已`啟用`。",
+        "filter_disabled": "`✅` | 8D 等化器已`停用`。"
+      }
+    },
+    "bassboost": {
+      "description": "啟用/關閉低音增強等化器",
+      "messages": {
+        "filter_enabled": "`✅` | 低音增強等化器已`啟用`。\n**請注意，音量過大會損害您的聽力！**",
+        "filter_disabled": "`✅` | 低音增強等化器已`停用`。",
+        "high": "`✅` | 高低音增強等化器已`啟用`。",
+        "low": "`✅` | 低低音增強等化器已`啟用`。",
+        "medium": "`✅` | 中低音增強等化器已`啟用`。",
+        "off": "`✅` | 低音增強等化器已`停用`。"
+      },
+      "options": {
+        "level": "您要設定的低音增強級別"
+      }
+    },
+    "distortion": {
+      "description": "啟用/關閉失真等化器",
+      "messages": {
+        "filter_enabled": "`✅` | 失真等化器已`啟用`。",
+        "filter_disabled": "`✅` | 失真等化器已`停用`。"
+      }
+    },
+    "karaoke": {
+      "description": "啟用/關閉卡拉 OK 等化器",
+      "messages": {
+        "filter_enabled": "`✅` | 卡拉 OK 等化器已`啟用`。",
+        "filter_disabled": "`✅` | 卡拉 OK 等化器已`停用`。"
+      }
+    },
+    "lowpass": {
+      "description": "啟用/關閉低通等化器",
+      "messages": {
+        "filter_enabled": "`✅` | 低通等化器已`啟用`。",
+        "filter_disabled": "`✅` | 低通等化器已`停用`。"
+      }
+    },
+    "nightcore": {
+      "description": "啟用/關閉 Nightcore 等化器",
+      "messages": {
+        "filter_enabled": "`✅` | Nightcore 等化器已`啟用`。",
+        "filter_disabled": "`✅` | Nightcore 等化器已`停用`。"
+      }
+    },
+    "pitch": {
+      "description": "啟用/關閉音調等化器",
+      "options": {
+        "pitch": "您要將音調設定為的數字（介於 0.5 和 5 之間）"
+      },
+      "errors": {
+        "invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。"
+      },
+      "messages": {
+        "pitch_set": "`✅` | 音調已設定為 **{pitch}**。"
+      }
+    },
+    "rate": {
+      "description": "更改歌曲的速度",
+      "options": {
+        "rate": "您要將速度設定到的數字（介於 0.5 和 5 之間）"
+      },
+      "errors": {
+        "invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。"
+      },
+      "messages": {
+        "rate_set": "`✅` | 速度已設定為 **{rate}**。"
+      }
+    },
+    "reset": {
+      "description": "重置使用中的等化器",
+      "messages": {
+        "filters_reset": "`✅` | 等化器已重置。"
+      }
+    },
+    "rotation": {
+      "description": "啟用/關閉旋轉等化器",
+      "messages": {
+        "enabled": "`✅` | 旋轉等化器已`啟用`。",
+        "disabled": "`✅` | 旋轉等化器已`停用`。"
+      }
+    },
+    "speed": {
+      "description": "更改歌曲的速度",
+      "options": {
+        "speed": "您要設定的速度"
+      },
+      "messages": {
+        "invalid_number": "請提供一個介於 0.5 和 5 之間的有效數字。",
+        "set_speed": "`✅` | 速度已設定為 **{speed}**。"
+      }
+    },
+    "tremolo": {
+      "description": "啟用/關閉顫音等化器",
+      "messages": {
+        "enabled": "`✅` | 顫音等化器已`啟用`。",
+        "disabled": "`✅` | 顫音等化器已`停用`。"
+      }
+    },
+    "vibrato": {
+      "description": "啟用/關閉震音等化器",
+      "messages": {
+        "enabled": "`✅` | 震音等化器已`啟用`。",
+        "disabled": "`✅` | 震音等化器已`停用`。"
+      }
+    },
+    "announce": {
+      "messages": {
+        "default_content": "機器人正在維護中，我們可能會重啟機器人。因此，請在維護完成後使用 bresumesesssion 指令繼續收聽。"
+      }
+    },
+    "autoplay": {
+      "description": "切換自動播放",
+      "messages": {
+        "enabled": "`✅` | 自動播放已`啟用`。",
+        "disabled": "`✅` | 自動播放已`停用`。"
+      }
+    },
+    "clearqueue": {
+      "description": "清除佇列",
+      "messages": {
+        "cleared": "佇列已清除。"
+      }
+    },
+    "grab": {
+      "description": "取得您 DM 上當前播放的歌曲",
+      "loading": "正在載入...",
+      "content": "**時長:** {length}\n**請求者:** <@{requester}>\n**連結:** [點擊此處]({uri})",
+      "check_dm": "請查看您的私訊。",
+      "dm_failed": "我無法向您發送私訊。請確保已開啟允許接收直接訊息。"
+    },
+    "join": {
+      "description": "加入語音頻道",
+      "already_connected": "我已經連接到 <#{channelId}>。",
+      "no_voice_channel": "您需要在語音頻道中才能使用此指令。",
+      "joined": "已成功加入 <#{channelId}>。"
+    },
+    "leave": {
+      "description": "離開語音頻道",
+      "left": "已成功離開 <#{channelId}>。",
+      "not_in_channel": "我不在語音頻道中。"
+    },
+    "loop": {
+      "description": "循環當前歌曲或佇列",
+      "looping_song": "**正在循環播放歌曲。**",
+      "looping_queue": "**正在循環播放佇列。**",
+      "looping_off": "**循環播放已關閉。**"
+    },
+    "nowplaying": {
+      "description": "顯示當前播放的歌曲",
+      "now_playing": "正在播放",
+      "track_info": "[{title}]({uri}) - 請求者: <@{requester}>\n\n`{bar}`"
+    },
+    "pause": {
+      "description": "暫停當前歌曲",
+      "successfully_paused": "已成功暫停歌曲。",
+      "messages": {
+        "vote_embed": "投票暫停: **{votes}/{needed}**\n✅ 暫停，❌ 繼續播放。",
+        "button_yes": "✅ 暫停",
+        "button_no": "❌ 繼續",
+        "already_voted": "您已經投過票了。"
+      }
+    },
+    "play": {
+      "description": "播放來自 YouTube、Spotify 或 http 的歌曲",
+      "options": {
+        "song": "您要播放的歌曲"
+      },
+      "loading": "正在載入...",
+      "warnings": {
+        "longtrack_warning": "⚠️ **警告:** 搜尋結果中的一首或多首曲目時長超過 30 分鐘。請確保您想要播放這些長曲目，因為它們可能會影響您的聆聽體驗。"
+      },
+      "errors": {
+        "search_error": "搜尋時出錯。",
+        "no_results": "未找到結果。",
+        "queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
+        "playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。"
+      },
+      "added_to_queue": "已將 [{title}]({uri}) 新增到佇列。",
+      "added_playlist_to_queue": "已將 {length} 首歌曲新增到佇列。"
+    },
+    "playnext": {
+      "description": "新增歌曲以在佇列中接下來播放",
+      "options": {
+        "song": "您要播放的歌曲"
+      },
+      "loading": "正在載入...",
+      "errors": {
+        "search_error": "搜尋時出錯。",
+        "no_results": "未找到結果。",
+        "queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
+        "playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。"
+      },
+      "added_to_play_next": "已將 [{title}]({uri}) 新增到佇列中接下來播放。",
+      "added_playlist_to_play_next": "已將 {length} 首歌曲新增到佇列中接下來播放。"
+    },
+    "queue": {
+      "description": "顯示當前佇列",
+      "now_playing": "正在播放: [{title}]({uri}) - 請求者: <@{requester}> - 時長: `{duration}`",
+      "live": "直播",
+      "track_info": "{index}. [{title}]({uri}) - 請求者: <@{requester}> - 時長: `{duration}`",
+      "title": "佇列",
+      "page_info": "第 {index} 頁，共 {total} 頁",
+      "duration": "佇列時長: `{totalDuration}`"
+    },
+    "remove": {
+      "description": "從佇列中刪除歌曲",
+      "options": {
+        "song": "您要刪除的歌曲編號"
+      },
+      "errors": {
+        "no_songs": "佇列中沒有歌曲。",
+        "invalid_number": "請提供有效的歌曲編號。"
+      },
+      "messages": {
+        "removed": "已從佇列中刪除歌曲編號 {songNumber}。"
+      }
+    },
+    "region": {
+      "description": "查看或切換音訊伺服器區域，選擇最近的節點獲得最佳音質 🌐",
+      "options": {
+        "region": "要切換的區域（例如：EU、VN）"
+      },
+      "info_title": "🌐 音訊伺服器區域",
+      "current_region": "**目前節點：** `{nodeId}`\n**區域：** {region}\n**延遲：** `{ping}ms`",
+      "available_regions": "可用區域",
+      "region_field": "{nodeCount} 個節點，{playerCount} 個播放器\n{nodes}",
+      "current_indicator": "（目前）",
+      "switched": "已切換到 {region} 區域！\n**節點：** `{oldNode}` → `{newNode}`\n**延遲：** `{oldPing}ms` → `{newPing}ms`",
+      "already_on_region": "你已經在 {region} 區域了（`{nodeId}`）！",
+      "no_nodes_in_region": "{region} 區域目前沒有可用節點！",
+      "invalid_region": "未知區域 `{region}`。可用區域：{available}",
+      "switch_failed": "切換區域失敗，請重試！"
+    },
+    "replay": {
+      "description": "重播當前曲目",
+      "errors": {
+        "not_seekable": "無法重播此曲目，因為它不可搜尋。"
+      },
+      "messages": {
+        "replaying": "正在重播當前曲目。"
+      }
+    },
+    "resume": {
+      "description": "恢復當前歌曲",
+      "errors": {
+        "not_paused": "播放器未暫停。"
+      },
+      "messages": {
+        "resumed": "已恢復播放器。",
+        "vote_embed": "投票恢復: **{votes}/{needed}**\n✅ 恢復，❌ 保持暫停。",
+        "button_yes": "✅ 恢復",
+        "button_no": "❌ 保持暫停",
+        "already_voted": "您已經投過票了。"
+      }
+    },
+    "search": {
+      "description": "搜尋歌曲",
+      "options": {
+        "song": "您要搜尋的歌曲"
+      },
+      "select": "請選擇您要播放的歌曲",
+      "errors": {
+        "no_results": "未找到結果。",
+        "search_error": "搜尋時出錯。"
+      },
+      "messages": {
+        "added_to_queue": "已將 [{title}]({uri}) 新增到佇列。"
+      }
+    },
+    "seek": {
+      "description": "跳轉到歌曲中的某個時間點",
+      "options": {
+        "duration": "要跳轉到的時長"
+      },
+      "errors": {
+        "invalid_format": "無效的時間格式。示例: seek 1m, seek 1h 30m",
+        "not_seekable": "此曲目不可搜尋。",
+        "beyond_duration": "無法跳轉到歌曲時長 {length} 之後。"
+      },
+      "messages": {
+        "seeked_to": "已跳轉到 {duration}"
+      }
+    },
+    "shuffle": {
+      "description": "隨機播放佇列",
+      "errors": {
+        "fairplay": "公平播放模式已啟用。您不能隨機播放佇列。"
+      },
+      "messages": {
+        "shuffled": "已隨機播放佇列。"
+      }
+    },
+    "skip": {
+      "description": "跳過當前歌曲",
+      "messages": {
+        "skipped": "已跳過 [{title}]({uri})。",
+        "vote_embed": "投票跳過: **{votes}/{needed}**\n✅ 跳過，❌ 繼續播放。",
+        "button_skip": "👍 跳過",
+        "button_keep": "👎 保留",
+        "button_yes": "✅ 跳過",
+        "button_no": "❌ 保留",
+        "already_voted": "您已經投過票了。"
+      }
+    },
+    "skipto": {
+      "description": "跳至佇列中的特定歌曲",
+      "options": {
+        "number": "您要跳至的歌曲編號"
+      },
+      "errors": {
+        "invalid_number": "請提供有效的編號。"
+      },
+      "messages": {
+        "skipped_to": "已跳至歌曲編號 {number}。"
+      }
+    },
+    "stop": {
+      "description": "停止音樂並清除佇列",
+      "messages": {
+        "stopped": "已停止音樂並清除佇列。",
+        "vote_embed": "投票停止: **{votes}/{needed}**\n✅ 停止，❌ 繼續播放。",
+        "button_stop": "🛑 停止",
+        "button_keep": "👎 保留",
+        "button_yes": "✅ 停止",
+        "button_no": "❌ 繼續",
+        "already_voted": "您已經投過票了。"
+      }
+    },
+    "volume": {
+      "description": "設定播放器的音量",
+      "options": {
+        "number": "您要設定的音量"
+      },
+      "messages": {
+        "invalid_number": "請提供有效的數字。",
+        "too_low": "音量不能低於 0。",
+        "too_high": "音量不能高於 200。您想損害您的聽力或喇叭嗎？嗯，我認為這不是一個好主意。",
+        "set": "已將音量設定為 {volume}"
+      }
+    },
+    "addsong": {
+      "description": "將歌曲新增到播放清單",
+      "options": {
+        "playlist": "您要新增到的播放清單",
+        "song": "您要新增的歌曲"
+      },
+      "messages": {
+        "no_playlist": "請提供一個播放清單",
+        "no_song": "請提供一首歌曲",
+        "playlist_not_found": "該播放清單不存在",
+        "no_songs_found": "未找到歌曲",
+        "added": "已將 {count} 首歌曲新增到 {playlist}"
+      }
+    },
+    "create": {
+      "description": "創建播放清單",
+      "options": {
+        "name": "播放清單的名稱"
+      },
+      "messages": {
+        "name_too_long": "播放清單名稱只能包含 50 個字元。",
+        "playlist_exists": "具有該名稱的播放清單已存在。請使用其他名稱。",
+        "playlist_created": "播放清單 **{name}** 已創建。"
+      }
+    },
+    "delete": {
+      "description": "刪除播放清單",
+      "options": {
+        "playlist": "您要刪除的播放清單"
+      },
+      "messages": {
+        "playlist_not_found": "該播放清單不存在。",
+        "playlist_deleted": "已刪除播放清單 **{playlistName}**。"
+      }
+    },
+    "list": {
+      "description": "查詢使用者的所有播放清單",
+      "options": {
+        "user": "您要查詢其播放清單的使用者"
+      },
+      "messages": {
+        "no_playlists": "此使用者沒有播放清單。",
+        "your": "您的",
+        "playlists_title": "{username} 的播放清單",
+        "error": "查詢播放清單時出錯。"
+      }
+    },
+    "load": {
+      "description": "載入播放清單",
+      "options": {
+        "playlist": "您要載入的播放清單"
+      },
+      "messages": {
+        "playlist_not_exist": "該播放清單不存在。",
+        "playlist_empty": "該播放清單為空。",
+        "playlist_loaded": "已載入包含 {count} 首歌曲的 `{name}`。"
+      }
+    },
+    "removesong": {
+      "description": "從播放清單中刪除歌曲",
+      "options": {
+        "playlist": "您要從中刪除的播放清單",
+        "song": "您要刪除的歌曲"
+      },
+      "messages": {
+        "provide_playlist": "請提供一個播放清單。",
+        "provide_song": "請提供一首歌曲。",
+        "playlist_not_exist": "該播放清單不存在。",
+        "song_not_found": "未找到匹配的歌曲。",
+        "song_removed": "已從 {playlist} 中刪除 {song}。",
+        "error_occurred": "刪除歌曲時出錯。"
+      }
+    },
+    "steal": {
+      "description": "從另一個使用者那里竊取播放清單並將其新增到您的播放清單中",
+      "options": {
+        "playlist": "您要竊取的播放清單",
+        "user": "您要從其竊取播放清單的使用者"
+      },
+      "messages": {
+        "provide_playlist": "請提供播放清單名稱。",
+        "provide_user": "請@一個使用者。",
+        "playlist_not_exist": "所提及的使用者沒有該播放清單。",
+        "playlist_stolen": "已成功從 {user} 竊取播放清單 `{playlist}`。",
+        "error_occurred": "竊取播放清單時出錯。"
+      }
+    },
+    "lyrics": {
+      "description": "取得當前播放曲目的歌詞",
+      "lyrics_track": "### 歌詞: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
+      "searching": "`🔍` 正在搜尋 **{trackTitle}** 的歌詞...",
+      "errors": {
+        "no_results": "未找到當前曲目的歌詞。",
+        "lyrics_error": "取得歌詞時出錯。"
+      }
+    },
+    "livelyrics": {
+      "description": "啟用或停用即時歌詞同步"
+    },
+    "fairplay": {
+      "description": "設定機器人公平播放音樂",
+      "errors": {
+        "not_in_voice": "您需要在語音頻道中才能使用此指令。",
+        "generic": "執行此指令時出錯。"
+      },
+      "messages": {
+        "disabled": "`✅` | 公平播放模式已`停用`。",
+        "enabled": "`✅` | 公平播放模式已`啟用`。",
+        "added_to_queue": "已將 [{title}]({url}) 新增到佇列。",
+        "errors": {
+          "empty_query": "請附加音訊檔案以播放。",
+          "invalid_format": "您只能播放 MP3、WAV、OGG、FLAC、AAC 或 M4A 檔案。",
+          "no_results": "播放音訊檔案失敗。它可能已損壞。"
+        }
+      }
+    },
+    "playlocal": {
+      "description": "播放您的本機音訊檔案",
+      "options": {
+        "file": "您要播放的音訊檔案"
+      },
+      "loading": "正在載入...",
+      "errors": {
+        "empty_query": "請附加音訊檔案以播放。",
+        "invalid_format": "您只能播放 MP3、WAV、OGG、FLAC、AAC 或 M4A 檔案。",
+        "no_results": "播放音訊檔案失敗。它可能已損壞。"
+      },
+      "added_to_queue": "已將 [{title}]({url}) 新增到佇列"
+    },
+    "loop_current": {
+      "description": "切換循環播放當前歌曲。"
+    },
+    "loop_queue": {
+      "description": "切換循環播放佇列。"
+    },
+    "resume_session": {
+      "no_session_found": "未找到上一個會話。",
+      "resume_failed": "出現錯誤。無法恢復會話。",
+      "resumed": "已成功恢復會話。"
+    },
+    "save_session": {
+      "saved": "成功儲存 {saved} 個會話。無法儲存 {failed} 個會話。"
+    },
+    "vote": {
+      "description": "管理音樂指令的投票系統",
+      "options": {
+        "toggle": "開啟或關閉投票系統",
+        "status": "檢查投票系統的目前狀態"
+      }
+    },
+    "lavaconfig": {
+      "description": "執行時管理 LavaSrc 配置 🎵",
+      "errors": {
+        "service_unavailable": "LavaSrc 配置服務不可用。",
+        "missing_subcommand": "請提供子命令。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`",
+        "missing_node": "缺少必要參數: `node`。示例: `!lavaconfig {subcommand} node:main`",
+        "unknown_subcommand": "未知子命令: `{subcommand}`。可用: `spotify`, `applemusic`, `deezer`, `yandexmusic`, `vkmusic`, `qobuz`, `ytdlp`, `view`, `list-nodes`"
+      },
+      "messages": {
+        "processing": "處理中...",
+        "config_updated_title": "✅ {source} 配置已更新",
+        "config_updated_desc": "已成功更新節點 **{nodeId}** 的 {source} 配置",
+        "updated_config": "已更新配置",
+        "view_title": "📋 LavaSrc 配置 - {nodeId}",
+        "nodes_title": "📡 Lavalink 節點",
+        "no_nodes": "沒有可用節點。",
+        "total_nodes": "共 {count} 個節點"
+      },
+      "usage": {
+        "title": "用法",
+        "value": "`!lavaconfig <子命令> [選項]`\n示例: `!lavaconfig spotify node:main clientId:xxx`"
+      }
+    },
+    "youtubeconfig": {
+      "description": "執行時管理 YouTube 來源配置 🎵",
+      "errors": {
+        "service_unavailable": "YouTube 配置服務不可用。",
+        "missing_subcommand": "請提供子命令。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_node": "缺少必要參數: `node`。示例: `!youtubeconfig {subcommand} node:main`",
+        "unknown_subcommand": "未知子命令: `{subcommand}`。可用: `oauth`, `potoken`, `view`, `refresh-token`, `list-nodes`",
+        "missing_oauth_option": "請提供至少一個選項: `refreshToken` 或 `skipInitialization`",
+        "missing_potoken_pair": "為了獲得最佳效果，`poToken` 和 `visitorData` 應該一起提供",
+        "missing_refresh_token": "缺少必要參數: `refreshToken`。示例: `!youtubeconfig refresh-token node:main refreshToken:xxx`"
+      },
+      "messages": {
+        "processing": "處理中...",
+        "oauth_updated_title": "✅ YouTube OAuth 配置已更新",
+        "oauth_updated_desc": "已成功更新節點 **{nodeId}** 的 YouTube OAuth 配置",
+        "potoken_updated_title": "✅ YouTube poToken 配置已更新",
+        "potoken_updated_desc": "已成功更新節點 **{nodeId}** 的 YouTube poToken 配置",
+        "token_refreshed_title": "✅ OAuth 權杖已刷新",
+        "token_refreshed_desc": "已成功刷新節點 **{nodeId}** 的 OAuth 權杖",
+        "view_title": "📋 YouTube 來源配置 - {nodeId}",
+        "nodes_title": "📡 Lavalink 節點",
+        "no_nodes": "沒有可用節點。",
+        "total_nodes": "共 {count} 個節點",
+        "not_set": "未設定",
+        "na": "不適用"
+      },
+      "fields": {
+        "refresh_token": "刷新權杖",
+        "skip_initialization": "跳過初始化",
+        "potoken": "poToken",
+        "visitor_data": "訪客資料",
+        "token_type": "權杖類型",
+        "expires_in": "過期時間",
+        "scope": "範圍",
+        "access_token_truncated": "存取權杖（已截斷）",
+        "updated": "✅ 已更新",
+        "not_changed": "⚪ 未變更",
+        "yes": "✅ 是",
+        "no": "❌ 否",
+        "important": "⚠️ 重要",
+        "oauth_warning": "OAuth 權杖應該保密。建議使用臨時 YouTube 帳號。",
+        "how_to_generate": "💡 如何產生",
+        "generator_link": "使用 [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) 取得這些值。",
+        "note": "ℹ️ 注意",
+        "api_note": "API 只返回刷新權杖。poToken 和 visitorData 不會暴露。"
+      },
+      "usage": {
+        "title": "用法",
+        "value": "`!youtubeconfig <子命令> [選項]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
+      }
+    }
+  },
+  "buttons": {
+    "invite": "邀請",
+    "support": "支援伺服器",
+    "previous": "上一首",
+    "resume": "恢復",
+    "stop": "停止",
+    "skip": "跳過",
+    "loop": "循環",
+    "errors": {
+      "not_author": "您不能使用此按鈕。"
+    }
+  },
+  "player": {
+    "errors": {
+      "no_player": "此伺服器中沒有活動的播放器。",
+      "no_channel": "您需要在語音頻道中才能使用此指令。",
+      "queue_empty": "佇列為空。",
+      "no_previous": "佇列中沒有上一首歌曲。",
+      "no_song": "佇列中沒有歌曲。",
+      "already_paused": "歌曲已暫停。"
+    },
+    "trackStart": {
+      "now_playing": "正在播放",
+      "requested_by": "由 {user} 請求",
+      "duration": "時長",
+      "author": "作者",
+      "not_connected_to_voice_channel": "您未連接到 <#{channel}> 以使用這些按鈕。",
+      "need_dj_role": "您需要擁有 DJ 身份組才能使用此指令。",
+      "previous_by": "由 {user} 上一首",
+      "no_previous_song": "沒有上一首歌曲。",
+      "paused_by": "由 {user} 暫停",
+      "resumed_by": "由 {user} 恢復",
+      "skipped_by": "由 {user} 跳過",
+      "no_more_songs_in_queue": "佇列中沒有更多歌曲。",
+      "looping_by": "由 {user} 循環播放",
+      "looping_queue_by": "由 {user} 循環播放佇列",
+      "looping_off_by": "由 {user} 關閉循環播放"
+    },
+    "setupStart": {
+      "now_playing": "正在播放",
+      "description": "[{title}]({uri}) 作者: {author} • `[{length}]` - 請求者: <@{requester}>",
+      "error_searching": "搜尋時出錯。",
+      "no_results": "未找到結果。",
+      "nothing_playing": "現在沒有播放任何內容。",
+      "queue_too_long": "佇列太長。最大長度為 {maxQueueSize} 首歌曲。",
+      "playlist_too_long": "播放清單太長。最大長度為 {maxPlaylistSize} 首歌曲。",
+      "added_to_queue": "已將 [{title}]({uri}) 新增到佇列。",
+      "added_playlist_to_queue": "已將播放清單中的 [{length}] 首歌曲新增到佇列。"
+    }
+  },
+  "event": {
+    "interaction": {
+      "setup_channel": "您不能在設定頻道中使用此指令。",
+      "no_send_message": "我在 `{guild}`\n頻道: {channel} 中沒有 **`發送訊息`** 權限。",
+      "no_embed_links": "我沒有 **`嵌入連結`** 權限。",
+      "no_permission": "我沒有足夠的權限來執行此指令。",
+      "no_user_permission": "您沒有足夠的權限來使用此指令。",
+      "no_voice_channel": "您必須連接到語音頻道才能使用此 `{command}` 指令。",
+      "no_connect_permission": "我沒有 `連接` 權限來執行此 `{command}` 指令。",
+      "no_speak_permission": "我沒有 `說話` 權限來執行此 `{command}` 指令。",
+      "no_request_to_speak": "我沒有 `請求發言` 權限來執行此 `{command}` 指令。",
+      "different_voice_channel": "您未連接到 {channel} 以使用此 `{command}` 指令。",
+      "no_music_playing": "現在沒有播放任何內容。",
+      "no_dj_role": "未設定 DJ 身份組。",
+      "no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
+      "cooldown": "請等待 {time} 秒後再使用 `{command}` 指令。",
+      "error": "發生錯誤: `{error}`",
+      "vote_button": "為我投票！",
+      "vote_message": "等等！您需要在 top.gg 上為機器人投票才能使用此指令。謝謝。",
+      "slash_deprecated": "斜線指令已棄用！請改用 `{prefix}{command}`。🎵",
+      "periodic_message_vote_only": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票吧！您的支持讓我們更強大！❤️\n音訊不穩定？使用 `bregion` 切換到離你更近的地區",
+      "periodic_message_with_bots": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票！想在多個房間播放音樂？添加更多機器人吧！🎶\n音訊不穩定？使用 `bregion` 切換到離你更近的地區",
+      "voice_channel_full": "語音頻道 <#{channel}> 已滿。請切換到其他頻道或增加成員限制。",
+      "no_bots_configured": "此伺服器尚未新增任何音樂機器人。請先邀請機器人！",
+      "no_free_bots": "目前沒有可用的機器人。您可能需要向此伺服器新增更多機器人。",
+      "maintenance": "機器人正在維護中。請稍後再試。",
+      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+    },
+    "message": {
+      "prefix_mention": "嘿，我這個伺服器的前綴是 `{prefix}`。想要了解更多資訊？請執行 `{prefix}help`\n注意安全，保持出色！",
+      "no_send_message": "我在 `{guild}`\n頻道: {channel} 中沒有 **`發送訊息`** 權限。",
+      "no_embed_links": "我沒有 **`嵌入連結`** 權限。",
+      "no_permission": "我沒有足夠的權限來執行此指令。",
+      "no_user_permission": "您沒有足夠的權限來使用此指令。",
+      "no_voice_channel": "您必須連接到語音頻道才能使用此 `{command}` 指令。",
+      "no_connect_permission": "我沒有 `連接` 權限來執行此 `{command}` 指令。",
+      "no_speak_permission": "我沒有 `說話` 權限來執行此 `{command}` 指令。",
+      "no_request_to_speak": "我沒有 `請求發言` 權限來執行此 `{command}` 指令。",
+      "different_voice_channel": "您未連接到 {channel} 以使用此 `{command}` 指令。",
+      "no_music_playing": "現在沒有播放任何內容。",
+      "no_dj_role": "未設定 DJ 身份組。",
+      "no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
+      "missing_arguments": "缺少參數",
+      "missing_arguments_description": "請為 `{command}` 指令提供所需的 參數。\n\n示例:\n{examples}",
+      "syntax_footer": "語法: [] = 可選，<> = 必需 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "cooldown": "請等待 {time} 秒後再使用 `{command}` 指令。",
+      "no_mention_everyone": "您不能對所有人或此處使用此指令。",
+      "error": "發生錯誤: `{error}`",
+      "no_voice_channel_queue": "您未連接到語音頻道以將歌曲排入佇列。",
+      "no_permission_connect_speak": "我在 <#{channel}> 中沒有足夠的權限連接/說話。",
+      "different_voice_channel_queue": "您未連接到 <#{channel}> 以將歌曲排入佇列。",
+      "maintenance": "機器人正在維護中。請稍後再試。",
+      "no_free_bots": "目前沒有可用的機器人。您可能需要向此伺服器新增更多機器人。",
+      "no_bots_configured": "此伺服器尚未新增任何音樂機器人。請先邀請機器人！",
+      "voice_channel_full": "語音頻道 <#{channel}> 已滿。請切換到其他頻道或增加成員限制。",
+      "vote_button": "為我投票！",
+      "vote_message": "等等！您需要在 top.gg 上為機器人投票才能使用此指令。謝謝。"
+    },
+    "setupButton": {
+      "no_voice_channel_button": "您未連接到語音頻道以使用此按鈕。",
+      "different_voice_channel_button": "您未連接到 {channel} 以使用這些按鈕。",
+      "now_playing": "正在播放",
+      "live": "直播",
+      "requested_by": "由 <@{requester}> 請求",
+      "no_dj_permission": "您需要擁有 DJ 身份組才能使用此指令。",
+      "volume_set": "音量已設定為 {vol}%",
+      "volume_footer": "音量: {vol}% • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "paused": "已暫停",
+      "resumed": "已恢復",
+      "pause_resume": "{name} 音樂。",
+      "pause_resume_footer": "由 {displayName} {name} • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "no_music_to_skip": "沒有可跳過的音樂。",
+      "skipped": "已跳過音樂。",
+      "skipped_footer": "由 {displayName} 跳過 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "stopped": "已停止音樂。",
+      "stopped_footer": "由 {displayName} 停止 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "nothing_playing": "現在沒有播放任何內容",
+      "loop_set": "循環已設定為 {loop}。",
+      "loop_footer": "由 {displayName} 將循環設定為 {loop} • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "shuffled": "已隨機播放佇列。",
+      "no_previous_track": "沒有上一首曲目。",
+      "playing_previous": "正在播放上一首曲目。",
+      "previous_footer": "由 {displayName} 播放上一首曲目 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "rewinded": "已倒帶音樂。",
+      "rewind_footer": "由 {displayName} 資訊 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "forward_limit": "您不能將音樂快轉到超過歌曲長度的位置。",
+      "forwarded": "已快轉音樂。",
+      "forward_footer": "由 {displayName} 快轉 • BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
+      "button_not_available": "此按鈕不可用。",
+      "no_music_playing": "此伺服器中沒有正在播放的音樂。"
+    },
+    "voice_state_update": {
+      "kicked": "機器人已從語音頻道 <#{channelId}> 中被踢出。",
+      "moved": "機器人已移至 <#{channelId}>。",
+      "left_due_to_timeout_no_listeners": "機器人已因不活動（無聽眾）而離開語音頻道 <#{channelId}>。",
+      "left_due_to_timeout_no_songs": "機器人已因不活動（無歌曲）而離開語音頻道 <#{channelId}>。"
+    }
+  },
+  "will_leave": {
+    "no_listeners": "由於沒有聽眾，機器人將在 {time} 分鐘後離開。",
+    "no_songs": "由於沒有歌曲，機器人將在 {time} 分鐘後離開。"
+  },
+  "LIVE_LYRICS": {
+    "NO_PLAYER": "目前沒有播放音樂。",
+    "NO_LYRICS": "這首歌沒有找到同步歌詞。",
+    "TITLE": "即時歌詞 - {track}",
+    "CURRENT": "🎵 正在播放",
+    "STOPPED": "即時歌詞已停止。",
+    "REFRESHED": "歌詞已刷新！",
+    "ERROR": "取得歌詞時發生錯誤。",
+    "ENDED": "歌曲已結束。即時歌詞已停止。",
+    "PAUSED": "播放已暫停。歌詞將在繼續播放時恢復。",
+    "SEARCHING": "正在搜尋同步歌詞...",
+    "NO_SYNCED_TITLE": "⚠️ 同步歌詞不可用",
+    "NO_SYNCED_DESCRIPTION": "找不到 **{trackTitle}** 的同步歌詞。\n\n**替代方案：**\n• 使用 `/lyrics` 查看靜態歌詞\n• 嘗試其他歌曲\n\n同步歌詞最適用於 Spotify、Deezer 或 YouTube Music 上的熱門歌曲。",
+    "ALREADY_RUNNING": "即時歌詞已在執行！請先使用停止按鈕結束它。",
+    "STARTED": "🎤 即時歌詞已開始！請查看下方的訊息。",
+    "PROGRESS": "進度",
+    "UPDATE_INTERVAL": "每 {seconds} 秒更新",
+    "CLICK_REFRESH": "點擊刷新立即更新",
+    "NO_LYRICS_AVAILABLE": "暫無歌詞",
+    "REFRESH_BUTTON": "刷新",
+    "STOP_BUTTON": "停止"
+  },
+  "will_restart_after": "機器人將在 {time} 後重啟",
+  "maintenance": {
+    "title": "維護模式",
+    "enabled_title": "🛠️ 已啟用維護模式",
+    "enabled_desc": "機器人當前處於**維護模式**。音樂指令已停用。",
+    "disabled_title": "✅ 已停用維護模式",
+    "disabled_desc": "機器人已**恢復正常運行**。",
+    "field_title": "🔧 維護",
+    "status_title": "🛠️ 維護狀態",
+    "status_value": "正在維護中",
+    "affected_title": "🕒 受影響的功能",
+    "affected_value": "音樂和佇列指令暫時停用。",
+    "requested_by": "由 {author} 請求",
+    "global_field_value_enabled": "```diff\n+ {count}/{total} 正在維護中\n```",
+    "global_field_value_disabled": "```diff\n- 全部正常運行\n```",
+    "global_field_fetch_failed": "⚠️ 無法取得資料。",
+    "local_field_enabled": "```diff\n+ 正在維護中\n```",
+    "local_field_disabled": "```diff\n- 正常運行\n```"
+  },
+  "Evaluate code": "評估代碼",
+  "Leave a guild": "離開伺服器",
+  "List all guilds the bot is in": "列出機器人所在的所有伺服器",
+  "Restart the bot": "重啟機器人",
+  "The loop mode you want to set": "您想設置的循環模式",
+  "Show current maintenance status": "顯示當前維護狀態",
+  "Show current maintenance status.": "Show current maintenance status.",
+  "Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
+  "Update Spotify configuration": "Update Spotify configuration",
+  "Update Apple Music configuration": "Update Apple Music configuration",
+  "Update Deezer configuration": "Update Deezer configuration",
+  "Update Yandex Music configuration": "Update Yandex Music configuration",
+  "Update VK Music configuration": "Update VK Music configuration",
+  "Update Qobuz configuration": "Update Qobuz configuration",
+  "Update yt-dlp configuration": "Update yt-dlp configuration",
+  "View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
+  "List all available Lavalink nodes": "List all available Lavalink nodes",
+  "The Lavalink node ID": "The Lavalink node ID",
+  "Spotify client ID": "Spotify client ID",
+  "Spotify client secret": "Spotify client secret",
+  "Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
+  "Prefer anonymous token": "Prefer anonymous token",
+  "Custom token endpoint URL": "Custom token endpoint URL",
+  "Apple Music media API token": "Apple Music media API token",
+  "Deezer ARL cookie value": "Deezer ARL cookie value",
+  "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
+  "Yandex Music access token": "Yandex Music access token",
+  "VK Music user token": "VK Music user token",
+  "Qobuz user OAuth token": "Qobuz user OAuth token",
+  "Qobuz application ID": "Qobuz application ID",
+  "Qobuz application secret": "Qobuz application secret",
+  "Path to yt-dlp executable": "Path to yt-dlp executable",
+  "Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
+  "Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
+  "Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
+  "Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
+  "Update YouTube poToken configuration": "Update YouTube poToken configuration",
+  "View current YouTube source configuration": "View current YouTube source configuration",
+  "Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
+  "YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
+  "Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
+  "Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
+  "Visitor data associated with the poToken": "Visitor data associated with the poToken",
+  "The refresh token to use": "The refresh token to use"
 }
