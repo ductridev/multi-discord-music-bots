@@ -70,3 +70,21 @@ Observation 16977 claims a race in `T()` (`setLocale` then `__mf` non-atomic). *
 - `MessageCreate` does 3 DB calls (`getSetup`, `getLanguage`, `getAllPrefixes`) before testing the prefix regex. Once content is empty fleet-wide, every message in every guild burns three queries then bails.
 - `getLanguage` (`server.ts:92`) has no cache; hits MongoDB on every call, on every message.
 - `sendDeferMessage` ignores its content argument for interaction contexts (observation 16971). Must be fixed because the delegated channel-send path relies on that argument.
+
+### 2026-07-31 — Plan authoring notes
+
+Plan: `docs/superpowers/plans/2026-07-31-slash-command-migration.md` (9 tasks)
+
+Deviations from the spec, decided while writing the plan:
+
+- **Dropped `resolveBot(opts.preferPrefix)`.** The spec listed it, but the spec also decided the prefix path keeps its own inline selection code — so the parameter would ship with zero callers. Removing it makes `buildBotMeta` fully synchronous, since `getPrefix` was its only await.
+- **Added `resolveBot(receiver)` instead.** Without it, an idle receiving bot would delegate to whichever bot sorts first in `activeBots`, causing pointless handoffs. New ladder rung 2: the receiver, if idle. This is a real behavior improvement over the prefix ladder, not a port of it.
+- **`runCommandFor` gained an `onGuardsPassed` callback.** First draft announced the handoff before running guards, so a user with no voice channel would see "Bot2 will handle this" followed by "you're not in a voice channel". The notice now fires only after guards pass. Guard failures and execution errors always answer through the receiver's interaction, since at guard time nothing has been announced.
+- **`runGuards` uses `guild.members.me`, not `members.resolve(client.user.id)`.** Member caches are per-client; resolving the chosen bot's id against the receiver's guild cache can miss and produce a spurious `no_send_message` failure. `members.me` on the chosen bot's own guild object is always populated, with a `fetchMe()` fallback.
+- **Mention-delegated contexts do not use `Context.delegated()`.** A message-backed context already has `sendMode: 'channel'`, so swapping `client`/`channel`/`guild` is enough. The factory exists only for interaction-backed contexts.
+- **Omitted the `command.args && args.length === 0` check from `runGuards`.** Discord validates required slash options before delivery, so it can never fire there. The mention path keeps its own copy since mention args are free-form.
+- **`ServerData.languageCache` is `static`.** Each bot builds its own `ServerData`, but guild language is not bot-specific — one shared map avoids N copies of the same value.
+
+Verified before writing, so the plan contains no guesses: `Command`/`Context`/`Lavamusic` are exported from `src/structures/index`; `config.color.blue`, `env.DEFAULT_LANGUAGE`, `env.LOG_COMMANDS_ID` all exist; `locales/EnglishUS.json` is missing `event.message.voice_channel_full` and `.maintenance` that Vietnamese has, which is why the locale patcher falls back per-key rather than copying wholesale.
+
+Known accepted cost: a delegated command produces two messages (receiver's handoff notice, chosen bot's output). Forced by the ack deadline — see spec.
