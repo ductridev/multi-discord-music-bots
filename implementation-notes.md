@@ -122,3 +122,29 @@ Both now route through `Context`, which also gives the chosen bot ownership of i
 **Incidental bugs found and fixed while in the area:** `restoreBackup` and the `Setup` bulk-restore path bypassed the new caches (fixed with explicit invalidation); the audit-log `EmbedBuilder` sat unguarded inside a `finally`, so a bot with no avatar turned a successful command into a failure; the cooldown was stamped before the busy check, rate-limiting commands that never ran; a throw after the defer escaped to the global `unhandledRejection` handler and left the interaction spinning forever.
 
 **Ledger with every adjudication and deferred minor:** `.superpowers/sdd/2026-07-31-slash-command-migration/progress.md`. Kept rather than deleted, since manual testing has not happened yet.
+
+---
+
+## CodeRabbit review round on PR #1 (2026-07-31)
+
+16 inline findings. Five were real code defects, two I rejected with evidence, the rest were the plan and spec documents having drifted from what actually shipped during the fix waves.
+
+**Real code defects fixed**
+
+- **`buildBotMeta` read the occupant id from `voiceState.member?.user.id`.** That depends on the per-client `GuildMember` cache, and `GuildMembers` was dropped from the intent list back in June. A cache miss made an occupied bot look idle, so the resolver could hand a second command to a bot already playing. Now reads `voiceState.id`, which is the user id straight off Discord's voice-state payload and never depends on a member cache. This was the most consequential finding in the set — it silently degrades the routing the whole feature exists to provide.
+- **The rejected client was left alive before the intent-fallback client logged in.** `shardStart` created a client, `start()` rejected on `Used disallowed intents`, and the reference went out of scope still holding its REST agent, its sweeper intervals and whatever the `Lavamusic` constructor registered — while a second client logged in on the same token. Hoisted the reference and `destroy()`d it first.
+- **A member cache miss during delegation fell back to the receiver's member.** Both `Context.delegated` and the mention path did `resolve(...) ?? ctx.member`, which is exactly the mismatch the member swap exists to prevent: guards would validate the receiver's view of the user's voice state while the chosen bot executed. A miss now cancels the delegation, matching how a missing guild or channel is already treated. CodeRabbit only flagged the mention path; the slash path had the identical bug.
+- **The audit-log embed still forced `iconURL` non-null.** The surrounding `try` (added in an earlier round) stops this from failing the command, but an avatarless bot still lost its audit log entirely. `?? undefined` omits the icon instead.
+
+**Findings rejected, with reasons**
+
+- *"Check gateway close code `4014` before relying on the error text."* There is no close code to check. `@discordjs/ws@1.2.3` (`dist/index.js:1149-1153`) handles `GatewayCloseCodes.DisallowedIntents` by emitting `new Error("Used disallowed intents")` — a bare `Error` with no `code` property and no `4014` anywhere on it. A `code === 4014` branch would be dead code that reads as a safety net.
+- *"Drop the English fallback values so `retryInDefaultLocale` resolves the configured default."* The configured default is **Vietnamese**. Removing the English fallback from `French.json` would show French users Vietnamese, not English — strictly worse. The real problem CodeRabbit was circling is that the values were untranslated at all, so I translated them: `delegated_to_bot`, `prefix_deprecated`, `voice_channel_full` and `maintenance` across all 17 non-English/Vietnamese locales, 62 changed values, placeholders verified intact and each string round-tripped through `T()`. Files that already carried a real translation were left untouched by matching on the exact English fallback string.
+
+**Deleted `scripts/add-interaction-locale-keys.js` and `scripts/invert-deprecation-notice.js`.** Both were spent one-shot migrations. Worse than dead: re-running either would now overwrite the translations above with English again.
+
+**Document drift — the bulk of the findings.** Findings against the plan's cooldown ordering, post-defer error boundary, `voiceStates.cache` lookup, setup-channel ordering and audit-log guarding were all reporting code the plan document *proposed*, not code that shipped — each had already been fixed in a review round without the plan being updated. Those snippets are now synchronized with the shipped files. Two exceptions where I annotated instead of rewriting: the `BotResolver` Step 1/2 blocks keep the pre-deviation single-occupant shape with an explicit banner naming the shipped file as authoritative, because they are the record of what was planned before the multi-occupant deviation was approved mid-execution.
+
+**Setup-channel gap promoted to a release blocker** with a named owner and the 2026-08-27 deadline, and the recommended fix named (drop the slash rejection in `InteractionCreate.ts` unconditionally — gating it on `messageContentIntent` becomes dead code the moment the revocation lands). It still does not block merging this branch, because it is the intent loss meeting a pre-existing feature rather than a regression here. It does block calling the migration complete.
+
+**Three manual tests could never have passed as written.** Tests 1, 5, 6 and 10 in the test plan all set up "all bots idle" and then expected delegation. Rung 2 of the ladder hands the command straight back to an idle receiver, so those tests would have resolved `receiver_idle`, the invoked bot would have done the work, and the test would have looked like a pass while exercising none of the delegation code. Each now parks the receiving bot in another voice channel and asserts on the `any_idle` debug line. This was a genuine error in my own test plan, and it was the finding most likely to have produced false confidence.

@@ -61,9 +61,12 @@ Note: the current implementation computes `is247` into `botMeta` but never uses 
 
 When `resolveBot` returns a bot other than the receiver:
 
-1. Receiver edits its deferred reply to a handoff notice: "Bot2 will handle this — it's free and joining your channel."
-2. Chosen bot executes `command.run(chosenBot, delegatedCtx, args)`.
-3. `delegatedCtx` emits output via `channel.send()` on the **chosen** bot's client.
+1. Every guard runs first, against the **chosen** bot, and answers through the receiver's deferred reply. A command that fails a guard is never announced — a handoff notice followed by silence would be worse than the plain failure.
+2. Once the guards pass, the receiver edits its deferred reply to a handoff notice: "Bot2 will handle this — it's free and joining your channel." **This notice is skipped when `resolved.reason === 'in_user_vc'`**: the chosen bot is already sitting in the user's voice channel, so it is visibly there and its own reply follows immediately. A preamble there explains nothing and adds a second message to every command. The notice exists to explain a bot *arriving*.
+3. Chosen bot executes `command.run(chosenBot, delegatedCtx, args)`.
+4. `delegatedCtx` emits output via `channel.send()` on the **chosen** bot's client.
+
+A delegated command whose chosen bot has not cached the guild, the channel, *or* the invoking member cancels the delegation and is handled by the receiver instead. Half-swapping identity — validating one bot's view of the member while another executes — is the exact failure the swap exists to prevent.
 
 The chosen bot owns every message it posts, so its buttons, collectors (`Search.ts`), embeds, name, and avatar are all self-consistent. No interaction token crosses a client boundary.
 
@@ -168,7 +171,9 @@ Requires `npx prisma generate` and `npm run db:push`.
 
 Once `MessageContent` is off, `message.content` is empty on ordinary messages. `MessageCreate` currently performs three database calls — `getSetup` (line 55), `getLanguage` (59), `getAllPrefixes` (62) — *before* testing the prefix regex at line 89. Every message in every guild would burn three queries and bail at line 90.
 
-Add a guard at the top of the handler: if content is empty and the message is not a mention, return immediately. Worth doing independent of this migration.
+Add a guard **after the cached setup-channel check**: if content is empty and the message is not a mention, return immediately. Worth doing independent of this migration.
+
+The ordering matters. The setup channel is a music-request channel, and the pre-existing code emitted `setupSystem` for every message posted there regardless of content — `SetupSystem.run` always ends in `message.delete()`, so attachment-only and sticker-only posts were consumed. Bailing ahead of `getSetup` would leave those lingering in a channel whose whole purpose is staying clean. `getSetup` therefore gains a cache on `ServerData` (caching `null` too, so guilds with no setup row do not re-query per message), which keeps it above the bail without reintroducing the per-message query the bail exists to remove.
 
 ## Locale keys
 

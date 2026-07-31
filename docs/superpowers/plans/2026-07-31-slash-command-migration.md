@@ -140,6 +140,8 @@ The core of delegation, and the only piece where a regression silently routes th
 
 **Approved deviation (2026-07-31, during execution).** `vcToBot` maps a channel to an *array* of occupants, and `BotMeta` carries `hasActivePlayer`. Two fleet bots can share a voice channel (24/7 stay mode, a manual join, a restored session); the original single-value map dropped one of them by cache iteration order, so rung 1 could hand the command to an idle co-occupant instead of the bot holding the queue. Rung 1 now prefers the occupant with an active player. `master:src/events/client/MessageCreate.ts:125-131` has the same defect — this supersedes "priority ladder, unchanged from today" on that one point. Invisible to Tasks 6 and 7, which pass `botMeta` and `vcToBot` through opaquely.
 
+> **The code blocks in Steps 1 and 2 below were written before that deviation and still show the single-occupant shape** — `Map<string, string>`, a `meta()` fixture with no `hasActivePlayer`, and a rung 1 that takes the only occupant. They are kept as the record of what was planned. **The shipped `src/utils/BotResolver.ts` and `src/utils/BotResolver.spec.ts` are authoritative**: `vcToBot` is `Map<string, string[]>`, `BotMeta` carries `hasActivePlayer`, `buildBotMeta` populates it from `bot.manager.getPlayer(guild.id)?.queue.current`, and rung 1 resolves `occupants.find(e => e.hasActivePlayer) ?? occupants[0]`. Test 7 in the spec is ordered so a naive `occupants[0]` implementation fails it.
+
 - [ ] **Step 1: Write the failing test**
 
 Create `src/utils/BotResolver.spec.ts`. The fake bots only need a `user.id` and `childEnv`, so they are cast — `resolveBot` never touches anything else.
@@ -965,8 +967,6 @@ export async function runGuards(
 			);
 		}
 	}
-	timestamps.set(userId, now);
-	setTimeout(() => timestamps.delete(userId), cooldownAmount);
 
 	// 9. Mention abuse.
 	if (ctx.args.some(arg => typeof arg === 'string' && (arg.includes('@everyone') || arg.includes('@here')))) {
@@ -977,6 +977,12 @@ export async function runGuards(
 	if (busy) {
 		return fail(T(locale, 'event.interaction.no_free_bots'));
 	}
+
+	// Stamp the cooldown only now that the command will actually proceed — a user
+	// rejected above (including for "all bots busy") must not burn a cooldown
+	// window on a command that never ran.
+	timestamps.set(userId, now);
+	setTimeout(() => timestamps.delete(userId), cooldownAmount);
 
 	return PASS;
 }
@@ -1080,27 +1086,36 @@ export async function runCommandFor(
 			chosen.logger.error('Failed to track command usage:', error);
 		}
 
-		const logs = chosen.channels.cache.get(chosen.env.LOG_COMMANDS_ID!);
-		if (logs) {
-			const embed = new EmbedBuilder()
-				.setAuthor({
-					name: ctx.isInteraction ? 'Slash - Command Logs' : 'Mention - Command Logs',
-					iconURL: chosen.user?.avatarURL({ size: 2048 })!,
-				})
-				.setColor(chosen.config.color.blue)
-				.addFields(
-					{ name: 'Command', value: `\`${command.name}\``, inline: true },
-					{ name: 'User', value: `${ctx.author?.tag} (\`${ctx.author?.id}\`)`, inline: true },
-					{ name: 'Guild', value: `${ctx.guild.name} (\`${ctx.guild.id}\`)`, inline: true },
-				)
-				.setFooter({
-					text: 'BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️',
-					iconURL:
-						'https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg',
-				})
-				.setTimestamp();
+		// Everything in here is best-effort. It runs inside `finally`, so an
+		// EmbedBuilder rejection would turn a command that already succeeded into
+		// a reported failure.
+		try {
+			const logs = chosen.channels.cache.get(chosen.env.LOG_COMMANDS_ID!);
+			if (logs) {
+				const embed = new EmbedBuilder()
+					.setAuthor({
+						name: ctx.isInteraction ? 'Slash - Command Logs' : 'Mention - Command Logs',
+						// A bot with no custom avatar returns null, and EmbedBuilder
+						// rejects null. undefined just omits the icon.
+						iconURL: chosen.user?.avatarURL({ size: 2048 }) ?? undefined,
+					})
+					.setColor(chosen.config.color.blue)
+					.addFields(
+						{ name: 'Command', value: `\`${command.name}\``, inline: true },
+						{ name: 'User', value: `${ctx.author?.tag} (\`${ctx.author?.id}\`)`, inline: true },
+						{ name: 'Guild', value: `${ctx.guild.name} (\`${ctx.guild.id}\`)`, inline: true },
+					)
+					.setFooter({
+						text: 'BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️',
+						iconURL:
+							'https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg',
+					})
+					.setTimestamp();
 
-			await (logs as TextChannel).send({ embeds: [embed], flags: 4096 }).catch(() => null);
+				await (logs as TextChannel).send({ embeds: [embed], flags: 4096 }).catch(() => null);
+			}
+		} catch (error) {
+			chosen.logger.error('Failed to send command audit log:', error);
 		}
 	}
 }
@@ -1164,92 +1179,117 @@ export default class InteractionCreate extends Event {
 			return;
 		}
 
-		const reply = async (payload: any) => {
-			await interaction.editReply(payload);
-		};
+		// Assigned inside the try below; kept in scope so the catch can still
+		// localize its error message if something throws before locale loads.
+		let locale = 'Vietnamese';
 
-		const guildId = interaction.guildId;
-		const locale = await this.client.db.getLanguage(guildId);
+		// Everything after the defer runs inside this boundary. A MongoDB or
+		// editReply failure would otherwise leave the interaction deferred
+		// forever, showing "is thinking…" until Discord swaps it for "The
+		// application did not respond".
+		try {
+			const reply = async (payload: any) => {
+				await interaction.editReply(payload);
+			};
 
-		const setup = await this.client.db.getSetup(guildId);
-		if (setup && interaction.channelId === setup.textId) {
-			await reply({ content: T(locale, 'event.interaction.setup_channel') });
-			return;
-		}
+			const guildId = interaction.guildId;
+			locale = await this.client.db.getLanguage(guildId);
 
-		const allBots = getBotsForGuild(guildId);
-		if (allBots.length === 0) {
-			await reply({ content: T(locale, 'event.interaction.no_bots_configured') });
-			return;
-		}
-
-		const member = interaction.guild.members.resolve(interaction.user.id);
-		const userVCId = member?.voice?.channelId ?? null;
-
-		const { botMeta, vcToBot } = buildBotMeta(allBots, interaction.guild);
-		const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
-
-		// When nothing is free the receiving bot answers, so the guards still
-		// run and the user sees permission or voice problems before "all busy".
-		let chosen = resolved.bot ?? this.client;
-		const busy = !resolved.valid;
-		let isSelf = chosen.user!.id === this.client.user!.id;
-
-		const options = (interaction as ChatInputCommandInteraction).options.data as any[];
-		let ctx: Context;
-
-		if (isSelf) {
-			ctx = new Context(interaction as ChatInputCommandInteraction, options);
-		} else {
-			const delegatedCtx = Context.delegated(
-				interaction as ChatInputCommandInteraction,
-				chosen,
-				options,
-			);
-			if (delegatedCtx) {
-				ctx = delegatedCtx;
-			} else {
-				// The chosen bot has not cached this guild or channel, so it
-				// cannot honestly own its own messages. Handle it here instead
-				// of half-swapping identity and letting the wrong bot speak.
-				this.client.logger.warn(
-					`Cannot delegate ${command.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
-				);
-				chosen = this.client;
-				isSelf = true;
-				ctx = new Context(interaction as ChatInputCommandInteraction, options);
+			const setup = await this.client.db.getSetup(guildId);
+			if (setup && interaction.channelId === setup.textId) {
+				await reply({ content: T(locale, 'event.interaction.setup_channel') });
+				return;
 			}
+
+			const allBots = getBotsForGuild(guildId);
+			if (allBots.length === 0) {
+				await reply({ content: T(locale, 'event.interaction.no_bots_configured') });
+				return;
+			}
+
+			// voiceStates.cache, not members.resolve — the member cache can miss
+			// and a miss would silently read as "user is in no voice channel".
+			const userVCId = interaction.guild.voiceStates.cache.get(interaction.user.id)?.channelId ?? null;
+
+			const { botMeta, vcToBot } = buildBotMeta(allBots, interaction.guild);
+			const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
+			this.client.logger.debug(
+				`resolve ${command.name}: ${resolved.reason} -> ${resolved.bot?.childEnv.name ?? 'none'}`,
+			);
+
+			// When nothing is free the receiving bot answers, so the guards still
+			// run and the user sees permission or voice problems before "all busy".
+			let chosen = resolved.bot ?? this.client;
+			const busy = !resolved.valid;
+			let isSelf = chosen.user!.id === this.client.user!.id;
+
+			const options = (interaction as ChatInputCommandInteraction).options.data as any[];
+			let ctx: Context;
+
+			if (isSelf) {
+				ctx = new Context(interaction as ChatInputCommandInteraction, options);
+			} else {
+				const delegatedCtx = Context.delegated(
+					interaction as ChatInputCommandInteraction,
+					chosen,
+					options,
+				);
+				if (delegatedCtx) {
+					ctx = delegatedCtx;
+				} else {
+					// The chosen bot has not cached this guild, channel or member, so
+					// it cannot honestly own its own messages. Handle it here instead
+					// of half-swapping identity and letting the wrong bot speak.
+					this.client.logger.warn(
+						`Cannot delegate ${command.name} to ${chosen.childEnv.name}: guild, channel or member not cached. Handling locally.`,
+					);
+					chosen = this.client;
+					isSelf = true;
+					ctx = new Context(interaction as ChatInputCommandInteraction, options);
+				}
+			}
+
+			ctx.setArgs(options);
+			ctx.guildLocale = locale;
+
+			// Announce a handoff only when a bot is about to JOIN the channel —
+			// that is the surprising part worth explaining. A bot already sitting in
+			// the user's channel is visibly there and its own reply follows, so a
+			// preamble explains nothing and adds a second message to every command.
+			const announceHandoff = !isSelf && resolved.reason !== 'in_user_vc';
+
+			// Guard failures and execution errors always answer through the
+			// interaction, delegated or not — the receiver is the bot the user
+			// actually invoked, and at guard time nothing has been announced yet.
+			await runCommandFor(
+				chosen,
+				ctx,
+				command,
+				busy,
+				reply,
+				announceHandoff
+					? async () => {
+							// Guards passed, so the handoff is real and worth announcing.
+							// The chosen bot posts its own output as a normal channel
+							// message; this notice is all the interaction reply carries.
+							//
+							// It cannot be ephemeral: a deferred public reply cannot become
+							// ephemeral, and deferring ephemerally would hide self-handled
+							// replies — including now-playing — from everyone but the invoker.
+							await reply({
+								content: T(locale, 'event.interaction.delegated_to_bot', {
+									bot: chosen.user!.username,
+								}),
+							});
+						}
+					: undefined,
+			);
+		} catch (error) {
+			this.client.logger.error('Slash command handler threw:', error);
+			await interaction
+				.editReply({ content: T(locale, 'event.interaction.error', { error: 'internal error' }) })
+				.catch(() => null);
 		}
-
-		ctx.setArgs(options);
-		ctx.guildLocale = locale;
-
-		// Guard failures and execution errors always answer through the
-		// interaction, delegated or not — the receiver is the bot the user
-		// actually invoked, and at guard time nothing has been announced yet.
-		await runCommandFor(
-			chosen,
-			ctx,
-			command,
-			busy,
-			reply,
-			isSelf
-				? undefined
-				: async () => {
-						// Guards passed, so the handoff is real and worth announcing.
-						// The chosen bot posts its own output as a normal channel
-						// message; this notice is all the interaction reply carries.
-						//
-						// It cannot be ephemeral: a deferred public reply cannot become
-						// ephemeral, and deferring ephemerally would hide self-handled
-						// replies — including now-playing — from everyone but the invoker.
-						await reply({
-							content: T(locale, 'event.interaction.delegated_to_bot', {
-								bot: chosen.user!.username,
-							}),
-						});
-					},
-		);
 	}
 }
 ```
@@ -1321,17 +1361,23 @@ Out of scope but worth stating: once the intent is revoked, `setupSystem` receiv
 		const mentionPrefix = new RegExp(`^<@!?${this.client.user?.id}>\\s*`);
 		const mentionMatch = message.content.match(mentionPrefix);
 
-		// Once MessageContent is disabled, content is empty on everything except
-		// mentions and DMs. Bail before spending any database calls.
-		if (!(message.content.trim() || mentionMatch)) return;
-
 		const guildId = message.guildId;
 		const userVCId = message.member?.voice?.channelId ?? null;
 
+		// getSetup is cache-backed (ServerData.setupCache), so this runs ahead of
+		// the empty-content bail below without reintroducing a per-message
+		// database call. A setup-channel message must be consumed regardless of
+		// content — SetupSystem.run always ends in message.delete(), and that
+		// channel's whole purpose is staying clean of stray posts.
 		const setup = await this.client.db.getSetup(guildId);
 		if (setup && setup.textId === message.channelId) {
 			return this.client.emit('setupSystem', message);
 		}
+
+		// Once MessageContent is disabled, content is empty on everything except
+		// mentions and DMs. Bail before spending any further database calls.
+		if (!(message.content.trim() || mentionMatch)) return;
+
 		const locale = await this.client.db.getLanguage(guildId);
 		const botClientId = this.client.childEnv.id;
 
@@ -1736,7 +1782,7 @@ pointing at slash commands and mentions."
 Run after every task is complete:
 
 - [ ] `npx tsc --noEmit` — clean
-- [ ] `npm run lint` — no new errors
+- ~~`npm run lint`~~ — **not applicable.** No ESLint configuration exists anywhere in this repo's history, so the script cannot run. `tsc --noEmit` with `strict`, `noUnusedLocals`, `noUnusedParameters` and `noImplicitReturns` is the only static gate available. Adding an ESLint config is out of scope for this migration.
 - [ ] `npm run build && node dist/utils/BotResolver.spec.js` — `BotResolver: all assertions passed`
 - [ ] All 19 locales parse and contain the five new `event.interaction` keys plus `event.message.prefix_deprecated`, with no `event.interaction.slash_deprecated`
 - [ ] `/play` with the receiving bot idle: handled directly, no handoff notice
