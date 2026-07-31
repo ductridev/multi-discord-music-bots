@@ -1,6 +1,6 @@
 import { EmbedBuilder, type InteractionReplyOptions, type TextChannel } from 'discord.js';
 import { PrismaClient } from '@prisma/client';
-import { T } from '../structures/I18n';
+import { DEFAULT_LOCALE, T } from '../structures/I18n';
 import { runGuards } from './CommandGuards';
 import type Context from '../structures/Context';
 import type { Command, Lavamusic } from '../structures/index';
@@ -49,7 +49,7 @@ export async function runCommandFor(
 	reply: ReplyFn,
 	onGuardsPassed?: () => Promise<void>,
 ): Promise<void> {
-	const locale = ctx.guildLocale ?? chosen.env.DEFAULT_LANGUAGE ?? 'Vietnamese';
+	const locale = ctx.guildLocale ?? DEFAULT_LOCALE;
 
 	const guard = await runGuards(chosen, ctx, command, busy);
 	if (!guard.passed) {

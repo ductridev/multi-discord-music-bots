@@ -7,7 +7,7 @@ import {
 	type InteractionReplyOptions,
 	PermissionFlagsBits,
 } from 'discord.js';
-import { T } from '../structures/I18n';
+import { DEFAULT_LOCALE, T } from '../structures/I18n';
 import type Context from '../structures/Context';
 import type { Command, Lavamusic } from '../structures/index';
 
@@ -38,7 +38,7 @@ export async function runGuards(
 	command: Command,
 	busy: boolean,
 ): Promise<GuardResult> {
-	const locale = ctx.guildLocale ?? client.env.DEFAULT_LANGUAGE ?? 'Vietnamese';
+	const locale = ctx.guildLocale ?? DEFAULT_LOCALE;
 	const guild = ctx.guild;
 	const userId = ctx.author!.id;
 	const isDev = client.env.OWNER_IDS?.includes(userId) ?? false;

@@ -1,5 +1,5 @@
 import { BotConfig, type Dj, type Guild, type Playlist, PrismaClient, type Role, type Setup, type Stay } from '@prisma/client';
-import { env } from '../env';
+import { DEFAULT_LOCALE } from '../structures/I18n';
 import Logger from '../structures/Logger';
 import { PlayerJson } from 'lavalink-client';
 
@@ -97,7 +97,7 @@ export default class ServerData {
 		if (cached !== undefined) return cached;
 
 		const guild = await this.get(guildId);
-		const language = guild?.language ?? env.DEFAULT_LANGUAGE;
+		const language = guild?.language ?? DEFAULT_LOCALE;
 		ServerData.languageCache.set(guildId, language);
 		return language;
 	}

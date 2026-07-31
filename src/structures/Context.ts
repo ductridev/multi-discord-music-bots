@@ -15,8 +15,7 @@ import {
 	type TextChannel,
 	type User,
 } from 'discord.js';
-import { env } from '../env';
-import { T } from './I18n';
+import { DEFAULT_LOCALE, T } from './I18n';
 import type { Lavamusic } from './index';
 
 export default class Context {
@@ -164,7 +163,7 @@ export default class Context {
 	}
 
 	public locale(key: string, ...args: any) {
-		if (!this.guildLocale) this.guildLocale = env.DEFAULT_LANGUAGE || 'Vietnamese';
+		if (!this.guildLocale) this.guildLocale = DEFAULT_LOCALE;
 		return T(this.guildLocale, key, ...args);
 	}
 

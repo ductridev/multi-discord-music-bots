@@ -6,7 +6,7 @@ import {
 	InteractionType,
 } from 'discord.js';
 import { getBotsForGuild } from '../..';
-import { T } from '../../structures/I18n';
+import { DEFAULT_LOCALE, T } from '../../structures/I18n';
 import { Context, Event, type Lavamusic } from '../../structures/index';
 import { buildBotMeta, resolveBot } from '../../utils/BotResolver';
 import { runCommandFor } from '../../utils/CommandRunner';
@@ -51,7 +51,7 @@ export default class InteractionCreate extends Event {
 
 		// Assigned inside the try below; kept in scope so the catch can still
 		// localize its error message if something throws before locale loads.
-		let locale = this.client.env.DEFAULT_LANGUAGE || 'Vietnamese';
+		let locale = DEFAULT_LOCALE;
 
 		try {
 			const reply = async (payload: any) => {
