@@ -6,6 +6,7 @@ export interface BotMeta {
 	clientId: string;
 	name: string;
 	isInAnyVC: boolean;
+	hasActivePlayer: boolean;
 }
 
 export type ResolveReason = 'in_user_vc' | 'receiver_idle' | 'any_idle' | 'all_busy' | 'no_bots';
@@ -23,26 +24,32 @@ export interface ResolveResult {
  */
 export function buildBotMeta(bots: Lavamusic[], guild: Guild): {
 	botMeta: BotMeta[];
-	vcToBot: Map<string, string>;
+	vcToBot: Map<string, string[]>;
 } {
 	const botIds = new Set(bots.map(bot => bot.user!.id));
-	const vcToBot = new Map<string, string>();
+	const vcToBot = new Map<string, string[]>();
 	const activeBotIds = new Set<string>();
 
 	for (const [, voiceState] of guild.voiceStates.cache) {
 		const memberId = voiceState.member?.user.id;
 		if (voiceState.channelId && memberId && botIds.has(memberId)) {
-			vcToBot.set(voiceState.channelId, memberId);
+			const occupants = vcToBot.get(voiceState.channelId) ?? [];
+			occupants.push(memberId);
+			vcToBot.set(voiceState.channelId, occupants);
 			activeBotIds.add(memberId);
 		}
 	}
 
-	const botMeta = bots.map(bot => ({
-		bot,
-		clientId: bot.user!.id,
-		name: bot.childEnv.name,
-		isInAnyVC: activeBotIds.has(bot.user!.id),
-	}));
+	const botMeta = bots.map(bot => {
+		const player = bot.manager.getPlayer(guild.id);
+		return {
+			bot,
+			clientId: bot.user!.id,
+			name: bot.childEnv.name,
+			isInAnyVC: activeBotIds.has(bot.user!.id),
+			hasActivePlayer: Boolean(player?.queue.current),
+		};
+	});
 
 	return { botMeta, vcToBot };
 }
@@ -58,7 +65,7 @@ export function buildBotMeta(bots: Lavamusic[], guild: Guild): {
  * 4. Nothing free.
  */
 export function resolveBot(
-	vcToBot: Map<string, string>,
+	vcToBot: Map<string, string[]>,
 	botMeta: BotMeta[],
 	userVCId: string | null,
 	receiver?: Lavamusic | null,
@@ -68,10 +75,15 @@ export function resolveBot(
 	}
 
 	if (userVCId) {
-		const occupantId = vcToBot.get(userVCId);
-		const occupant = botMeta.find(entry => entry.clientId === occupantId);
-		if (occupant) {
-			return { bot: occupant.bot, valid: true, reason: 'in_user_vc' };
+		const occupantIds = vcToBot.get(userVCId) ?? [];
+		const occupants = occupantIds
+			.map(id => botMeta.find(entry => entry.clientId === id))
+			.filter((entry): entry is BotMeta => entry !== undefined);
+		// Two bots can share a channel. The one holding the queue is the one
+		// the user means, so prefer it over an idle co-occupant.
+		const chosen = occupants.find(entry => entry.hasActivePlayer) ?? occupants[0];
+		if (chosen) {
+			return { bot: chosen.bot, valid: true, reason: 'in_user_vc' };
 		}
 	}
 
