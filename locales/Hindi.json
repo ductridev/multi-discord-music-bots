@@ -747,7 +747,6 @@
 			"error": "Ek error aaya: `{error}`",
 			"vote_button": "मुझे वोट करें!",
 			"vote_message": "रुकें! इस कमांड का उपयोग करने के लिए आपको top.gg पर वोट करना होगा। धन्यवाद।",
-			"slash_deprecated": "स्लैश कमांड बंद कर दिए गए हैं! कृपया इसके बजाय `{prefix}{command}` का उपयोग करें। 🎵",
 			"periodic_message_vote_only": "🎵 संगीत पसंद आ रहा है? Top.gg पर हमें वोट करें! आपका वोट हमें बढ़ने में मदद करता है! ❤️\nऑडियो अस्थिर है? अपने पास का क्षेत्र चुनने के लिए `bregion` का उपयोग करें",
 			"periodic_message_with_bots": "🎵 संगीत पसंद आ रहा है? Top.gg पर हमें वोट करें! कई रूम में संगीत चाहिए? और बॉट जोड़ें! 🎶\nऑडियो अस्थिर है? अपने पास का क्षेत्र चुनने के लिए `bregion` का उपयोग करें",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -782,7 +781,8 @@
 			"vote_button": "मुझे वोट करें!",
 			"vote_message": "रुकें! इस कमांड का उपयोग करने के लिए आपको top.gg पर वोट करना होगा। धन्यवाद।",
 			"no_free_bots": "अभी कोई बॉट उपलब्ध नहीं है। आप इस सर्वर में और बॉट जोड़ना चाह सकते हैं।",
-			"no_bots_configured": "इस सर्वर में अभी तक कोई म्यूज़िक बॉट नहीं जोड़ा गया है। कृपया पहले एक बॉट को आमंत्रित करें!"
+			"no_bots_configured": "इस सर्वर में अभी तक कोई म्यूज़िक बॉट नहीं जोड़ा गया है। कृपया पहले एक बॉट को आमंत्रित करें!",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Is button ka upyog karne ke liye aap kisi voice channel से जुड़े नहीं हैं.",

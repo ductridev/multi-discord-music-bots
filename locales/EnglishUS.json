@@ -752,7 +752,6 @@
 			"bot_busy_different_vc": "I'm playing music in another channel right now! Use a different bot or wait till I'm free 🎵",
 			"bot_busy_get_more": "I'm busy in another channel! Add more bots to play in multiple rooms at once 🤖",
 			"get_more_bots_button": "Get More Bots ➕",
-			"slash_deprecated": "Slash commands have been deprecated! Please use `{prefix}{command}` instead. 🎵",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
 			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵",
 			"no_free_bots": "No bots available right now! Consider adding more bots to the server 🤖",
@@ -784,7 +783,8 @@
 			"vote_button": "Vote for me! ⭐",
 			"vote_message": "Hold on! Vote for the bot on top.gg to use this command. Thanks! 💖",
 			"no_free_bots": "No bots available right now! Consider adding more bots to the server 🤖",
-			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵"
+			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Join a voice channel first to use this button! 🎵",

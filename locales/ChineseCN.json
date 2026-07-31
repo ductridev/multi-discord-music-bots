@@ -764,7 +764,6 @@
 			"error": "哎呀！出错了: `{error}` 😢",
 			"vote_button": "为我投票！⭐",
 			"vote_message": "等一下！在 top.gg 上为机器人投票后才能用这个命令。谢谢支持！💖",
-			"slash_deprecated": "斜杠命令已弃用！请改用 `{prefix}{command}`。🎵",
 			"periodic_message_vote_only": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票吧！您的支持让我们更强大！❤️\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
 			"periodic_message_with_bots": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票！想在多个房间播放音乐？添加更多机器人吧！🎶\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
 			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
@@ -801,7 +800,8 @@
 			"no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
 			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
 			"vote_button": "为我投票！",
-			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。"
+			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "你不在语音频道里才能用这个按钮！🎵",

@@ -642,6 +642,16 @@ export default class MessageCreate extends Event {
 
 				await (logs as TextChannel).send({ embeds: [embed], flags: 4096 });
 			}
+
+			// Warn users that prefix commands are deprecated
+			await message.channel
+				.send({
+					content: T(locale, 'event.message.prefix_deprecated', {
+						command: command.name,
+						bot: this.client.user!.username,
+					}),
+				})
+				.catch(() => null);
 		}
 	}
 }

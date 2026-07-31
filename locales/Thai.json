@@ -774,7 +774,6 @@
       "error": "เกิดข้อผิดพลาด: `{error}`",
       "vote_button": "โหวตให้ฉัน!",
       "vote_message": "รอหน่อย! คุณต้องโหวตใน top.gg ก่อนถึงจะใช้คำสั่งนี้ได้ ขอบคุณครับ",
-      "slash_deprecated": "คำสั่งแบบสแลชถูกยกเลิกแล้ว! กรุณาใช้ `{prefix}{command}` แทน 🎵",
       "periodic_message_vote_only": "🎵 ชอบเพลงไหม? โหวตให้เราบน Top.gg! โหวตของคุณช่วยให้เราเติบโต! ❤️\nเสียงไม่เสถียร? ใช้ `bregion` เพื่อเปลี่ยนไปยังภูมิภาคที่ใกล้คุณกว่า",
       "periodic_message_with_bots": "🎵 ชอบเพลงไหม? โหวตให้เราบน Top.gg! อยากฟังเพลงหลายห้อง? เพิ่มบอทเลย! 🎶\nเสียงไม่เสถียร? ใช้ `bregion` เพื่อเปลี่ยนไปยังภูมิภาคที่ใกล้คุณกว่า",
       "voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -808,7 +807,8 @@
       "vote_button": "โหวตให้ฉัน!",
       "vote_message": "รอหน่อย! คุณต้องโหวตบน top.gg ก่อนถึงจะใช้คำสั่งนี้ได้ ขอบคุณ",
       "no_free_bots": "ไม่มีบอทที่พร้อมใช้งานในขณะนี้ คุณอาจต้องการเพิ่มบอทเข้าไปในเซิร์ฟเวอร์นี้",
-      "no_bots_configured": "ยังไม่มีบอทเพลงถูกเพิ่มเข้าไปในเซิร์ฟเวอร์นี้ กรุณาเชิญบอทก่อน!"
+      "no_bots_configured": "ยังไม่มีบอทเพลงถูกเพิ่มเข้าไปในเซิร์ฟเวอร์นี้ กรุณาเชิญบอทก่อน!",
+      "prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
     },
     "setupButton": {
       "no_voice_channel_button": "คุณต้องอยู่ในห้องเสียงเพื่อใช้ปุ่มนี้",

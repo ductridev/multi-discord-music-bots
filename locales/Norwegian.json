@@ -748,7 +748,6 @@
 			"error": "En feil oppstod: `{error}`",
 			"vote_button": "Stem på meg!",
 			"vote_message": "Vent! Du må stemme på top.gg for å bruke denne kommandoen. Takk.",
-			"slash_deprecated": "Skråstrekkommandoer er utdatert! Vennligst bruk `{prefix}{command}` i stedet. 🎵",
 			"periodic_message_vote_only": "🎵 Liker du musikken? Stem på oss på Top.gg! Din stemme hjelper oss å vokse! ❤️\nUstabil lyd? Bruk `bregion` for å bytte til en region nærmere deg",
 			"periodic_message_with_bots": "🎵 Liker du musikken? Stem på oss på Top.gg! Vil du ha musikk i flere rom? Legg til flere botter! 🎶\nUstabil lyd? Bruk `bregion` for å bytte til en region nærmere deg",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -783,7 +782,8 @@
 			"vote_button": "Stem på meg!",
 			"vote_message": "Vent! Du må stemme på top.gg for å bruke denne kommandoen. Takk.",
 			"no_free_bots": "Ingen roboter er tilgjengelige akkurat nå. Du vil kanskje legge til flere roboter på denne serveren.",
-			"no_bots_configured": "Ingen musikkroboter har blitt lagt til på denne serveren ennå. Vennligst inviter en robot først!"
+			"no_bots_configured": "Ingen musikkroboter har blitt lagt til på denne serveren ennå. Vennligst inviter en robot først!",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Du er ikke tilkoblet en talekanal for å bruke denne knappen.",

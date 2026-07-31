@@ -788,7 +788,6 @@
 			"bot_busy_different_vc": "Mình đang phát nhạc ở kênh khác rồi! Dùng bot khác hoặc chờ mình rảnh nhé 🎶",
 			"bot_busy_get_more": "Mình bận rồi! Thêm nhiều bot để phát nhạc nhiều phòng cùng lúc nhé! 🎵",
 			"get_more_bots_button": "Thêm Bot ➕",
-			"slash_deprecated": "Lệnh slash đã bị loại bỏ! Vui lòng dùng `{prefix}{command}` thay thế. 🎵",
 			"voice_channel_full": "Kênh <#{channel}> đầy rồi! Sang kênh khác hoặc tăng giới hạn thành viên 😅",
 			"no_bots_configured": "Chưa có bot nhạc nào trong server! Mời bot vào trước nhé 🎵",
 			"no_free_bots": "Không có bot nào rảnh! Thêm bot khác vào server xem 🤖",
@@ -823,7 +822,8 @@
 			"syntax_footer": "Cú pháp: [] = tùy chọn, <> = bắt buộc • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ❤️",
 			"voice_channel_full": "Kênh <#{channel}> đầy rồi! Sang kênh khác hoặc tăng giới hạn thành viên 😅",
 			"vote_button": "Vote cho mình! ⭐",
-			"vote_message": "Vote cho mình trên top.gg để dùng lệnh này nhé! Cảm ơn! 💖"
+			"vote_message": "Vote cho mình trên top.gg để dùng lệnh này nhé! Cảm ơn! 💖",
+			"prefix_deprecated": "⚠️ Lệnh prefix sắp ngừng hoạt động vì Discord thu hồi quyền đọc tin nhắn. Dùng lệnh gạch chéo `/{command}` hoặc nhắc tên bot: `@{bot} {command}` nhé!"
 		},
 		"setupButton": {
 			"button_not_available": "⛔ Nút này hiện không sài được!",

@@ -778,7 +778,6 @@
 			"error": "Bir hata oluştu: `{error}`",
 			"vote_button": "Oy Ver!",
 			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
-			"slash_deprecated": "Slash komutları kullanımdan kaldırıldı! Lütfen yerine `{prefix}{command}` kullanın. 🎵",
 			"periodic_message_vote_only": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Oyun büyümemize yardımcı olur! ❤️\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
 			"periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -812,7 +811,8 @@
 			"vote_button": "Oy Ver!",
 			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
 			"no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
-			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın."
+			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın.",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Bu butonu kullanmak için bir ses kanalına bağlı olmalısınız.",

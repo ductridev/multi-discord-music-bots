@@ -775,7 +775,6 @@
 			"error": "Se ha producido un error: `{error}`",
 			"vote_button": "¡Vota por mí!",
 			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
-			"slash_deprecated": "¡Los comandos slash han sido descontinuados! Por favor, usa `{prefix}{command}` en su lugar. 🎵",
 			"periodic_message_vote_only": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¡Tu voto nos ayuda a crecer! ❤️\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
 			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -810,7 +809,8 @@
 			"vote_button": "¡Vota por mí!",
 			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
 			"no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
-			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!"
+			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "No estás conectado a un canal de voz para usar este botón.",

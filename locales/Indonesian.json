@@ -747,7 +747,6 @@
 			"error": "Terjadi kesalahan: `{error}`",
 			"vote_button": "Vote untuk saya!",
 			"vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
-			"slash_deprecated": "Perintah slash sudah tidak digunakan lagi! Silakan gunakan `{prefix}{command}` sebagai gantinya. 🎵",
 			"periodic_message_vote_only": "🎵 Suka musiknya? Vote kami di Top.gg! Vote kamu membantu kami berkembang! ❤️\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
 			"periodic_message_with_bots": "🎵 Suka musiknya? Vote kami di Top.gg! Ingin musik di banyak ruangan? Tambahkan lebih banyak bot! 🎶\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -782,7 +781,8 @@
 			"vote_button": "Vote untuk saya!",
 			"vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
 			"no_free_bots": "Tidak ada bot yang tersedia saat ini. Anda mungkin ingin menambahkan lebih banyak bot ke server ini.",
-			"no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!"
+			"no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Anda tidak terhubung ke voice channel untuk menggunakan tombol ini.",

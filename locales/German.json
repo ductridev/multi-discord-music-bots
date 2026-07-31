@@ -741,7 +741,6 @@
 			"error": "Ein Fehler ist aufgetreten: `{error}`",
 			"vote_button": "Stimme für mich ab!",
 			"vote_message": "Warte! Du musst auf top.gg abstimmen, um diesen Befehl zu verwenden. Danke.",
-			"slash_deprecated": "Slash-Befehle sind veraltet! Bitte verwende stattdessen `{prefix}{command}`. 🎵",
 			"periodic_message_vote_only": "🎵 Gefällt dir die Musik? Stimme für uns auf Top.gg ab! Deine Stimme hilft uns zu wachsen! ❤️\nInstabiler Ton? Verwende `bregion`, um zu einer näheren Region zu wechseln",
 			"periodic_message_with_bots": "🎵 Gefällt dir die Musik? Stimme für uns auf Top.gg ab! Musik in mehreren Räumen? Füge mehr Bots hinzu! 🎶\nInstabiler Ton? Verwende `bregion`, um zu einer näheren Region zu wechseln",
 			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
@@ -783,7 +782,8 @@
 			"button_stop": "⏹️ Stoppen",
 			"button_loop_off": "🔁 Schleife Aus",
 			"button_loop_song": "🔂 Song wiederholen",
-			"button_loop_queue": "🔁 Warteschlange wiederholen"
+			"button_loop_queue": "🔁 Warteschlange wiederholen",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Du bist nicht mit einem Sprachkanal verbunden, um diesen Button zu verwenden.",
