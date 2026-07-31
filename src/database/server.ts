@@ -1,5 +1,5 @@
 import { BotConfig, type Dj, type Guild, type Playlist, PrismaClient, type Role, type Setup, type Stay } from '@prisma/client';
-import { env } from '../env';
+import { DEFAULT_LOCALE } from '../structures/I18n';
 import Logger from '../structures/Logger';
 import { PlayerJson } from 'lavalink-client';
 
@@ -7,6 +7,8 @@ export default class ServerData {
 	private prisma: PrismaClient;
 	private childEnv: BotConfig = {} as BotConfig;
 	public logger: Logger;
+	private static languageCache = new Map<string, string>();
+	private static setupCache = new Map<string, Setup | null>();
 
 	constructor(bot: BotConfig) {
 		this.prisma = new PrismaClient();
@@ -87,27 +89,52 @@ export default class ServerData {
 			where: { guildId },
 			data: { language },
 		});
+		ServerData.languageCache.set(guildId, language);
 	}
 
 	public async getLanguage(guildId: string): Promise<string> {
+		const cached = ServerData.languageCache.get(guildId);
+		if (cached !== undefined) return cached;
+
 		const guild = await this.get(guildId);
-		return guild?.language ?? env.DEFAULT_LANGUAGE;
+		const language = guild?.language ?? DEFAULT_LOCALE;
+		ServerData.languageCache.set(guildId, language);
+		return language;
+	}
+
+	/** Drops every cached guild language. Required after any bulk write that
+	 *  bypasses updateLanguage, e.g. a backup restore. */
+	public static clearLanguageCache(): void {
+		ServerData.languageCache.clear();
+	}
+
+	/** Drops every cached setup row. Required after any bulk write that
+	 *  bypasses setSetup/deleteSetup, e.g. a backup restore. */
+	public static clearSetupCache(): void {
+		ServerData.setupCache.clear();
 	}
 
 	public async getSetup(guildId: string): Promise<Setup | null> {
-		return await this.prisma.setup.findUnique({ where: { guildId } });
+		const cached = ServerData.setupCache.get(guildId);
+		if (cached !== undefined) return cached;
+
+		const setup = await this.prisma.setup.findUnique({ where: { guildId } });
+		ServerData.setupCache.set(guildId, setup);
+		return setup;
 	}
 
 	public async setSetup(guildId: string, textId: string, messageId: string): Promise<void> {
-		await this.prisma.setup.upsert({
+		const setup = await this.prisma.setup.upsert({
 			where: { guildId },
 			update: { textId, messageId },
 			create: { guildId, textId, messageId },
 		});
+		ServerData.setupCache.set(guildId, setup);
 	}
 
 	public async deleteSetup(guildId: string): Promise<void> {
 		await this.prisma.setup.delete({ where: { guildId } });
+		ServerData.setupCache.delete(guildId);
 	}
 
 	public async set_247(guildId: string, botClientId: string, textId: string, voiceId: string): Promise<void> {

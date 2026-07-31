@@ -567,11 +567,7 @@
 			}
 		},
 		"livelyrics": {
-			"description": "显示当前歌曲的实时同步歌词！卡拉OK模式 🎤",
-			"errors": {
-				"no_player": "当前没有播放音乐。",
-				"no_synced": "这首歌没有找到同步歌词。"
-			}
+			"description": "启用或禁用实时歌词同步"
 		},
 		"fairplay": {
 			"description": "启用公平模式！让每个人都有机会播放喜欢的歌 ⚖️",
@@ -697,9 +693,6 @@
 				"title": "用法",
 				"value": "`!youtubeconfig <子命令> [选项]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
 			}
-		},
-		"livelyrics": {
-			"description": "启用或禁用实时歌词同步"
 		}
 	},
 	"buttons": {
@@ -771,10 +764,13 @@
 			"error": "哎呀！出错了: `{error}` 😢",
 			"vote_button": "为我投票！⭐",
 			"vote_message": "等一下！在 top.gg 上为机器人投票后才能用这个命令。谢谢支持！💖",
-			"slash_deprecated": "斜杠命令已弃用！请改用 `{prefix}{command}`。🎵",
 			"periodic_message_vote_only": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票吧！您的支持让我们更强大！❤️\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
-			"periodic_message_with_bots": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票！想在多个房间播放音乐？添加更多机器人吧！🎶\n音频不稳定？使用 `bregion` 切换到离你更近的地区"
-
+			"periodic_message_with_bots": "🎵 喜欢音乐吗？在 Top.gg 上为我们投票！想在多个房间播放音乐？添加更多机器人吧！🎶\n音频不稳定？使用 `bregion` 切换到离你更近的地区",
+			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
+			"no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
+			"no_free_bots": "目前没有可用的机器人。您可能需要向此服务器添加更多机器人。",
+			"maintenance": "机器人正在维护中。请稍后再试。",
+			"delegated_to_bot": "**{bot}** 会处理这个请求 — 它现在空闲，马上进入你的频道 🎶"
 		},
 		"message": {
 			"prefix_mention": "嘿，我这个服务器的前缀是 `{prefix}`。想要了解更多信息？请执行 `{prefix}help`\n注意安全，保持出色！",
@@ -804,7 +800,8 @@
 			"no_bots_configured": "此服务器尚未添加任何音乐机器人。请先邀请机器人！",
 			"voice_channel_full": "语音频道 <#{channel}> 已满。请切换到其他频道或增加成员限制。",
 			"vote_button": "为我投票！",
-			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。"
+			"vote_message": "等等！您需要在 top.gg 上为机器人投票才能使用此命令。谢谢。",
+			"prefix_deprecated": "⚠️ 前缀命令即将停用 — Discord 正在收回消息读取权限。请改用斜杠命令 `/{command}` 或提及机器人：`@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "你不在语音频道里才能用这个按钮！🎵",

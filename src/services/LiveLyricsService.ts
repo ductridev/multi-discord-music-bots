@@ -10,8 +10,7 @@ import {
 import type { Player, LyricsResult } from 'lavalink-client';
 import type Lavamusic from '../structures/Lavamusic';
 import AsyncLock from '../structures/AsyncLock.js';
-import { T } from '../structures/I18n.js';
-import { env } from '../env.js';
+import { DEFAULT_LOCALE, T } from '../structures/I18n.js';
 
 /**
  * Discord rate limit scope types
@@ -205,9 +204,9 @@ export class LiveLyricsService {
 	private async getGuildLocale(guildId: string): Promise<string> {
 		try {
 			const locale = await this.client.db.getLanguage(guildId);
-			return locale || env.DEFAULT_LANGUAGE || 'Vietnamese';
+			return locale || DEFAULT_LOCALE;
 		} catch {
-			return env.DEFAULT_LANGUAGE || 'Vietnamese';
+			return DEFAULT_LOCALE;
 		}
 	}
 

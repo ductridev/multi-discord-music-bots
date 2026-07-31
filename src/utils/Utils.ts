@@ -6,7 +6,6 @@ import {
 	CommandInteraction,
 	Message,
 	MessageFlags,
-	type TextChannel,
 } from 'discord.js';
 import type { Context, Lavamusic } from '../structures/index';
 
@@ -91,11 +90,10 @@ export class Utils {
 
 	public static async paginate(client: Lavamusic, ctx: Context, embed: any[]): Promise<void> {
 		if (embed.length < 2) {
-			if (ctx.isInteraction) {
-				ctx.deferred ? await ctx.interaction?.followUp({ embeds: embed }) : await ctx.interaction?.reply({ embeds: embed });
-				return;
-			}
-			await (ctx.channel as TextChannel).send({ embeds: embed });
+			// Let Context decide how to send: it knows whether this reply belongs
+			// to an interaction or to a delegated bot's channel, and it resolves
+			// an outstanding defer instead of stacking a follow-up on top of it.
+			await ctx.sendMessage({ embeds: embed });
 			return;
 		}
 
@@ -135,19 +133,10 @@ export class Utils {
 		};
 
 		const msgOptions = getButton(0);
-		let msg: Message;
-
-		if (ctx.isInteraction) {
-			if (ctx.deferred) {
-				await ctx.interaction!.followUp(msgOptions);
-				msg = await ctx.interaction!.fetchReply() as Message;
-			} else {
-				await ctx.interaction!.reply(msgOptions);
-				msg = await ctx.interaction!.fetchReply() as Message;
-			}
-		} else {
-			msg = await (ctx.channel as TextChannel).send(msgOptions);
-		}
+		// Let Context decide how to send: it knows whether this reply belongs to
+		// an interaction or to a delegated bot's channel, and it resolves an
+		// outstanding defer instead of stacking a follow-up on top of it.
+		const msg: Message = await ctx.sendMessage(msgOptions);
 
 		const author = ctx instanceof CommandInteraction ? ctx.user : ctx.author;
 

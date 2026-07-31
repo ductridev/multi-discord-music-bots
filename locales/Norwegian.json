@@ -748,10 +748,13 @@
 			"error": "En feil oppstod: `{error}`",
 			"vote_button": "Stem på meg!",
 			"vote_message": "Vent! Du må stemme på top.gg for å bruke denne kommandoen. Takk.",
-			"slash_deprecated": "Skråstrekkommandoer er utdatert! Vennligst bruk `{prefix}{command}` i stedet. 🎵",
 			"periodic_message_vote_only": "🎵 Liker du musikken? Stem på oss på Top.gg! Din stemme hjelper oss å vokse! ❤️\nUstabil lyd? Bruk `bregion` for å bytte til en region nærmere deg",
-			"periodic_message_with_bots": "🎵 Liker du musikken? Stem på oss på Top.gg! Vil du ha musikk i flere rom? Legg til flere botter! 🎶\nUstabil lyd? Bruk `bregion` for å bytte til en region nærmere deg"
-
+			"periodic_message_with_bots": "🎵 Liker du musikken? Stem på oss på Top.gg! Vil du ha musikk i flere rom? Legg til flere botter! 🎶\nUstabil lyd? Bruk `bregion` for å bytte til en region nærmere deg",
+			"voice_channel_full": "Kanalen <#{channel}> er full! Prøv en annen kanal eller øk brukergrensen 😅",
+			"no_bots_configured": "Ingen musikkroboter har blitt lagt til på denne serveren ennå. Vennligst inviter en robot først!",
+			"no_free_bots": "Ingen roboter er tilgjengelige akkurat nå. Du vil kanskje legge til flere roboter på denne serveren.",
+			"maintenance": "Boten er under vedlikehold! Kom tilbake snart 🔧",
+			"delegated_to_bot": "**{bot}** tar denne — den er ledig og kommer inn i kanalen din 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hei, prefikset mitt for denne serveren er `{prefix}`. Vil du ha mer informasjon? Bruk da `{prefix}help`\nHold deg trygg, hold deg fantastisk!",
@@ -779,7 +782,8 @@
 			"vote_button": "Stem på meg!",
 			"vote_message": "Vent! Du må stemme på top.gg for å bruke denne kommandoen. Takk.",
 			"no_free_bots": "Ingen roboter er tilgjengelige akkurat nå. Du vil kanskje legge til flere roboter på denne serveren.",
-			"no_bots_configured": "Ingen musikkroboter har blitt lagt til på denne serveren ennå. Vennligst inviter en robot først!"
+			"no_bots_configured": "Ingen musikkroboter har blitt lagt til på denne serveren ennå. Vennligst inviter en robot først!",
+			"prefix_deprecated": "⚠️ Prefiks-kommandoer forsvinner — Discord trekker tilbake tilgangen til meldinger. Bruk slash-kommandoen `/{command}` eller nevn boten: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Du er ikke tilkoblet en talekanal for å bruke denne knappen.",

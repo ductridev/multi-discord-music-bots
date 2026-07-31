@@ -744,10 +744,13 @@
 			"error": "오류: `{error}`",
 			"vote_button": "투표하기",
 			"vote_message": "잠깐! 이 명령어를 사용하려면 top.gg에서 투표해야 해요.",
-			"slash_deprecated": "빗금 명령어가 더 이상 사용되지 않아요! 대신 `{prefix}{command}`를 사용해 주세요. 🎵",
 			"periodic_message_vote_only": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러분의 투표가 성장에 도움이 됩니다! ❤️\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요",
-			"periodic_message_with_bots": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러 방에서 음악을 듣고 싶나요? 봇을 더 추가하세요! 🎶\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요"
-
+			"periodic_message_with_bots": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러 방에서 음악을 듣고 싶나요? 봇을 더 추가하세요! 🎶\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요",
+			"voice_channel_full": "<#{channel}> 채널이 꽉 찼어요! 다른 채널을 쓰거나 인원 제한을 늘려 주세요 😅",
+			"no_bots_configured": "아직 이 서버에 음악 봇이 추가되지 않았어요. 먼저 봇을 초대해 주세요!",
+			"no_free_bots": "현재 사용 가능한 봇이 없어요. 이 서버에 더 많은 봇을 추가해 보세요.",
+			"maintenance": "봇이 점검 중이에요! 잠시 후에 다시 와 주세요 🔧",
+			"delegated_to_bot": "**{bot}** 이(가) 처리할 거예요 — 지금 한가해서 곧 채널로 들어갈게요 🎶"
 		},
 		"message": {
 			"prefix_mention": "이 서버의 접두사는 `{prefix}`예요. 더 많은 정보를 원하시나요? `{prefix}help`를 사용하세요.\n안전하게 지내시고, 멋진 하루 보내세요!",
@@ -774,7 +777,8 @@
 			"vote_button": "투표하기",
 			"vote_message": "잠깐! 이 명령어를 사용하려면 top.gg에서 투표해야 해요.",
 			"no_free_bots": "현재 사용 가능한 봇이 없어요. 이 서버에 더 많은 봇을 추가해 보세요.",
-			"no_bots_configured": "아직 이 서버에 음악 봇이 추가되지 않았어요. 먼저 봇을 초대해 주세요!"
+			"no_bots_configured": "아직 이 서버에 음악 봇이 추가되지 않았어요. 먼저 봇을 초대해 주세요!",
+			"prefix_deprecated": "⚠️ 프리픽스 명령어는 곧 사라져요 — Discord가 메시지 접근 권한을 회수하고 있어요. 슬래시 명령어 `/{command}` 를 쓰거나 봇을 멘션해 주세요: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "이 버튼을 사용하려면 음성 채널에 있어야 해요.",

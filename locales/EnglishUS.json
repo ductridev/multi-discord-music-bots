@@ -752,7 +752,11 @@
 			"bot_busy_different_vc": "I'm playing music in another channel right now! Use a different bot or wait till I'm free 🎵",
 			"bot_busy_get_more": "I'm busy in another channel! Add more bots to play in multiple rooms at once 🤖",
 			"get_more_bots_button": "Get More Bots ➕",
-			"slash_deprecated": "Slash commands have been deprecated! Please use `{prefix}{command}` instead. 🎵"
+			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵",
+			"no_free_bots": "No bots available right now! Consider adding more bots to the server 🤖",
+			"maintenance": "The bot is under maintenance! Check back soon 🔧",
+			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hey! My prefix here is `{prefix}`. Want help? Try `{prefix}help`\nStay awesome! 🎉",
@@ -779,7 +783,8 @@
 			"vote_button": "Vote for me! ⭐",
 			"vote_message": "Hold on! Vote for the bot on top.gg to use this command. Thanks! 💖",
 			"no_free_bots": "No bots available right now! Consider adding more bots to the server 🤖",
-			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵"
+			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵",
+			"prefix_deprecated": "⚠️ Prefix commands are going away — Discord is revoking message access. Use the slash command `/{command}` or mention the bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Join a voice channel first to use this button! 🎵",
@@ -893,5 +898,23 @@
 	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
 	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
 	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
-	"The refresh token to use": "The refresh token to use"
+	"The refresh token to use": "The refresh token to use",
+	"maintenance": {
+		"title": "Maintenance Mode",
+		"enabled_title": "🛠️ Maintenance Mode On",
+		"enabled_desc": "The bot is under **maintenance**! Music commands are paused for now — check back soon 🔧",
+		"disabled_title": "✅ Maintenance Mode Off",
+		"disabled_desc": "The bot is **back to normal**! Play away 🎵",
+		"field_title": "🔧 Maintenance",
+		"status_title": "🛠️ Maintenance status",
+		"status_value": "Under maintenance",
+		"affected_title": "🕒 What's affected",
+		"affected_value": "Music and queue commands are temporarily unavailable. Hang tight!",
+		"requested_by": "Requested by {author}",
+		"global_field_value_enabled": "```diff\n+ {count}/{total} UNDER MAINTENANCE\n```",
+		"global_field_value_disabled": "```diff\n- ALL RUNNING NORMALLY\n```",
+		"global_field_fetch_failed": "⚠️ Couldn't fetch the data! Try again",
+		"local_field_enabled": "```diff\n+ UNDER MAINTENANCE\n```",
+		"local_field_disabled": "```diff\n- RUNNING NORMALLY\n```"
+	}
 }

@@ -39,12 +39,54 @@ import { BotConfig } from '@prisma/client';
 
 const { MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping } = GatewayIntentBits;
 
-const clientOptions: ClientOptions = {
-	intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMessageTyping],
-	allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
-};
+function clientOptionsFor(bot: BotConfig): ClientOptions {
+	const intents = [Guilds, GuildMessages, GuildVoiceStates, GuildMessageTyping];
+
+	// Requesting an intent the application does not hold fails login outright
+	// with "Used disallowed intents", so this must be per bot. Mentions still
+	// deliver content without it.
+	if (bot.messageContentIntent) intents.push(MessageContent);
+
+	return {
+		intents,
+		allowedMentions: { parse: ['users', 'roles'], repliedUser: false },
+	};
+}
+
+function isDisallowedIntents(error: unknown): boolean {
+	const message = error instanceof Error ? error.message : String(error);
+	return message.includes('Used disallowed intents');
+}
 
 export async function shardStart(bot: BotConfig) {
-	const client = new Lavamusic(clientOptions, bot);
+	let failed: Lavamusic | undefined;
+
+	try {
+		failed = new Lavamusic(clientOptionsFor(bot), bot);
+		await failed.start();
+		return;
+	} catch (error) {
+		if (!(bot.messageContentIntent && isDisallowedIntents(error))) throw error;
+	}
+
+	// The rejected client still holds its REST agent, its sweeper intervals and
+	// everything the Lavamusic constructor registered. Tear it down before a
+	// second client logs in with the same token.
+	await failed?.destroy().catch(() => null);
+
+	// Discord has revoked MessageContent for this application. Coming up without
+	// it beats staying offline: slash commands and @mention commands both work
+	// without any privileged intent. Only prefix commands are lost.
+	//
+	// Deliberately NOT persisted to BotConfig — a write from an error path would
+	// turn a transient Discord fault into a permanent silent downgrade. Flip
+	// messageContentIntent to false yourself once you have confirmed the
+	// revocation is real, and this retry stops happening.
+	const client = new Lavamusic(clientOptionsFor({ ...bot, messageContentIntent: false }), bot);
+	client.logger.error(
+		`${bot.name}: Discord rejected the MessageContent intent. Starting without it — ` +
+			'slash and @mention commands will work, prefix commands will not. ' +
+			`Set messageContentIntent=false on this bot's BotConfig row to make this permanent.`,
+	);
 	await client.start();
-};
+}

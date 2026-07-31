@@ -1,5 +1,5 @@
 import type { AutocompleteInteraction } from 'discord.js';
-import { env } from '../../env';
+import { DEFAULT_LOCALE } from '../../structures/I18n';
 import { Command, type Context, type Lavamusic } from '../../structures/index';
 import { Language, LocaleFlags } from '../../types';
 
@@ -62,7 +62,7 @@ export default class LanguageCommand extends Command {
 			subCommand = args.shift();
 		}
 
-		const defaultLanguage = env.DEFAULT_LANGUAGE || Language.Vietnamese;
+		const defaultLanguage = DEFAULT_LOCALE;
 
 		if (subCommand === 'set') {
 			const embed = client.embed().setColor(this.client.color.main);

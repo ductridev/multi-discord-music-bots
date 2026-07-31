@@ -709,7 +709,6 @@
 			"not_author": "Je kunt deze knop niet gebruiken."
 		}
 	},
-
 	"player": {
 		"errors": {
 			"no_player": "Er is geen actieve speler in deze server.",
@@ -766,10 +765,13 @@
 			"error": "Er is een fout opgetreden: `{error}`",
 			"vote_button": "Stem op mij!",
 			"vote_message": "Wacht! Je moet stemmen op top.gg om dit commando te gebruiken. Bedankt.",
-			"slash_deprecated": "Slash-commando's zijn verouderd! Gebruik in plaats daarvan `{prefix}{command}`. 🎵",
 			"periodic_message_vote_only": "🎵 Geniet je van de muziek? Stem op ons op Top.gg! Jouw stem helpt ons groeien! ❤️\nInstabiel geluid? Gebruik `bregion` om naar een regio dichter bij jou te schakelen",
-			"periodic_message_with_bots": "🎵 Geniet je van de muziek? Stem op ons op Top.gg! Muziek in meerdere kamers? Voeg meer bots toe! 🎶\nInstabiel geluid? Gebruik `bregion` om naar een regio dichter bij jou te schakelen"
-
+			"periodic_message_with_bots": "🎵 Geniet je van de muziek? Stem op ons op Top.gg! Muziek in meerdere kamers? Voeg meer bots toe! 🎶\nInstabiel geluid? Gebruik `bregion` om naar een regio dichter bij jou te schakelen",
+			"voice_channel_full": "Spraakkanaal <#{channel}> is vol. Schakel over naar een ander kanaal of verhoog de ledenlimiet.",
+			"no_bots_configured": "Er zijn nog geen muziekbots aan deze server toegevoegd. Nodig eerst een bot uit!",
+			"no_free_bots": "Er zijn momenteel geen bots beschikbaar. Je wilt misschien meer bots aan deze server toevoegen.",
+			"maintenance": "De bot is in onderhoud. Probeer het later opnieuw.",
+			"delegated_to_bot": "**{bot}** handelt dit af — die is vrij en komt naar je kanaal 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hé, mijn voorvoegsel voor deze server is `{prefix}`. Wil je meer informatie? Gebruik dan `{prefix}help`\nBlijf veilig, blijf geweldig!",
@@ -798,7 +800,8 @@
 			"no_bots_configured": "Er zijn nog geen muziekbots aan deze server toegevoegd. Nodig eerst een bot uit!",
 			"voice_channel_full": "Spraakkanaal <#{channel}> is vol. Schakel over naar een ander kanaal of verhoog de ledenlimiet.",
 			"vote_button": "Stem op mij!",
-			"vote_message": "Wacht! Je moet stemmen op top.gg om dit commando te gebruiken. Bedankt."
+			"vote_message": "Wacht! Je moet stemmen op top.gg om dit commando te gebruiken. Bedankt.",
+			"prefix_deprecated": "⚠️ Prefix-commando's verdwijnen — Discord trekt de toegang tot berichten in. Gebruik het slash-commando `/{command}` of vermeld de bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Je bent niet verbonden met een spraakkanaal om deze knop te gebruiken.",

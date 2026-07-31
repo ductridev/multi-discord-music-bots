@@ -558,11 +558,7 @@
 			}
 		},
 		"livelyrics": {
-			"description": "Zeige synchronisierte Live-Songtexte für den aktuellen Titel! Karaoke-Modus 🎤",
-			"errors": {
-				"no_player": "Es wird gerade keine Musik abgespielt.",
-				"no_synced": "Keine synchronisierten Songtexte für diesen Titel gefunden."
-			}
+			"description": "Live-Lyrics-Synchronisierung aktivieren oder deaktivieren"
 		},
 		"fairplay": {
 			"description": "Stellen Sie den Bot so ein, dass er Musik fair abspielt",
@@ -674,9 +670,6 @@
 				"toggle": "Aktiviere oder deaktiviere das Abstimmungssystem",
 				"status": "Überprüfe den aktuellen Status des Abstimmungssystems"
 			}
-		},
-		"livelyrics": {
-			"description": "Live-Lyrics-Synchronisierung aktivieren oder deaktivieren"
 		}
 	},
 	"buttons": {
@@ -748,10 +741,13 @@
 			"error": "Ein Fehler ist aufgetreten: `{error}`",
 			"vote_button": "Stimme für mich ab!",
 			"vote_message": "Warte! Du musst auf top.gg abstimmen, um diesen Befehl zu verwenden. Danke.",
-			"slash_deprecated": "Slash-Befehle sind veraltet! Bitte verwende stattdessen `{prefix}{command}`. 🎵",
 			"periodic_message_vote_only": "🎵 Gefällt dir die Musik? Stimme für uns auf Top.gg ab! Deine Stimme hilft uns zu wachsen! ❤️\nInstabiler Ton? Verwende `bregion`, um zu einer näheren Region zu wechseln",
-			"periodic_message_with_bots": "🎵 Gefällt dir die Musik? Stimme für uns auf Top.gg ab! Musik in mehreren Räumen? Füge mehr Bots hinzu! 🎶\nInstabiler Ton? Verwende `bregion`, um zu einer näheren Region zu wechseln"
-
+			"periodic_message_with_bots": "🎵 Gefällt dir die Musik? Stimme für uns auf Top.gg ab! Musik in mehreren Räumen? Füge mehr Bots hinzu! 🎶\nInstabiler Ton? Verwende `bregion`, um zu einer näheren Region zu wechseln",
+			"voice_channel_full": "Kanal <#{channel}> ist voll! Versuche einen anderen Kanal oder erhöhe das Nutzerlimit 😅",
+			"no_bots_configured": "Diesem Server wurden noch keine Musik-Bots hinzugefügt. Bitte lade zuerst einen Bot ein!",
+			"no_free_bots": "Im Moment sind keine Bots verfügbar. Möglicherweise möchtest du weitere Bots zu diesem Server hinzufügen.",
+			"maintenance": "Der Bot ist in Wartung! Schau bald wieder vorbei 🔧",
+			"delegated_to_bot": "**{bot}** übernimmt das — der Bot ist frei und kommt in deinen Kanal 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hey, mein Präfix für diesen Server ist `{prefix}`. Möchtest du mehr Infos? Dann gib `{prefix}help` ein\nBleib sicher, bleib großartig!",
@@ -786,7 +782,8 @@
 			"button_stop": "⏹️ Stoppen",
 			"button_loop_off": "🔁 Schleife Aus",
 			"button_loop_song": "🔂 Song wiederholen",
-			"button_loop_queue": "🔁 Warteschlange wiederholen"
+			"button_loop_queue": "🔁 Warteschlange wiederholen",
+			"prefix_deprecated": "⚠️ Prefix-Befehle werden abgeschafft — Discord entzieht den Zugriff auf Nachrichten. Nutze den Slash-Befehl `/{command}` oder erwähne den Bot: `@{bot} {command}`"
 		},
 		"setupButton": {
 			"no_voice_channel_button": "Du bist nicht mit einem Sprachkanal verbunden, um diesen Button zu verwenden.",

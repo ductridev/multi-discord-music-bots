@@ -15,8 +15,25 @@ import { Context, Event, type Lavamusic } from '../../structures/index';
 import { env } from '../../env';
 import { getBotsForGuild } from '../..';
 import { Stay, PrismaClient } from '@prisma/client';
+import { buildBotMeta, resolveBot } from '../../utils/BotResolver';
+import { runCommandFor } from '../../utils/CommandRunner';
 
 const prisma = new PrismaClient();
+
+/**
+ * Last time each user was told prefix commands are going away, keyed
+ * `guildId:userId`.
+ *
+ * The notice doubles the message volume of every prefix command, which on a busy
+ * guild is real channel rate-limit pressure. Keyed per user rather than per
+ * guild because the notice exists to retrain each individual — a guild-wide
+ * throttle would let one person's command suppress everyone else's only warning.
+ *
+ * Unbounded by design: one small entry per user who still uses prefix commands,
+ * on a code path that is deleted when the intent revocation completes.
+ */
+const prefixNoticeSentAt = new Map<string, number>();
+const PREFIX_NOTICE_INTERVAL = 6 * 60 * 60 * 1000;
 
 /**
  * Parse a string into args, respecting quoted strings (both double and single quotes)
@@ -49,38 +66,152 @@ export default class MessageCreate extends Event {
 		if (message.author.bot) return;
 		if (!(message.guild && message.guildId)) return;
 
+		const mentionPrefix = new RegExp(`^<@!?${this.client.user?.id}>\\s*`);
+		const mentionMatch = message.content.match(mentionPrefix);
+
 		const guildId = message.guildId;
 		const userVCId = message.member?.voice?.channelId ?? null;
 
-		const setup = await this.client.db.getSetup(message.guildId!);
+		// getSetup is cache-backed (ServerData.setupCache), so this runs ahead
+		// of the empty-content bail below without reintroducing a per-message
+		// database call. A setup-channel message must be consumed regardless
+		// of content — SetupSystem.run always ends in message.delete(), and
+		// that channel's whole purpose is staying clean of stray posts.
+		const setup = await this.client.db.getSetup(guildId);
 		if (setup && setup.textId === message.channelId) {
 			return this.client.emit('setupSystem', message);
 		}
-		const locale = await this.client.db.getLanguage(message.guildId!);
+
+		// Once MessageContent is disabled, content is empty on everything except
+		// mentions and DMs. Bail before spending any database calls.
+		if (!(message.content.trim() || mentionMatch)) return;
+
+		const locale = await this.client.db.getLanguage(guildId);
 		const botClientId = this.client.childEnv.id;
+
+		if (mentionMatch) {
+			const rest = message.content.slice(mentionMatch[0].length).trim();
+
+			// Bare mention keeps the old behaviour: show help.
+			if (!rest) {
+				const helpCommand = this.client.commands.get('help');
+				if (helpCommand) {
+					const helpCtx = new Context(message, []);
+					helpCtx.guildLocale = locale;
+					await helpCommand.run(this.client, helpCtx, []);
+					return;
+				}
+				await message.reply({
+					content: T(locale, 'event.message.prefix_mention', {
+						prefix: await this.client.db.getPrefix(guildId, botClientId),
+					}),
+				});
+				return;
+			}
+
+			// `@Bot play song` — only this bot received content, so resolve and
+			// delegate exactly as the slash path does.
+			const mentionArgs = parseArgsWithQuotes(rest);
+			const mentionCmdName = mentionArgs.shift()?.toLowerCase();
+			if (!mentionCmdName) return;
+
+			const mentionCommand =
+				this.client.commands.get(mentionCmdName) ||
+				this.client.commands.get(this.client.aliases.get(mentionCmdName) as string);
+			if (!mentionCommand) return;
+
+			const mentionBots = getBotsForGuild(guildId);
+			if (mentionBots.length === 0) {
+				await message.reply({ content: T(locale, 'event.message.no_bots_configured') });
+				return;
+			}
+
+			if (mentionCommand.args && mentionArgs.length === 0) {
+				const embed = this.client
+					.embed()
+					.setColor(this.client.color.red)
+					.setTitle(T(locale, 'event.message.missing_arguments'))
+					.setDescription(
+						T(locale, 'event.message.missing_arguments_description', {
+							command: mentionCommand.name,
+							examples: mentionCommand.description.examples
+								? mentionCommand.description.examples.join('\n')
+								: 'None',
+						}),
+					);
+				await message.reply({ embeds: [embed] });
+				return;
+			}
+
+			const { botMeta, vcToBot } = buildBotMeta(mentionBots, message.guild);
+			const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
+			this.client.logger.debug(
+				`resolve @mention ${mentionCommand.name}: ${resolved.reason} -> ${resolved.bot?.childEnv.name ?? 'none'}`,
+			);
+			let chosen = resolved.bot ?? this.client;
+			let isSelf = chosen.user!.id === this.client.user!.id;
+
+			const mentionCtx = new Context(message, mentionArgs);
+			mentionCtx.setArgs(mentionArgs);
+			mentionCtx.guildLocale = locale;
+
+			if (!isSelf) {
+				const chosenChannel = chosen.channels.cache.get(message.channelId);
+				const chosenGuild = chosen.guilds.cache.get(guildId);
+				// Commands read ctx.member directly, so it must come from the chosen
+				// bot's cache too — otherwise guards validate one view of the user's
+				// voice state while execution reads another. resolve() does not
+				// fetch, so a member cache miss disqualifies the delegation just
+				// like a missing guild or channel.
+				const chosenMember = chosenGuild?.members.resolve(message.author.id);
+				if (chosenChannel?.isTextBased() && chosenGuild && chosenMember) {
+					// Swap all four together, before runGuards — it resolves the
+					// chosen bot's own member from ctx.guild and member caches are
+					// per-client.
+					mentionCtx.client = chosen;
+					mentionCtx.channel = chosenChannel;
+					mentionCtx.guild = chosenGuild;
+					mentionCtx.member = chosenMember;
+				} else {
+					// The chosen bot cannot honestly own its own messages here, so
+					// handle it locally rather than validating one bot and running
+					// another. Mirrors the slash path's null-delegation fallback.
+					this.client.logger.warn(
+						`Cannot delegate ${mentionCommand.name} to ${chosen.childEnv.name}: guild, channel or member not cached. Handling locally.`,
+					);
+					chosen = this.client;
+					isSelf = true;
+				}
+			}
+
+			// Announce a handoff only when a bot is about to JOIN the channel. A bot
+			// already sitting in the user's channel is visibly there and its own
+			// reply follows, so a preamble explains nothing.
+			const announceHandoff = !isSelf && resolved.reason !== 'in_user_vc';
+
+			await runCommandFor(
+				chosen,
+				mentionCtx,
+				mentionCommand,
+				!resolved.valid,
+				async payload => {
+					await message.reply(payload as any).catch(() => null);
+				},
+				announceHandoff
+					? async () => {
+							await message.reply({
+								content: T(locale, 'event.interaction.delegated_to_bot', {
+									bot: chosen.user!.username,
+								}),
+							});
+						}
+					: undefined,
+			);
+			return;
+		}
 
 		const allPrefixes = await this.client.db.getAllPrefixes(guildId);
 		allPrefixes.push(env.GLOBAL_PREFIX);
-
-		const prefix = await this.client.db.getPrefix(guildId, botClientId);
-		const mention = new RegExp(`^<@!?${this.client.user?.id}>( |)$`);
-		if (mention.test(message.content)) {
-			// Get the help command and execute it
-			const helpCommand = this.client.commands.get('help');
-			if (helpCommand) {
-				const ctx = new Context(message, []);
-				ctx.guildLocale = locale;
-				await helpCommand.run(this.client, ctx, []);
-				return;
-			}
-			// Fallback to prefix message if help command not found
-			await message.reply({
-				content: T(locale, 'event.message.prefix_mention', {
-					prefix: prefix,
-				}),
-			});
-			return;
-		}
 
 		const escapeRegex = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		const prefixPatterns = allPrefixes.map(p => `(${escapeRegex(p)})`);
@@ -540,6 +671,23 @@ export default class MessageCreate extends Event {
 					.setTimestamp();
 
 				await (logs as TextChannel).send({ embeds: [embed], flags: 4096 });
+			}
+
+			// Warn users that prefix commands are deprecated, at most once per user
+			// per PREFIX_NOTICE_INTERVAL.
+			const noticeKey = `${message.guildId}:${message.author.id}`;
+			const lastNotice = prefixNoticeSentAt.get(noticeKey) ?? 0;
+			const now = Date.now();
+			if (now - lastNotice > PREFIX_NOTICE_INTERVAL) {
+				prefixNoticeSentAt.set(noticeKey, now);
+				await message.channel
+					.send({
+						content: T(locale, 'event.message.prefix_deprecated', {
+							command: command.name,
+							bot: this.client.user!.username,
+						}),
+					})
+					.catch(() => null);
 			}
 		}
 	}

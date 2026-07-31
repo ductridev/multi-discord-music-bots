@@ -15,8 +15,7 @@ import {
 	type TextChannel,
 	type User,
 } from 'discord.js';
-import { env } from '../env';
-import { T } from './I18n';
+import { DEFAULT_LOCALE, T } from './I18n';
 import type { Lavamusic } from './index';
 
 export default class Context {
@@ -35,9 +34,13 @@ export default class Context {
 	public args: any[];
 	public msg: any;
 	public guildLocale: string | undefined;
+	public sourceType: 'interaction' | 'message';
+	private sendMode: 'interaction' | 'channel';
 
 	constructor(ctx: ChatInputCommandInteraction | Message, args: any[]) {
 		this.ctx = ctx;
+		this.sourceType = ctx instanceof ChatInputCommandInteraction ? 'interaction' : 'message';
+		this.sendMode = this.sourceType === 'interaction' ? 'interaction' : 'channel';
 		this.interaction = ctx instanceof ChatInputCommandInteraction ? ctx : null;
 		this.message = ctx instanceof Message ? ctx : null;
 		this.channel = ctx.channel!;
@@ -51,16 +54,52 @@ export default class Context {
 		this.member = ctx.member;
 		this.args = args;
 		this.setArgs(args);
-		this.setUpLocale();
 	}
 
-	private async setUpLocale(): Promise<void> {
-		const defaultLanguage = env.DEFAULT_LANGUAGE || 'Vietnamese';
-		this.guildLocale = this.guild ? await this.client.db.getLanguage(this.guild.id) : defaultLanguage;
+	/**
+	 * Build a Context whose args come from the receiving bot's interaction but
+	 * whose output is sent by a different bot as a normal channel message.
+	 * The chosen bot then owns every message it posts, so its own collectors,
+	 * buttons, name and avatar stay consistent.
+	 *
+	 * Returns null when the chosen bot has not cached the guild or channel:
+	 * without both, its identity cannot be swapped in honestly, and the caller
+	 * must handle the command itself rather than let the wrong bot speak.
+	 */
+	public static delegated(
+		interaction: ChatInputCommandInteraction,
+		chosenBot: Lavamusic,
+		args: any[],
+	): Context | null {
+		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
+		const channel = chosenBot.channels.cache.get(interaction.channelId);
+		// Commands read ctx.member directly, so it must come from the chosen
+		// bot's cache too — otherwise guards validate one view of the user's
+		// voice state while execution reads another. resolve() does not fetch,
+		// so a cache miss is as disqualifying as a missing guild or channel:
+		// keeping the receiver's member here is exactly the mismatch this swap
+		// exists to prevent.
+		const member = guild?.members.resolve(interaction.user.id);
+		if (!guild || !channel?.isTextBased() || !member) return null;
+
+		const ctx = new Context(interaction, args);
+		ctx.sendMode = 'channel';
+		ctx.client = chosenBot;
+		ctx.guild = guild;
+		ctx.channel = channel as TextBasedChannel;
+		ctx.member = member;
+
+		return ctx;
 	}
 
+	/** True when args and options come from an interaction payload. */
 	public get isInteraction(): boolean {
-		return this.ctx instanceof ChatInputCommandInteraction;
+		return this.sourceType === 'interaction';
+	}
+
+	/** True when replies go through the interaction rather than channel.send(). */
+	private get sendsViaInteraction(): boolean {
+		return this.sendMode === 'interaction';
 	}
 
 	public setArgs(args: any[]): void {
@@ -70,18 +109,19 @@ export default class Context {
 	public async sendMessage(
 		content: string | MessagePayload | MessageCreateOptions | InteractionReplyOptions,
 	): Promise<Message> {
-		if (this.isInteraction) {
+		if (this.sendsViaInteraction) {
 			if (typeof content === 'string' || isInteractionReplyOptions(content)) {
-				// Check if interaction has already been replied or deferred
-				if (this.interaction?.replied || this.interaction?.deferred) {
-					// Use followUp instead (returns Message directly)
+				if (this.interaction?.deferred && !this.interaction?.replied) {
+					// Resolve the outstanding defer rather than leaving a stuck
+					// "thinking" placeholder. editReply marks the interaction
+					// replied, so any later send falls through to followUp below.
+					this.msg = await this.interaction.editReply(content as any) as Message;
+				} else if (this.interaction?.replied || this.interaction?.deferred) {
 					this.msg = await this.interaction?.followUp(content) as Message;
 				} else {
-					// Use reply with fetchReply to get the message object
 					if (typeof content === 'string') {
 						this.msg = await this.interaction?.reply({ content, fetchReply: true }) as Message;
 					} else {
-						// For object content, reply and then fetch the reply
 						await this.interaction?.reply(content);
 						this.msg = await this.interaction?.fetchReply() as Message;
 					}
@@ -89,7 +129,7 @@ export default class Context {
 				return this.msg;
 			}
 		} else if (typeof content === 'string' || isMessagePayload(content)) {
-			this.msg = await (this.message?.channel as TextChannel).send(content);
+			this.msg = await (this.channel as TextChannel).send(content as any);
 			return this.msg;
 		}
 		return this.msg;
@@ -98,7 +138,7 @@ export default class Context {
 	public async editMessage(
 		content: string | MessagePayload | InteractionEditReplyOptions | MessageEditOptions,
 	): Promise<Message> {
-		if (this.isInteraction && this.msg) {
+		if (this.sendsViaInteraction && this.msg) {
 			this.msg = await this.interaction?.editReply(content);
 			return this.msg;
 		}
@@ -110,35 +150,37 @@ export default class Context {
 	}
 
 	public async sendDeferMessage(content: string | MessagePayload | MessageCreateOptions): Promise<Message> {
-		if (this.isInteraction) {
-			await this.interaction?.deferReply();
+		if (this.sendsViaInteraction) {
+			if (!(this.interaction?.deferred || this.interaction?.replied)) {
+				await this.interaction?.deferReply();
+			}
 			this.msg = await this.interaction?.fetchReply() as Message;
 			return this.msg;
 		}
 
-		this.msg = await (this.message?.channel as TextChannel).send(content);
+		this.msg = await (this.channel as TextChannel).send(content as any);
 		return this.msg;
 	}
 
 	public locale(key: string, ...args: any) {
-		if (!this.guildLocale) this.guildLocale = env.DEFAULT_LANGUAGE || 'Vietnamese';
+		if (!this.guildLocale) this.guildLocale = DEFAULT_LOCALE;
 		return T(this.guildLocale, key, ...args);
 	}
 
 	public async sendFollowUp(
 		content: string | MessagePayload | MessageCreateOptions | InteractionReplyOptions,
 	): Promise<void> {
-		if (this.isInteraction) {
+		if (this.sendsViaInteraction) {
 			if (typeof content === 'string' || isInteractionReplyOptions(content)) {
 				await this.interaction?.followUp(content);
 			}
 		} else if (typeof content === 'string' || isMessagePayload(content)) {
-			this.msg = await (this.message?.channel as TextChannel).send(content);
+			this.msg = await (this.channel as TextChannel).send(content as any);
 		}
 	}
 
 	public get deferred(): boolean | undefined {
-		return this.isInteraction ? this.interaction?.deferred : !!this.msg;
+		return this.sendsViaInteraction ? this.interaction?.deferred : !!this.msg;
 	}
 
 	options = {
