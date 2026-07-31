@@ -58,6 +58,36 @@ export function buildBotMeta(bots: Lavamusic[], guild: Guild): {
 }
 
 /**
+ * Which bot a prefix command was addressed to, before availability is considered.
+ *
+ * A guild-specific prefix names exactly one bot. The global prefix names none,
+ * so those are spread across the fleet by message id rather than piling onto the
+ * first bot. Generic over the bot type so it can be tested as plain data.
+ *
+ * Every instance runs this over the same message and the same bot list, so all
+ * of them must reach the same answer — that agreement is what stops two bots
+ * answering one command.
+ *
+ * `prefixes[i]` is the guild prefix of `bots[i]`; the arrays must line up.
+ */
+export function pickReceiver<T>(
+	bots: T[],
+	prefixes: string[],
+	matchedPrefix: string,
+	globalPrefix: string,
+	messageId: string,
+): T {
+	const named = prefixes.findIndex(prefix => prefix === matchedPrefix);
+	if (named !== -1) return bots[named];
+	if (matchedPrefix === globalPrefix) {
+		// Last 4 hex digits of a snowflake are its sequence counter, which varies
+		// per message where the leading timestamp bits barely move.
+		return bots[parseInt(messageId.slice(-4), 16) % bots.length];
+	}
+	return bots[0];
+}
+
+/**
  * Pure selection ladder. Every input is plain data so this is testable
  * without a Discord connection.
  *

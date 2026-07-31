@@ -1,24 +1,10 @@
-import {
-	ActionRowBuilder,
-	ButtonBuilder,
-	ButtonStyle,
-	ChannelType,
-	Collection,
-	EmbedBuilder,
-	type GuildMember,
-	type Message,
-	PermissionFlagsBits,
-	type TextChannel,
-} from 'discord.js';
+import type { Message } from 'discord.js';
 import { T } from '../../structures/I18n';
-import { Context, Event, type Lavamusic } from '../../structures/index';
+import { type Command, Context, Event, type Lavamusic } from '../../structures/index';
 import { env } from '../../env';
-import { getBotsForGuild } from '../..';
-import { Stay, PrismaClient } from '@prisma/client';
-import { buildBotMeta, resolveBot } from '../../utils/BotResolver';
+import { activeBots, getBotsForGuild } from '../..';
+import { buildBotMeta, pickReceiver, resolveBot } from '../../utils/BotResolver';
 import { runCommandFor } from '../../utils/CommandRunner';
-
-const prisma = new PrismaClient();
 
 /**
  * Last time each user was told prefix commands are going away, keyed
@@ -60,6 +46,30 @@ export default class MessageCreate extends Event {
 		super(client, file, {
 			name: 'messageCreate',
 		});
+	}
+
+	/**
+	 * Shared by the mention and prefix paths. Deliberately not folded into
+	 * runGuards: a slash command's required options are enforced by Discord
+	 * before the interaction ever arrives, and `ctx.args` there is an options
+	 * array rather than words, so the same check would reject valid slash calls.
+	 */
+	private missingArgsEmbed(command: Command, locale: string) {
+		return this.client
+			.embed()
+			.setColor(this.client.color.red)
+			.setTitle(T(locale, 'event.message.missing_arguments'))
+			.setDescription(
+				T(locale, 'event.message.missing_arguments_description', {
+					command: command.name,
+					examples: command.description.examples ? command.description.examples.join('\n') : 'None',
+				}),
+			)
+			.setFooter({
+				text: T(locale, 'event.message.syntax_footer'),
+				iconURL:
+					'https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg',
+			});
 	}
 
 	public async run(message: Message): Promise<any> {
@@ -127,19 +137,7 @@ export default class MessageCreate extends Event {
 			}
 
 			if (mentionCommand.args && mentionArgs.length === 0) {
-				const embed = this.client
-					.embed()
-					.setColor(this.client.color.red)
-					.setTitle(T(locale, 'event.message.missing_arguments'))
-					.setDescription(
-						T(locale, 'event.message.missing_arguments_description', {
-							command: mentionCommand.name,
-							examples: mentionCommand.description.examples
-								? mentionCommand.description.examples.join('\n')
-								: 'None',
-						}),
-					);
-				await message.reply({ embeds: [embed] });
+				await message.reply({ embeds: [this.missingArgsEmbed(mentionCommand, locale)] });
 				return;
 			}
 
@@ -227,458 +225,65 @@ export default class MessageCreate extends Event {
 		if (!command) return;
 
 		const allBots = getBotsForGuild(guildId);
-
-		// Check if no bots are configured for this guild
 		if (allBots.length === 0) {
-			// Only one bot should reply to avoid spam
-			if (this.client.childEnv.id === this.client.childEnv.id) {
-				await message.reply({
-					content: T(locale, 'event.message.no_bots_configured')
-				});
+			// Every instance reaches this line for the same message, so the reply
+			// has to be pinned to one of them or the guild gets one copy per bot.
+			if (activeBots[0]?.user?.id === this.client.user?.id) {
+				await message.reply({ content: T(locale, 'event.message.no_bots_configured') });
 			}
 			return;
 		}
 
-		// Early return: If this bot is not configured for this guild, skip processing
-		if (!allBots.some(bot => bot.user?.id === this.client.user?.id)) {
-			return;
-		}
+		// This bot isn't serving this guild, so it has no say in the selection.
+		if (!allBots.some(bot => bot.user?.id === this.client.user?.id)) return;
 
-		let chosenBot: typeof this.client | null = null;
-		let valid = true;
+		// The bot the user addressed. A guild-specific prefix names exactly one
+		// bot; the global prefix names none, so those spread across the fleet by
+		// message id — every instance derives the same index from the same message.
+		const prefixes = await Promise.all(allBots.map(bot => bot.db.getPrefix(guildId, bot.childEnv.clientId)));
+		const receiver = pickReceiver(allBots, prefixes, matchedPrefix.trim(), env.GLOBAL_PREFIX, message.id);
 
-		// CRITICAL FIX: Use a shared state across ALL bot instances
-		// We need to check ACTUAL voice state from Discord, not from local memory
-		// because each bot instance might have different in-memory state
-		const voiceStates = message.guild!.voiceStates.cache;
-		const botClientIds = allBots.map(b => b.user!.id);
-
-		// Build REAL voice channel mapping from Discord's actual state
-		const realGuildMap = new Map<string, string>();
-		const realActiveClientIds = new Set<string>();
-
-		for (const [, voiceState] of voiceStates) {
-			if (voiceState.channelId && botClientIds.includes(voiceState.member!.user.id)) {
-				realGuildMap.set(voiceState.channelId, voiceState.member!.user.id);
-				realActiveClientIds.add(voiceState.member!.user.id);
-			}
-		}
-
-		const botMeta = await Promise.all(
-			allBots.map(async bot => {
-				const [prefix, is247] = await Promise.all([
-					bot.db.getPrefix(guildId, bot.childEnv.clientId),
-					bot.db.get_247(bot.childEnv.clientId, guildId)
-				]);
-				return {
-					bot,
-					clientId: bot.childEnv.clientId,
-					name: bot.childEnv.name,
-					prefix,
-					is247: is247 as Stay,
-					isInAnyVC: realActiveClientIds.has(bot.user!.id) // Use REAL state
-				};
-			})
+		const { botMeta, vcToBot } = buildBotMeta(allBots, message.guild);
+		const resolved = resolveBot(vcToBot, botMeta, userVCId, receiver);
+		this.client.logger.debug(
+			`resolve prefix ${command.name}: ${resolved.reason} -> ${resolved.bot?.childEnv.name ?? 'none'}`,
 		);
 
-		// Deterministic bot selection (same result across all bot instances)
-		if (userVCId) {
-			const botInSameVC = realGuildMap.get(userVCId);
+		// When nothing is free the addressed bot still answers, so the guards run
+		// and the user hears about a permission or voice problem before "all busy".
+		const chosen = resolved.bot ?? receiver;
 
-			// Priority 1: Bot already in user's VC
-			const sameVCBot = botMeta.find(entry => botInSameVC === entry.bot.user!.id);
-			if (sameVCBot) {
-				chosenBot = sameVCBot.bot;
-				valid = true;
-			}
-			// Priority 2: Bot with matching prefix that is idle
-			else {
-				const matchingFreeBot = botMeta.find(entry =>
-					entry.prefix === matchedPrefix.trim() && !entry.isInAnyVC
-				);
-				if (matchingFreeBot) {
-					chosenBot = matchingFreeBot.bot;
-					valid = true;
-				}
-				// Priority 3: Any idle bot (deterministic: use first idle bot found)
-				else {
-					const idleBot = botMeta.find(entry => !entry.isInAnyVC);
-					if (idleBot) {
-						chosenBot = idleBot.bot;
-						valid = true;
-					}
-					// No bot available - all bots are busy in other VCs
-					else {
-						// Pick a bot for responding (first one or based on prefix)
-						if (matchedPrefix.trim() === env.GLOBAL_PREFIX) {
-							const botIndex = parseInt(message.id.slice(-4), 16) % allBots.length;
-							chosenBot = allBots[botIndex];
-						} else {
-							chosenBot = allBots[0];
-						}
-						valid = false; // Mark as invalid so it shows "no free bots" message
-					}
-				}
-			}
-		} else {
-			// User not in voice channel - select bot based on prefix match or distribution
-			// First try to match the prefix
-			const matchingPrefixBot = botMeta.find(entry => entry.prefix === matchedPrefix.trim());
-			if (matchingPrefixBot) {
-				chosenBot = matchingPrefixBot.bot;
-			}
-			// Otherwise, use round-robin or first bot that matches
-			// If using global prefix, distribute commands across all available bots
-			else if (matchedPrefix.trim() === env.GLOBAL_PREFIX) {
-				// Simple distribution: use hash of message ID to pick a bot
-				const botIndex = parseInt(message.id.slice(-4), 16) % allBots.length;
-				chosenBot = allBots[botIndex];
-			}
-			// Fallback to first available bot
-			else {
-				chosenBot = allBots[0];
-			}
+		// No identity swap here, unlike the slash and mention paths: every bot
+		// receives this message and runs the same resolution, so the chosen bot
+		// handles its own event and the rest drop out on this line.
+		if (chosen.user!.id !== this.client.user!.id) return;
+
+		if (command.args && args.length === 0) {
+			await message.reply({ embeds: [this.missingArgsEmbed(command, locale)] });
+			return;
 		}
-
-		// Only the chosen bot should continue processing
-		if (!chosenBot || this.client.user!.id !== chosenBot.user!.id) return;
-
-		// Don't check if bot is free yet - we need to validate voice channel first
-		// to show proper error messages
 
 		const ctx = new Context(message, args);
 		ctx.setArgs(args);
 		ctx.guildLocale = locale;
 
-		const clientMember = message.guild!.members.resolve(this.client.user!)!;
-		const isDev = this.client.env.OWNER_IDS?.includes(message.author.id);
-
-		if (!(message.inGuild() && message.channel.permissionsFor(clientMember)?.has(PermissionFlagsBits.ViewChannel)))
-			return;
-
-		if (
-			!(
-				clientMember.permissions.has(PermissionFlagsBits.ViewChannel) &&
-				clientMember.permissions.has(PermissionFlagsBits.SendMessages) &&
-				clientMember.permissions.has(PermissionFlagsBits.EmbedLinks) &&
-				clientMember.permissions.has(PermissionFlagsBits.ReadMessageHistory)
-			)
-		) {
-			return await message.author
-				.send({
-					content: T(locale, 'event.message.no_send_message'),
-				})
-				.catch(() => {
-					null;
-				});
-		}
-
-		if (command.permissions) {
-			if (command.permissions?.client) {
-				const missingClientPermissions = command.permissions.client.filter(
-					(perm: any) => !clientMember.permissions.has(perm),
-				);
-
-				if (missingClientPermissions.length > 0) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_permission', {
-							permissions: missingClientPermissions.map((perm: string) => `\`${perm}\``).join(', '),
-						}),
-					});
-				}
-			}
-
-			if (command.permissions?.user) {
-				if (!(isDev || (message.member as GuildMember).permissions.has(command.permissions.user))) {
-					const missingUserPermissions = Array.isArray(command.permissions.user)
-						? command.permissions.user
-						: [command.permissions.user];
-
-					return await message.reply({
-						content: T(locale, 'event.message.no_user_permission', {
-							permissions: missingUserPermissions.map((perm: string) => `\`${perm}\``).join(', '),
-						}),
-					});
-				}
-			}
-
-			if (command.permissions?.dev && this.client.env.OWNER_IDS) {
-				if (!isDev) return;
-			}
-		}
-
-		if (!isDev && command.vote
-			&& this.client.env.TOPGG
-			&& !this.client.env.SKIP_VOTES_GUILDS!.find(id => id === message.guildId)
-			&& !this.client.env.SKIP_VOTES_USERS!.find(id => id === message.author.id)
-		) {
-			// Add timeout to prevent hanging on slow/unresponsive Top.gg API
-			const voteCheckTimeout = new Promise<boolean>((resolve) => {
-				setTimeout(() => {
-					this.client.logger.warn(`Vote check timeout for user ${message.author.id} - defaulting to disallow command`);
-					resolve(false); // Default to disallowing command if API is slow
-				}, 5000); // 5 second timeout
-			});
-
-			let voted: boolean;
-			try {
-				voted = await Promise.race([
-					this.client.topGG.hasVoted(message.author.id),
-					voteCheckTimeout
-				]);
-			} catch (error) {
-				voted = false; // Default to disallowing command on error
-			}
-
-			if (!voted) {
-				const voteBtn = new ActionRowBuilder<ButtonBuilder>().addComponents(
-					new ButtonBuilder()
-						.setLabel(T(locale, 'event.message.vote_button'))
-						.setURL(`https://top.gg/bot/${this.client.env.TOPGG_CLIENT_ID ?? '1385166515099275346'}/vote`)
-						.setStyle(ButtonStyle.Link),
-				);
-
-				return await message.reply({
-					content: T(locale, 'event.message.vote_message'),
-					components: [voteBtn],
-				});
-			}
-		}
-
-		if (command.player) {
-			if (command.player.voice) {
-				if (this.client.config.maintenance && !isDev) {
-					const embed = this.client.embed()
-						.setAuthor({
-							name: T(locale, 'maintenance.title'),
-							iconURL: this.client.user?.displayAvatarURL(),
-						})
-						.setColor(this.client.color.main)
-						.setDescription(T(locale, 'event.message.maintenance') || 'The bot is currently under maintenance. Some commands may not work properly.')
-						.addFields([
-							{
-								name: T(locale, 'maintenance.status_title'), // 🔒 Status
-								value: `\`\`\`diff\n- ${T(locale, 'maintenance.status_value')}\n\`\`\``, // - MAINTENANCE ENABLED
-								inline: true,
-							},
-							{
-								name: T(locale, 'maintenance.affected_title'), // 🕒 Affected Features
-								value: `\`\`\`${T(locale, 'maintenance.affected_value')}\`\`\``, // All music playback and queue commands are temporarily disabled.
-								inline: true,
-							},
-						])
-						.setFooter({
-							text: 'BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️',
-							iconURL: 'https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg',
-						})
-						.setTimestamp();
-
-					return await message.reply({ embeds: [embed] });
-				}
-
-				const voiceChannel = (message.member as GuildMember).voice.channel;
-				const botMember = message.guild?.members.me;
-				if (!voiceChannel) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_voice_channel', { command: command.name }),
-					});
-				}
-
-				if (voiceChannel.userLimit > 0 && voiceChannel.members.size >= voiceChannel.userLimit && !voiceChannel.members.has(botMember?.id ?? '')) {
-					return await message.reply({
-						content: T(locale, 'event.message.voice_channel_full', { command: command.name, channel: voiceChannel.id }),
-					});
-				}
-
-				if (!voiceChannel.permissionsFor(this.client.user!)?.has(PermissionFlagsBits.Connect)) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_connect_permission', { command: command.name }),
-					});
-				}
-
-				if (!voiceChannel.permissionsFor(this.client.user!)?.has(PermissionFlagsBits.Speak)) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_speak_permission', { command: command.name }),
-					});
-				}
-
-				if (!clientMember.permissions.has(PermissionFlagsBits.Connect)) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_connect_permission', { command: command.name }),
-					});
-				}
-
-				if (!clientMember.permissions.has(PermissionFlagsBits.Speak)) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_speak_permission', { command: command.name }),
-					});
-				}
-
-				if (
-					(message.member as GuildMember).voice.channel?.type === ChannelType.GuildStageVoice &&
-					!clientMember.permissions.has(PermissionFlagsBits.RequestToSpeak)
-				) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_request_to_speak', { command: command.name }),
-					});
-				}
-
-				// Only check if bot is in different channel if THIS bot is actually in a voice channel
-				// AND the bot selection was valid (meaning this bot was intended to be used)
-				if (
-					clientMember.voice.channel &&
-					clientMember.voice.channelId !== (message.member as GuildMember).voice.channelId &&
-					valid
-				) {
-					return await message.reply({
-						content: T(locale, 'event.message.different_voice_channel', {
-							channel: `<#${clientMember.voice.channelId}>`,
-							command: command.name,
-						}),
-					});
-				}
-			}
-
-			if (command.player.active) {
-				const queue = this.client.manager.getPlayer(message.guildId);
-				if (!queue?.queue.current) {
-					return await message.reply({
-						content: T(locale, 'event.message.no_music_playing'),
-					});
-				}
-			}
-
-			if (command.player.dj) {
-				const dj = await this.client.db.getDj(message.guildId);
-				if (dj?.mode) {
-					const djRole = await this.client.db.getRoles(message.guildId);
-					if (!djRole) {
-						return await message.reply({
-							content: T(locale, 'event.message.no_dj_role'),
-						});
-					}
-
-					const hasDJRole = (message.member as GuildMember).roles.cache.some(role =>
-						djRole.map(r => r.roleId).includes(role.id),
-					);
-					if (
-						!(isDev || (hasDJRole && !(message.member as GuildMember).permissions.has(PermissionFlagsBits.ManageGuild)))
-					) {
-						return await message.reply({
-							content: T(locale, 'event.message.no_dj_permission'),
-						});
-					}
-				}
-			}
-		}
-
-		if (command.args && args.length === 0) {
-			const embed = this.client
-				.embed()
-				.setColor(this.client.color.red)
-				.setTitle(T(locale, 'event.message.missing_arguments'))
-				.setDescription(
-					T(locale, 'event.message.missing_arguments_description', {
-						command: command.name,
-						examples: command.description.examples ? command.description.examples.join('\n') : 'None',
-					}),
-				)
-				.setFooter({
-					text: T(locale, 'event.message.syntax_footer'),
-					iconURL: "https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg"
-				});
-			await message.reply({ embeds: [embed] });
-			return;
-		}
-
-		if (!this.client.cooldown.has(cmd)) {
-			this.client.cooldown.set(cmd, new Collection());
-		}
-		const now = Date.now();
-		const timestamps = this.client.cooldown.get(cmd)!;
-		const cooldownAmount = (command.cooldown || 5) * 1000;
-
-		if (timestamps.has(message.author.id)) {
-			const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
-			const timeLeft = (expirationTime - now) / 1000;
-			if (now < expirationTime && timeLeft > 0.9) {
-				return await message.reply({
-					content: T(locale, 'event.message.cooldown', { time: timeLeft.toFixed(1), command: cmd }),
-				});
-			}
-			timestamps.set(message.author.id, now);
-			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-		} else {
-			timestamps.set(message.author.id, now);
-			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-		}
-
-		if (args.includes('@everyone') || args.includes('@here')) {
-			return await message.reply({
-				content: T(locale, 'event.message.no_mention_everyone'),
-			});
-		}
-
-		// NOW check if bot is free (after all permission/voice checks)
-		// This ensures users get proper error messages about missing permissions or voice channel first
-		if (!valid) {
-			await message.reply({
-				content: T(locale, 'event.message.no_free_bots'),
-			});
-			return;
-		}
-
-		try {
-			return await command.run(this.client, ctx, ctx.args);
-		} catch (error: any) {
-			this.client.logger.error(error);
-			await message.reply({
-				content: T(locale, 'event.message.error', { error: error.message || 'Unknown error' }),
-			});
-		} finally {
-			// Track command usage for statistics
-			try {
-				await prisma.commandUsage.create({
-					data: {
-						guildId: message.guildId!,
-						botId: this.client.childEnv.clientId,
-						commandName: command.name,
-						userId: message.author.id,
-					},
-				});
-			} catch (error) {
-				// Silently fail - don't interrupt command execution
-				this.client.logger.error('Failed to track command usage:', error);
-			}
-
-			const logs = this.client.channels.cache.get(this.client.env.LOG_COMMANDS_ID!);
-			if (logs) {
-				const embed = new EmbedBuilder()
-					.setAuthor({
-						name: 'Prefix - Command Logs',
-						iconURL: this.client.user?.avatarURL({ size: 2048 })!,
-					})
-					.setColor(this.client.config.color.green)
-					.addFields(
-						{ name: 'Command', value: `\`${command.name}\``, inline: true },
-						{ name: 'User', value: `${message.author.tag} (\`${message.author.id}\`)`, inline: true },
-						{ name: 'Guild', value: `${message.guild.name} (\`${message.guild.id}\`)`, inline: true },
-					)
-					.setFooter({
-						text: "BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",
-						iconURL: "https://raw.githubusercontent.com/ductridev/multi-distube-bots/refs/heads/master/assets/img/bot-avatar-1.jpg",
-					})
-					.setTimestamp();
-
-				await (logs as TextChannel).send({ embeds: [embed], flags: 4096 });
-			}
-
-			// Warn users that prefix commands are deprecated, at most once per user
-			// per PREFIX_NOTICE_INTERVAL.
-			const noticeKey = `${message.guildId}:${message.author.id}`;
-			const lastNotice = prefixNoticeSentAt.get(noticeKey) ?? 0;
-			const now = Date.now();
-			if (now - lastNotice > PREFIX_NOTICE_INTERVAL) {
+		await runCommandFor(
+			chosen,
+			ctx,
+			command,
+			!resolved.valid,
+			async payload => {
+				await message.reply(payload as any).catch(() => null);
+			},
+			// Warn that prefix commands are deprecated, at most once per user per
+			// PREFIX_NOTICE_INTERVAL. Hung off onGuardsPassed so a rejected command
+			// still doesn't produce a notice, matching the old placement in a
+			// finally that guard failures returned before ever reaching.
+			async () => {
+				const noticeKey = `${guildId}:${message.author.id}`;
+				const now = Date.now();
+				if (now - (prefixNoticeSentAt.get(noticeKey) ?? 0) <= PREFIX_NOTICE_INTERVAL) return;
+				if (!message.channel.isSendable()) return;
 				prefixNoticeSentAt.set(noticeKey, now);
 				await message.channel
 					.send({
@@ -688,9 +293,7 @@ export default class MessageCreate extends Event {
 						}),
 					})
 					.catch(() => null);
-			}
-		}
+			},
+		);
 	}
 }
-
-

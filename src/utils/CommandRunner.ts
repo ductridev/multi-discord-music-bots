@@ -89,7 +89,8 @@ export async function runCommandFor(
 			if (logs) {
 				const embed = new EmbedBuilder()
 					.setAuthor({
-						name: ctx.isInteraction ? 'Slash - Command Logs' : 'Mention - Command Logs',
+						// Message-backed contexts cover both mentions and prefix commands.
+						name: ctx.isInteraction ? 'Slash - Command Logs' : 'Message - Command Logs',
 						// A bot with no custom avatar returns null here, and EmbedBuilder
 						// rejects null — which would cost the audit log for that bot
 						// entirely. undefined just omits the icon.

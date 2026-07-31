@@ -289,8 +289,12 @@ export async function runGuards(
 		return fail(T(locale, 'event.message.no_mention_everyone'));
 	}
 
-	// 10. Busy — last, so the errors above take priority.
-	if (busy) {
+	// 10. Busy — last, so the errors above take priority. Only commands that need
+	// a bot to join a channel care: `help`, `ping` and the config commands work
+	// perfectly well while every bot is playing elsewhere, and refusing them was
+	// how the prefix path behaved only for users who happened to be in a voice
+	// channel at the time.
+	if (busy && command.player?.voice) {
 		return fail(T(locale, 'event.interaction.no_free_bots'));
 	}
 
