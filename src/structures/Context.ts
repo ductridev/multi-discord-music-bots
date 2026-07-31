@@ -63,21 +63,25 @@ export default class Context {
 	 * whose output is sent by a different bot as a normal channel message.
 	 * The chosen bot then owns every message it posts, so its own collectors,
 	 * buttons, name and avatar stay consistent.
+	 *
+	 * Returns null when the chosen bot has not cached the guild or channel:
+	 * without both, its identity cannot be swapped in honestly, and the caller
+	 * must handle the command itself rather than let the wrong bot speak.
 	 */
 	public static delegated(
 		interaction: ChatInputCommandInteraction,
 		chosenBot: Lavamusic,
 		args: any[],
-	): Context {
+	): Context | null {
+		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
+		const channel = chosenBot.channels.cache.get(interaction.channelId);
+		if (!guild || !channel?.isTextBased()) return null;
+
 		const ctx = new Context(interaction, args);
 		ctx.sendMode = 'channel';
 		ctx.client = chosenBot;
-
-		const guild = chosenBot.guilds.cache.get(interaction.guildId!);
-		if (guild) ctx.guild = guild;
-
-		const channel = chosenBot.channels.cache.get(interaction.channelId);
-		if (channel?.isTextBased()) ctx.channel = channel as TextBasedChannel;
+		ctx.guild = guild;
+		ctx.channel = channel as TextBasedChannel;
 
 		return ctx;
 	}
