@@ -104,8 +104,14 @@ export default class Lavamusic extends Client {
     nm.on("reconnecting", n => console.log("[NM] reconnecting", n.id, "att=", n.reconnectionAttemptCount));
     nm.on("error",        (n,e) => console.log("[NM] error", n.id, e?.message));
     nm.on("destroy",      (n,r) => console.log("[NM] destroy", n.id, r));
-    this.manager.on("debug", (ev,p) =>
-        p?.functionLayer?.includes("LavalinkNode") && console.log("[DBG]", ev, p.state, p.message));
+    // Node-layer diagnostics, minus the once-a-minute heartbeat. HeartBeatTriggered
+    // fires every 60s per node per bot and only confirms the node is alive — its
+    // absence is the interesting signal, not its presence. Keeping it would bury
+    // everything else in a multi-bot fleet.
+    this.manager.on("debug", (ev, p) =>
+        p?.functionLayer?.includes("LavalinkNode") &&
+        ev !== "HeartBeatTriggered" &&
+        console.log("[DBG]", ev, p.state, p.message));
     this.liveLyricsService = new LiveLyricsService(this);
     await this.loadCommands();
     this.logger.info("Successfully loaded commands!");
@@ -114,7 +120,12 @@ export default class Lavamusic extends Client {
     this.logger.info("Successfully loaded events!");
     loadPlugins(this);
 
-    this.on('debug', m => this.logger.info(`[DJS] ${m}`));
+    // The discord.js debug firehose at info level drowns everything else — it
+    // includes per-shard heartbeats and every REST call. Opt in with
+    // DJS_DEBUG=1 when you actually need it.
+    if (process.env.DJS_DEBUG === '1') {
+      this.on('debug', m => this.logger.info(`[DJS] ${m}`));
+    }
     this.on('error', e => this.logger.error(`[DJS-ERR]`, e));
     this.on('shardError', e => this.logger.error(`[SHARD-ERR]`, e));
     this.on('shardDisconnect', (e, id) =>
