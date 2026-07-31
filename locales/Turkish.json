@@ -780,8 +780,12 @@
 			"vote_message": "Durun! Bu komutu kullanabilmek için top.gg üzerinde oy vermelisiniz. Teşekkürler.",
 			"slash_deprecated": "Slash komutları kullanımdan kaldırıldı! Lütfen yerine `{prefix}{command}` kullanın. 🎵",
 			"periodic_message_vote_only": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Oyun büyümemize yardımcı olur! ❤️\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
-			"periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın"
-
+			"periodic_message_with_bots": "🎵 Müzikten keyif alıyor musun? Top.gg'de bize oy ver! Birden fazla odada müzik mi istiyorsun? Daha fazla bot ekle! 🎶\nSes kararsız mı? Daha yakın bir bölgeye geçmek için `bregion` kullanın",
+			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"no_bots_configured": "Bu sunucuya henüz müzik botu eklenmedi. Lütfen sunucu yöneticinize danışın.",
+			"no_free_bots": "Şu anda kullanılabilir bot yok. Lütfen bir botu boşaltmak için başka bir sunucudaki müziği durdurun.",
+			"maintenance": "The bot is under maintenance! Check back soon 🔧",
+			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
 		},
 		"message": {
 			"prefix_mention": "Merhaba, bu sunucu için ön ekim `{prefix}`. Daha fazla bilgi mi istiyorsunuz? `{prefix}help` yapın\nGüvende kalın, harika kalın!",

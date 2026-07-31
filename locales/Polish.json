@@ -676,8 +676,12 @@
 			"vote_message": "Czekaj! Musisz zagłosować na top.gg, aby użyć tej komendy. Dzięki.",
 			"slash_deprecated": "Komendy slash zostały wycofane! Użyj `{prefix}{command}` zamiast tego. 🎵",
 			"periodic_message_vote_only": "🎵 Podoba Ci się muzyka? Zagłosuj na nas na Top.gg! Twój głos pomaga nam rosnąć! ❤️\nNiestabilny dźwięk? Użyj `bregion`, aby przełączyć się na bliższy region",
-			"periodic_message_with_bots": "🎵 Podoba Ci się muzyka? Zagłosuj na nas na Top.gg! Chcesz muzykę w wielu pokojach? Dodaj więcej botów! 🎶\nNiestabilny dźwięk? Użyj `bregion`, aby przełączyć się na bliższy region"
-
+			"periodic_message_with_bots": "🎵 Podoba Ci się muzyka? Zagłosuj na nas na Top.gg! Chcesz muzykę w wielu pokojach? Dodaj więcej botów! 🎶\nNiestabilny dźwięk? Użyj `bregion`, aby przełączyć się na bliższy region",
+			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"no_bots_configured": "Nie dodano jeszcze żadnych botów muzycznych do tego serwera. Proszę najpierw zaprosić bota!",
+			"no_free_bots": "Żadne boty nie są obecnie dostępne. Możesz chcieć dodać więcej botów do tego serwera.",
+			"maintenance": "The bot is under maintenance! Check back soon 🔧",
+			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hej, mój prefiks dla tego serwera to `{prefix}`. Chcesz uzyskać więcej informacji? Uzyj komendy `{prefix}help`\nBądź bezpieczeny i niesamowity!",

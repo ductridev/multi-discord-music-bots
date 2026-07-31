@@ -777,8 +777,12 @@
 			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
 			"slash_deprecated": "¡Los comandos slash han sido descontinuados! Por favor, usa `{prefix}{command}` en su lugar. 🎵",
 			"periodic_message_vote_only": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¡Tu voto nos ayuda a crecer! ❤️\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
-			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana"
-
+			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
+			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!",
+			"no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
+			"maintenance": "The bot is under maintenance! Check back soon 🔧",
+			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
 		},
 		"message": {
 			"prefix_mention": "Hola, mi prefijo para este servidor es `{prefix}`. ¿Quieres más información? Entonces escribe `{prefix}help`\n¡Mantente seguro, mantente genial!",
