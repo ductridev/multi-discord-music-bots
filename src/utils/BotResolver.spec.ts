@@ -193,11 +193,6 @@ const c = fakeBot('C');
 	assert.strictEqual(pickReceiver(bots, prefixes, '!', '!', '111111111111110003'), 'A');
 	assert.strictEqual(pickReceiver(bots, prefixes, '!', '!', '111111111111110004'), 'B');
 	assert.strictEqual(pickReceiver(bots, prefixes, '!', '!', '111111111111110005'), 'C');
-	assert.strictEqual(
-		pickReceiver(bots, prefixes, '!', '!', '111111111111110004'),
-		pickReceiver(bots, prefixes, '!', '!', '111111111111110004'),
-		'same message must resolve to the same receiver on every instance',
-	);
 }
 
 // 16. A prefix that belongs to a bot no longer serving this guild is neither a
@@ -211,6 +206,17 @@ const c = fakeBot('C');
 //     consider themselves addressed.
 {
 	assert.strictEqual(pickReceiver(['A', 'B'], ['x!', 'x!'], 'x!', '!', '111111111111110004'), 'A');
+}
+
+// 18. Prefix matching is case-insensitive, in both directions. The regex that
+//     produces matchedPrefix ignores case, so `B1!` must still find the `b1!`
+//     the database holds, and a prefix stored capitalised must still be found.
+{
+	assert.strictEqual(pickReceiver(['A', 'B'], ['a!', 'b1!'], 'B1!', '!', '111111111111110004'), 'B');
+	assert.strictEqual(pickReceiver(['A', 'B'], ['a!', 'B1!'], 'b1!', '!', '111111111111110004'), 'B');
+	// Same for the global prefix, which otherwise falls through to bots[0] and
+	// would quietly stop distributing.
+	assert.strictEqual(pickReceiver(['A', 'B', 'C'], ['a!', 'b!', 'c!'], 'M!', 'm!', '111111111111110005'), 'C');
 }
 
 console.log('BotResolver: all assertions passed');

@@ -77,11 +77,18 @@ export function pickReceiver<T>(
 	globalPrefix: string,
 	messageId: string,
 ): T {
-	const named = prefixes.findIndex(prefix => prefix === matchedPrefix);
+	// The prefix regex matches case-insensitively, so `B1!` typed by a user has
+	// to find the `b1!` stored in the database.
+	const wanted = matchedPrefix.toLowerCase();
+
+	const named = prefixes.findIndex(prefix => prefix.toLowerCase() === wanted);
 	if (named !== -1) return bots[named];
-	if (matchedPrefix === globalPrefix) {
-		// Last 4 hex digits of a snowflake are its sequence counter, which varies
-		// per message where the leading timestamp bits barely move.
+	if (wanted === globalPrefix.toLowerCase()) {
+		// A snowflake is a decimal string whose trailing digits are the sequence
+		// counter, so they vary per message where the leading timestamp barely
+		// moves. Reading those digits as base 16 is arbitrary but harmless and
+		// predates this function — every instance computes the same index, which
+		// is the only property that matters here.
 		return bots[parseInt(messageId.slice(-4), 16) % bots.length];
 	}
 	return bots[0];

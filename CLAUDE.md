@@ -27,7 +27,7 @@ npx tsc --noEmit
 
 ### Tests
 
-No test runner is installed. Tests are executed by hand, one file at a time.
+Bot-side tests have no runner — they are self-executing `node:assert` scripts, run by hand one file at a time. The dashboard has Playwright. Neither has an npm `test` script and neither runs in CI.
 
 ```bash
 # Bot unit checks — plain node:assert, self-executing script
@@ -77,7 +77,7 @@ For sharded deployments use `getStateManager(client)` instead of the global maps
 
 ### Command dispatch (post slash-command migration)
 
-Slash and @mention paths are extracted into shared helpers; the prefix path is **not**.
+All three entry points — slash, @mention and prefix — run on the same extracted helpers.
 
 - `src/utils/BotResolver.ts` — `buildBotMeta(bots, guild)` reads Discord's cached voice states (cache-only, sync, no DB, so it is safe to call before ack). `resolveBot(...)` is the pure 4-rung ladder: bot in user's VC (preferring one with an active player) → receiver if idle → any idle → `all_busy`.
 - `src/utils/CommandGuards.ts` — `runGuards()` returns `{passed, reply?}`; 10 ordered checks (maintenance → channel perms → client perms → command perms/dev → vote → voice → active player → DJ → cooldown → @everyone → busy last). Cooldown is stamped only after every check passes.

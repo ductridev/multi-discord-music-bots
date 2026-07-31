@@ -213,9 +213,12 @@ export default class MessageCreate extends Event {
 
 		const escapeRegex = (str: string): string => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		const prefixPatterns = allPrefixes.map(p => `(${escapeRegex(p)})`);
-		const combinedPrefixRegex = new RegExp(`^(${prefixPatterns.join('|')})\\s*`);
+		// Case-insensitive against the raw content. Lowercasing the content instead
+		// — as this did — means a prefix stored with a capital in it never matches
+		// its own pattern, because the patterns come from the database verbatim.
+		const combinedPrefixRegex = new RegExp(`^(${prefixPatterns.join('|')})\\s*`, 'i');
 
-		const match = message.content.toLocaleLowerCase().match(combinedPrefixRegex);
+		const match = message.content.match(combinedPrefixRegex);
 		if (!match) return;
 		const [matchedPrefix] = match;
 		const args = parseArgsWithQuotes(message.content.slice(matchedPrefix.length).trim());
@@ -228,7 +231,14 @@ export default class MessageCreate extends Event {
 		if (allBots.length === 0) {
 			// Every instance reaches this line for the same message, so the reply
 			// has to be pinned to one of them or the guild gets one copy per bot.
-			if (activeBots[0]?.user?.id === this.client.user?.id) {
+			// The fleet shares one `activeBots` array, so electing the lowest client
+			// id agrees across instances and, unlike taking the first entry, does
+			// not depend on which bot happened to finish logging in first.
+			const [elected] = activeBots
+				.map(bot => bot.user?.id)
+				.filter((id): id is string => Boolean(id))
+				.sort();
+			if (elected === this.client.user?.id) {
 				await message.reply({ content: T(locale, 'event.message.no_bots_configured') });
 			}
 			return;
