@@ -88,3 +88,37 @@ Deviations from the spec, decided while writing the plan:
 Verified before writing, so the plan contains no guesses: `Command`/`Context`/`Lavamusic` are exported from `src/structures/index`; `config.color.blue`, `env.DEFAULT_LANGUAGE`, `env.LOG_COMMANDS_ID` all exist; `locales/EnglishUS.json` is missing `event.message.voice_channel_full` and `.maintenance` that Vietnamese has, which is why the locale patcher falls back per-key rather than copying wholesale.
 
 Known accepted cost: a delegated command produces two messages (receiver's handoff notice, chosen bot's output). Forced by the ack deadline — see spec.
+
+### 2026-07-31 — Execution: all 9 tasks (branch `feat/slash-command-migration`)
+
+22 commits off `e289dc6`. Type-check, build and the `BotResolver` spec pass. **Nothing has run against a live Discord connection and no `BotConfig` row was mutated** — see `docs/superpowers/2026-07-31-slash-migration-manual-test-plan.md`.
+
+Executed subagent-driven: one implementer per task, a spec+quality review after each, and a whole-branch review at the end. Every task except 8 and 9 needed one fix round. Consolidated report of deviations, per the standing "fix everything, report at the end" instruction:
+
+**Plan deviations (2 approved by you, rest adjudicated by me)**
+
+- **`vcToBot` maps a channel to an array, `BotMeta` gains `hasActivePlayer`** *(you approved)*. Two fleet bots can share a voice channel; the single-value map dropped one by cache iteration order, so rung 1 could hand a command to an idle co-occupant instead of the bot holding the queue. `master:MessageCreate.ts:125-131` has the same defect. Supersedes "priority ladder, unchanged from today".
+- **`Context.delegated` returns `Context | null`** *(you approved)*. It previously set `client` unconditionally but swapped `guild`/`channel` behind `if` guards, so a cache miss produced a half-swapped context — chosen bot plays, receiver posts, silently. Both delegation paths now fall back to handling the command locally.
+- **Dropped `resolveBot(opts.preferPrefix)`, added `receiver`.** The spec listed `preferPrefix`, but the spec also kept the prefix path's own inline selection, so it would have shipped with zero callers. `receiver` fixes a real gap the spec missed: without it an idle receiving bot delegates to whichever bot sorts first, causing handoffs for no reason.
+- **`runCommandFor` gained `onGuardsPassed`.** My first draft announced the handoff before running guards, so a user with no voice channel saw "Bot2 will handle this" then "you're not in a voice channel".
+- **Guard order is not the prefix path's order.** My plan's prose claimed it was. `MessageCreate` runs maintenance late, nested inside `command.player.voice` and after the vote gate; here it runs first. The `player?.voice` scoping is preserved. The property that is preserved is the one that matters: busy last.
+- **Added a channel-level `ViewChannel`/`SendMessages` guard.** My plan dropped the channel-level check `MessageCreate.ts:225` has. It matters more under delegation: a prefix command was necessarily received in a channel the bot could see, but a delegated command sends through the *chosen* bot into a channel only the *receiver* was known to reach.
+- **The setup-channel check stays above the early bail, and `getSetup` is now cached.** I claimed there was "no net regression" from bailing first. That was wrong — the old code emitted `setupSystem` for any setup-channel message regardless of content, and `SetupSystem.run` always ends in `message.delete()`, so attachment-only posts were consumed. Caching `getSetup` (including the `null` result) keeps the query the bail was meant to remove.
+
+**Corrections to my own plan**
+
+- The plan claimed `sendDeferMessage` "discarded its content argument". False: the channel path already used it, and the interaction path discards it inherently because `deferReply()` takes no content. Only the `deferred || replied` guard was a real change. Commit `86cf0f7`'s message carries the wrong claim; not rewriting history.
+- The plan called a 2-space locale reformat "expected and acceptable". It produced a 1.7 MB diff — 16,479 insertions for ~95 added lines. Locale files are mostly tab-indented with no trailing newline, but Thai is 2-space and Italian/Russian are internally inconsistent, so the scripts now detect each file's own indent. 16 of 19 round-trip byte-identically; the other three normalize, content verified semantically unchanged across all 19.
+- The plan's Global Constraints list `npm run lint` as a verification command. No eslint config exists anywhere in this repo's history, so it cannot run.
+
+**A rejected review finding worth recording.** The whole-branch reviewer reported, as Critical, that slash commands never register at all — `PortuguesePT` and a stray `vi.json` poisoning `name_localizations` with an `undefined` key. Disproven twice: `i18n.getLocales()` returns exactly the 15 `Language`-enum keys, all valid discord.js locales, and `descriptionLocalization` (the only function that would double-map key→value→key) is defined but never called. The investigation did surface a real adjacent bug though — `Lavamusic.ts` called `T(Locale.Vietnamese, ...)`, passing the value `'vi'` instead of the key `'Vietnamese'`, and since i18n defaults `updateFiles: true` it had auto-created that stray `locales/vi.json`. Three call sites fixed, file deleted.
+
+**Critical fallout from defer-first that reached outside the task.** Deferring before anything else was my design decision, and it broke two things elsewhere:
+- `Context.sendMessage` took its `followUp` branch whenever the interaction was deferred — now always — so the deferred reply was never edited and every one of 239 call sites left a stuck "thinking" placeholder.
+- `Utils.paginate` branched on `ctx.isInteraction` (source type) rather than send mode, so a delegated context called `reply()` on an already-deferred interaction. `/queue`, `/lavalink` and `/guildlist` failed every time they delegated.
+
+Both now route through `Context`, which also gives the chosen bot ownership of its own collectors.
+
+**Incidental bugs found and fixed while in the area:** `restoreBackup` and the `Setup` bulk-restore path bypassed the new caches (fixed with explicit invalidation); the audit-log `EmbedBuilder` sat unguarded inside a `finally`, so a bot with no avatar turned a successful command into a failure; the cooldown was stamped before the busy check, rate-limiting commands that never ran; a throw after the defer escaped to the global `unhandledRejection` handler and left the interaction spinning forever.
+
+**Ledger with every adjudication and deferred minor:** `.superpowers/sdd/2026-07-31-slash-command-migration/progress.md`. Kept rather than deleted, since manual testing has not happened yet.
