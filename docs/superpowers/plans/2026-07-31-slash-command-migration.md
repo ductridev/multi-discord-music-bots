@@ -1308,6 +1308,12 @@ In `src/events/client/MessageCreate.ts`, replace the block from `if (message.aut
 
 Two behaviour changes. First, the early bail: once `MessageContent` is disabled, `message.content` is empty for ordinary messages, and the current code performs three database calls (`getSetup`, `getLanguage`, `getAllPrefixes`) before the prefix regex at line 89 ever runs — every message in every guild, for nothing. Second, the mention regex loses its `$` anchor so `@Bot play song` is treated as a command.
 
+**The setup-channel check must stay ABOVE the bail.** The setup channel is a music-request channel, and the pre-existing code emitted `setupSystem` for every message posted there regardless of content — `SetupSystem.run` always ends in `message.delete()`, so attachment-only and sticker-only posts were consumed and removed. Bailing ahead of `getSetup` leaves those lingering in a channel whose whole purpose is staying clean. Moving `getSetup` above the bail would reintroduce the per-message query the bail exists to remove, so `getSetup` gains a cache on `ServerData` mirroring Task 1's language cache — including caching the `null` result, so guilds with no setup channel do not re-query on every message. Every writer of a `Setup` row must invalidate it.
+
+Final order: resolve the mention match → `getSetup` (cached) → if setup channel, emit `setupSystem` and return → bail on empty content with no mention → `getLanguage` → mention branch → prefix path.
+
+Out of scope but worth stating: once the intent is revoked, `setupSystem` receives empty content for every message and the request flow stops working regardless of this ordering. That is the intent loss, not this change.
+
 ```typescript
 		if (message.author.bot) return;
 		if (!(message.guild && message.guildId)) return;
@@ -1385,8 +1391,8 @@ Two behaviour changes. First, the early bail: once `MessageContent` is disabled,
 
 			const { botMeta, vcToBot } = buildBotMeta(mentionBots, message.guild);
 			const resolved = resolveBot(vcToBot, botMeta, userVCId, this.client);
-			const chosen = resolved.bot ?? this.client;
-			const isSelf = chosen.user!.id === this.client.user!.id;
+			let chosen = resolved.bot ?? this.client;
+			let isSelf = chosen.user!.id === this.client.user!.id;
 
 			const mentionCtx = new Context(message, mentionArgs);
 			mentionCtx.setArgs(mentionArgs);
@@ -1394,14 +1400,24 @@ Two behaviour changes. First, the early bail: once `MessageContent` is disabled,
 
 			// Swap the context onto the chosen bot's caches before guards run —
 			// runGuards resolves the chosen bot's own member from ctx.guild, and
-			// member caches are per-client.
+			// member caches are per-client. All three fields move together: a
+			// partial swap validates one bot's permissions while another executes.
 			if (!isSelf) {
 				const chosenChannel = chosen.channels.cache.get(message.channelId);
-				if (chosenChannel?.isTextBased()) {
+				const chosenGuild = chosen.guilds.cache.get(guildId);
+				if (chosenChannel?.isTextBased() && chosenGuild) {
 					mentionCtx.client = chosen;
 					mentionCtx.channel = chosenChannel;
-					const chosenGuild = chosen.guilds.cache.get(guildId);
-					if (chosenGuild) mentionCtx.guild = chosenGuild;
+					mentionCtx.guild = chosenGuild;
+				} else {
+					// Mirrors the slash path's null-delegation fallback. Without
+					// both, the chosen bot cannot own its own messages, so handle
+					// the command here rather than half-swapping identity.
+					this.client.logger.warn(
+						`Cannot delegate ${mentionCommand.name} to ${chosen.childEnv.name}: guild or channel not cached. Handling locally.`,
+					);
+					chosen = this.client;
+					isSelf = true;
 				}
 			}
 
