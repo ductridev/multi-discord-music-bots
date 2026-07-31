@@ -1,925 +1,905 @@
 {
-  "cmd": {
-    "247": {
-      "description": "Configura el bot para que permanezca en el canal de voz",
-      "errors": {
-        "not_in_voice": "Debes estar en un canal de voz para usar este comando.",
-        "generic": "Se produjo un error al intentar ejecutar este comando."
-      },
-      "messages": {
-        "disabled": "`✅` | El modo 24/7 se ha `DESACTIVADO`",
-        "enabled": "`✅` | El modo 24/7 se ha `ACTIVADO`. \n**El bot no dejará el canal de voz incluso si no hay nadie en el canal de voz.**"
-      }
-    },
-    "ping": {
-      "description": "Muestra el ping del bot.",
-      "content": "Poniendo a prueba...",
-      "bot_latency": "Latencia del Bot",
-      "api_latency": "Latencia de la API",
-      "requested_by": "Solicitado por {author}"
-    },
-    "lavalink": {
-      "description": "Muestra las estadísticas actuales de Lavalink.",
-      "title": "Estadísticas de Lavalink",
-      "content": "Reproductores: {players}\nReproductores en reproducción: {playingPlayers}\nTiempo de actividad: {uptime}\nNúcleos: {cores} Núcleo(s)\nUso de memoria: {used} / {reservable}\nCarga del sistema: {systemLoad}%\nCarga de Lavalink: {lavalinkLoad}%",
-      "page_info": "Página {index} de {total}"
-    },
-    "invite": {
-      "description": "Obtén el enlace de invitación del bot.",
-      "content": "Puedes invitarme haciendo clic en el botón de abajo. ¿Algún error o interrupción? ¡Únete al servidor de soporte!"
-    },
-    "help": {
-      "description": "Muestra el menú de ayuda.",
-      "options": {
-        "command": "El comando sobre el que quieres obtener información"
-      },
-      "content": "¡Hola! Soy {bot}, un bot de música hecho con [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) y Discord. Puedes usar `{prefix}help <command>` para obtener más información sobre un comando.",
-      "title": "Menú de Ayuda",
-      "not_found": "Este comando `{cmdName}` no existe.",
-      "help_cmd": "**Descripción:** {description}\n**Uso:** {usage}\n**Ejemplos:** {examples}\n**Alias:** {aliases}\n**Categoría:** {category}\n**Tiempo de espera:** {cooldown} segundos\n**Permisos:** {premUser}\n**Permisos del Bot:** {premBot}\n**Solo para desarrolladores:** {dev}\n**Comando Slash:** {slash}\n**Args:** {args}\n**Reproductor:** {player}\n**DJ:** {dj}\n**Permisos de DJ:** {djPerm}\n**Voz:** {voice}",
-      "footer": "Usa {prefix}help <command> para obtener más información sobre un comando • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
-    },
-    "botinfo": {
-      "description": "Información sobre el bot",
-      "content": "Información del Bot:\n- **Sistema operativo**: {osInfo}\n- **Tiempo de actividad**: {osUptime}\n- **Nombre de host**: {osHostname}\n- **Arquitectura de la CPU**: {cpuInfo}\n- **Uso de la CPU**: {cpuUsed}%\n- **Uso de la memoria**: {memUsed} / {memTotal}\n- **Versión de Node**: {nodeVersion}\n- **Versión de Discord**: {discordJsVersion}\n- **Conectado a** {guilds} servidores, {channels} canales y {users} usuarios\n- **Total de comandos**: {commands}"
-    },
-    "about": {
-      "description": "Muestra información sobre el bot",
-      "fields": {
-        "creator": "Creador",
-        "repository": "Repositorio",
-        "support": "Soporte",
-        "description": "Realmente quería hacer su primer proyecto de código abierto para obtener más experiencia en programación. En este proyecto, se desafió a sí mismo a hacer un proyecto con menos errores. ¡Espero que disfrutes usando MultiBungoBot!"
-      }
-    },
-    "dj": {
-      "description": "Gestiona el modo DJ y los roles asociados",
-      "errors": {
-        "provide_role": "Por favor, proporciona un rol.",
-        "no_roles": "El rol de DJ está vacío.",
-        "invalid_subcommand": "Por favor, proporciona un subcomando válido."
-      },
-      "messages": {
-        "role_exists": "El rol de DJ <@&{roleId}> ya está añadido.",
-        "role_added": "Se ha añadido el rol de DJ <@&{roleId}>.",
-        "role_not_found": "El rol de DJ <@&{roleId}> no está añadido.",
-        "role_removed": "Se ha eliminado el rol de DJ <@&{roleId}>.",
-        "all_roles_cleared": "Se han eliminado todos los roles de DJ.",
-        "toggle": "El modo DJ se ha cambiado a {status}."
-      },
-      "options": {
-        "add": "El rol de DJ que quieres añadir",
-        "remove": "El rol de DJ que quieres eliminar",
-        "clear": "Borra todos los roles de DJ",
-        "toggle": "Activa/desactiva el rol de DJ",
-        "role": "El rol de DJ"
-      },
-      "subcommands": "Subcomandos"
-    },
-    "prefix": {
-      "description": "Muestra o establece el prefijo del bot",
-      "errors": {
-        "prefix_too_long": "El prefijo no puede tener más de 3 caracteres."
-      },
-      "messages": {
-        "current_prefix": "El prefijo para este servidor es `{prefix}`",
-        "prefix_set": "El prefijo para este servidor es ahora `{prefix}`",
-        "prefix_reset": "El prefijo para este servidor es ahora `{prefix}`"
-      },
-      "options": {
-        "set": "Establece el prefijo",
-        "prefix": "El prefijo que quieres establecer",
-        "reset": "Restablece el prefijo al predeterminado"
-      }
-    },
-    "setup": {
-      "description": "Configura el bot",
-      "errors": {
-        "channel_exists": "El canal de solicitud de canciones ya existe.",
-        "channel_not_exists": "El canal de solicitud de canciones no existe.",
-        "channel_delete_fail": "El canal de solicitud de canciones ha sido eliminado. Si el canal no se elimina normalmente, por favor, elimínalo tú mismo."
-      },
-      "messages": {
-        "channel_created": "Se ha creado el canal de solicitud de canciones en <#{channelId}>.",
-        "channel_deleted": "Se ha eliminado el canal de solicitud de canciones.",
-        "channel_info": "El canal de solicitud de canciones es <#{channelId}>."
-      },
-      "options": {
-        "create": "Crea el canal de solicitud de canciones",
-        "delete": "Elimina el canal de solicitud de canciones",
-        "info": "Muestra el canal de solicitud de canciones"
-      }
-    },
-    "8d": {
-      "description": "Activar/desactivar filtro 8d",
-      "messages": {
-        "filter_enabled": "`✅` | El filtro 8D se ha `ACTIVADO`.",
-        "filter_disabled": "`✅` | El filtro 8D se ha `DESACTIVADO`."
-      }
-    },
-    "bassboost": {
-      "description": "Activar/desactivar filtro de refuerzo de graves",
-      "options": {
-        "level": "El nivel de refuerzo de graves que deseas establecer"
-      },
-      "messages": {
-        "high": "`✅` | El filtro de refuerzo de graves alto se ha `ACTIVADO`.",
-        "low": "`✅` | El filtro de refuerzo de graves bajo se ha `ACTIVADO`.",
-        "medium": "`✅` | El filtro de refuerzo de graves medio se ha `ACTIVADO`.",
-        "off": "`✅` | El filtro de refuerzo de graves se ha `DESACTIVADO`."
-      }
-    },
-    "distortion": {
-      "description": "Activar/desactivar filtro de distorsión",
-      "messages": {
-        "filter_enabled": "`✅` | El filtro de distorsión se ha `ACTIVADO`.",
-        "filter_disabled": "`✅` | El filtro de distorsión se ha `DESACTIVADO`."
-      }
-    },
-    "karaoke": {
-      "description": "Activar/desactivar filtro de karaoke",
-      "messages": {
-        "filter_enabled": "`✅` | El filtro de karaoke se ha `ACTIVADO`.",
-        "filter_disabled": "`✅` | El filtro de karaoke se ha `DESACTIVADO`."
-      }
-    },
-    "lowpass": {
-      "description": "Activar/desactivar filtro de paso bajo",
-      "messages": {
-        "filter_enabled": "`✅` | El filtro de paso bajo se ha `ACTIVADO`.",
-        "filter_disabled": "`✅` | El filtro de paso bajo se ha `DESACTIVADO`."
-      }
-    },
-    "nightcore": {
-      "description": "Activar/desactivar filtro nightcore",
-      "messages": {
-        "filter_enabled": "`✅` | El filtro nightcore se ha `ACTIVADO`.",
-        "filter_disabled": "`✅` | El filtro nightcore se ha `DESACTIVADO`."
-      }
-    },
-    "pitch": {
-      "description": "Activar/desactivar filtro de tono",
-      "options": {
-        "pitch": "El número al que quieres establecer el tono (entre 0,5 y 5)"
-      },
-      "errors": {
-        "invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5."
-      },
-      "messages": {
-        "pitch_set": "`✅` | El tono se ha establecido en **{pitch}**."
-      }
-    },
-    "rate": {
-      "description": "Cambiar la velocidad de la canción",
-      "options": {
-        "rate": "El número al que quieres establecer la velocidad (entre 0,5 y 5)"
-      },
-      "errors": {
-        "invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5."
-      },
-      "messages": {
-        "rate_set": "`✅` | La velocidad se ha establecido en **{rate}**."
-      }
-    },
-    "reset": {
-      "description": "Restablece los filtros activos",
-      "messages": {
-        "filters_reset": "`✅` | Se han restablecido los filtros."
-      }
-    },
-    "rotation": {
-      "description": "Activar/desactivar filtro de rotación",
-      "messages": {
-        "enabled": "`✅` | El filtro de rotación se ha `ACTIVADO`.",
-        "disabled": "`✅` | El filtro de rotación se ha `DESACTIVADO`."
-      }
-    },
-    "speed": {
-      "description": "Cambiar la velocidad de la canción",
-      "options": {
-        "speed": "La velocidad que quieres establecer"
-      },
-      "messages": {
-        "invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5.",
-        "set_speed": "`✅` | La velocidad se ha establecido en **{speed}**."
-      }
-    },
-    "tremolo": {
-      "description": "Activar/desactivar filtro de trémolo",
-      "messages": {
-        "enabled": "`✅` | El filtro de trémolo se ha `ACTIVADO`.",
-        "disabled": "`✅` | El filtro de trémolo se ha `DESACTIVADO`."
-      }
-    },
-    "vibrato": {
-      "description": "Activar/desactivar filtro de vibrato",
-      "messages": {
-        "enabled": "`✅` | El filtro de vibrato se ha `ACTIVADO`.",
-        "disabled": "`✅` | El filtro de vibrato se ha `DESACTIVADO`."
-      }
-    },
-    "autoplay": {
-      "description": "Activa/desactiva la reproducción automática",
-      "messages": {
-        "enabled": "`✅` | La reproducción automática se ha `ACTIVADO`.",
-        "disabled": "`✅` | La reproducción automática se ha `DESACTIVADO`."
-      }
-    },
-    "clearqueue": {
-      "description": "Borra la cola",
-      "messages": {
-        "cleared": "La cola se ha borrado."
-      }
-    },
-    "grab": {
-      "description": "Obtiene la canción que se está reproduciendo actualmente en tu DM",
-      "loading": "Cargando...",
-      "content": "**Duración:** {length}\n**Solicitado por:** <@{requester}>\n**Enlace:** [Haz clic aquí]({uri})",
-      "check_dm": "Por favor, revisa tu DM.",
-      "dm_failed": "No pude enviarte un DM."
-    },
-    "join": {
-      "description": "Únete al canal de voz",
-      "already_connected": "Ya estoy conectado a <#{channelId}>.",
-      "no_voice_channel": "Debes estar en un canal de voz para usar este comando.",
-      "joined": "Se ha unido correctamente a <#{channelId}>."
-    },
-    "leave": {
-      "description": "Deja el canal de voz",
-      "left": "Se ha salido correctamente de <#{channelId}>.",
-      "not_in_channel": "No estoy en ningún canal de voz."
-    },
-    "loop": {
-      "description": "Bucle de la canción actual o de la cola",
-      "looping_song": "**Poniendo en bucle la canción.**",
-      "looping_queue": "**Poniendo en bucle la cola.**",
-      "looping_off": "**El bucle ahora está desactivado.**"
-    },
-    "nowplaying": {
-      "description": "Muestra la canción que se está reproduciendo actualmente",
-      "now_playing": "Ahora se está reproduciendo",
-      "track_info": "[{title}]({uri}) - Solicitado por: <@{requester}>\n\n`{bar}`"
-    },
-    "pause": {
-      "description": "Pausa la canción actual",
-      "successfully_paused": "La canción se ha pausado correctamente.",
-      "messages": {
-        "vote_embed": "Vota para pausar: **{votes}/{needed}**\n✅ para pausar, ❌ para seguir reproduciendo.",
-        "button_yes": "✅ Pausar",
-        "button_no": "❌ Continuar",
-        "already_voted": "Ya has votado."
-      }
-    },
-    "play": {
-      "description": "Reproduce una canción de YouTube, Spotify o http",
-      "options": {
-        "song": "La canción que quieres reproducir"
-      },
-      "loading": "Cargando...",
-      "errors": {
-        "search_error": "Se ha producido un error durante la búsqueda.",
-        "no_results": "No se han encontrado resultados.",
-        "queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
-        "playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones."
-      },
-      "added_to_queue": "Se ha añadido [{title}]({uri}) a la cola.",
-      "added_playlist_to_queue": "Se han añadido {length} canciones a la cola.",
-      "warnings": {
-        "longtrack_warning": "⚠️ **Advertencia:** Una o más pistas en los resultados de búsqueda superan los 30 minutos de duración. Asegúrate de que deseas reproducir estas pistas largas ya que pueden afectar tu experiencia de escucha."
-      }
-    },
-    "playnext": {
-      "description": "Añade la canción para reproducirla a continuación en la cola",
-      "options": {
-        "song": "La canción que quieres reproducir"
-      },
-      "loading": "Cargando...",
-      "errors": {
-        "search_error": "Se ha producido un error durante la búsqueda.",
-        "no_results": "No se han encontrado resultados.",
-        "queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
-        "playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones."
-      },
-      "added_to_play_next": "Se ha añadido [{title}]({uri}) para reproducirla a continuación en la cola.",
-      "added_playlist_to_play_next": "Se han añadido {length} canciones para reproducirlas a continuación en la cola."
-    },
-    "queue": {
-      "description": "Muestra la cola actual",
-      "now_playing": "Ahora se está reproduciendo: [{title}]({uri}) - Solicitado por: <@{requester}> - Duración: {duration}",
-      "live": "EN DIRECTO",
-      "track_info": "{index}. [{title}]({uri}) - Solicitado por: <@{requester}> - Duración: {duration}",
-      "title": "Cola",
-      "page_info": "Página {index} de {total}",
-      "duration": "Duración de la Cola: `{totalDuration}`"
-    },
-    "remove": {
-      "description": "Elimina una canción de la cola",
-      "options": {
-        "song": "El número de la canción que quieres eliminar"
-      },
-      "errors": {
-        "no_songs": "No hay canciones en la cola.",
-        "invalid_number": "Por favor, proporciona un número de canción válido."
-      },
-      "messages": {
-        "removed": "Se ha eliminado la canción número {songNumber} de la cola."
-      }
-    },
-    "region": {
-      "description": "Ver o cambiar la región del servidor de audio para mejor calidad 🌐",
-      "options": {
-        "region": "La región a la que cambiar (ej: EU, VN)"
-      },
-      "info_title": "🌐 Región del Servidor de Audio",
-      "current_region": "**Nodo actual:** `{nodeId}`\n**Región:** {region}\n**Ping:** `{ping}ms`",
-      "available_regions": "Regiones disponibles",
-      "region_field": "{nodeCount} nodo(s), {playerCount} reproductor(es)\n{nodes}",
-      "current_indicator": " (actual)",
-      "switched": "¡Cambiado a la región {region}!\n**Nodo:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
-      "already_on_region": "¡Ya estás en un nodo {region} (`{nodeId}`)!",
-      "no_nodes_in_region": "¡No hay nodos disponibles en la región {region}!",
-      "invalid_region": "Región desconocida `{region}`. Disponibles: {available}",
-      "switch_failed": "Error al cambiar de región. ¡Inténtalo de nuevo!"
-    },
-    "replay": {
-      "description": "Vuelve a reproducir la pista actual",
-      "errors": {
-        "not_seekable": "No se puede reproducir de nuevo esta pista porque no se puede buscar."
-      },
-      "messages": {
-        "replaying": "Vuelve a reproducir la pista actual."
-      }
-    },
-    "resume": {
-      "description": "Reanuda la canción actual",
-      "errors": {
-        "not_paused": "El reproductor no está en pausa."
-      },
-      "messages": {
-        "resumed": "Se ha reanudado el reproductor.",
-        "vote_embed": "Vota para reanudar: **{votes}/{needed}**\n✅ para reanudar, ❌ para mantener en pausa.",
-        "button_yes": "✅ Reanudar",
-        "button_no": "❌ Mantener en Pausa",
-        "already_voted": "Ya has votado."
-      }
-    },
-    "search": {
-      "description": "Busca una canción",
-      "options": {
-        "song": "La canción que quieres buscar"
-      },
-      "select": "Por favor selecciona la canción que quieres reproducir",
-      "errors": {
-        "no_results": "No se han encontrado resultados.",
-        "search_error": "Se ha producido un error durante la búsqueda."
-      },
-      "messages": {
-        "added_to_queue": "Se ha añadido [{title}]({uri}) a la cola."
-      }
-    },
-    "seek": {
-      "description": "Busca en un momento determinado de la canción",
-      "options": {
-        "duration": "La duración a la que quieres buscar"
-      },
-      "errors": {
-        "invalid_format": "Formato de tiempo no válido. Ejemplos: seek 1m, seek 1h 30m",
-        "not_seekable": "Esta pista no se puede buscar.",
-        "beyond_duration": "No se puede buscar más allá de la duración de la canción de {length}."
-      },
-      "messages": {
-        "seeked_to": "Se ha buscado en {duration}"
-      }
-    },
-    "shuffle": {
-      "description": "Mezcla la cola",
-      "errors": {
-        "fairplay": "El modo de juego justo está activado. No puedes mezclar la cola."
-      },
-      "messages": {
-        "shuffled": "Se ha mezclado la cola."
-      }
-    },
-    "skip": {
-      "description": "Salta la canción actual",
-      "messages": {
-        "skipped": "Se ha saltado [{title}]({uri}).",
-        "vote_embed": "Vota para saltar: **{votes}/{needed}**\n✅ para saltar, ❌ para seguir reproduciendo.",
-        "button_skip": "👍 Saltar",
-        "button_keep": "👎 Mantener",
-        "button_yes": "✅ Saltar",
-        "button_no": "❌ Mantener",
-        "already_voted": "Ya has votado."
-      }
-    },
-    "skipto": {
-      "description": "Salta a una canción específica de la cola",
-      "options": {
-        "number": "El número de la canción a la que quieres saltar"
-      },
-      "errors": {
-        "invalid_number": "Por favor, proporciona un número válido."
-      },
-      "messages": {
-        "skipped_to": "Se ha saltado a la canción número {number}."
-      }
-    },
-    "stop": {
-      "description": "Detiene la música y vacía la cola",
-      "messages": {
-        "stopped": "Se ha detenido la música y se ha vaciado la cola.",
-        "vote_embed": "Vota para detener: **{votes}/{needed}**\n✅ para detener, ❌ para seguir reproduciendo.",
-        "button_stop": "🛑 Detener",
-        "button_keep": "👎 Mantener",
-        "button_yes": "✅ Detener",
-        "button_no": "❌ Mantener",
-        "already_voted": "Ya has votado."
-      }
-    },
-    "volume": {
-      "description": "Establece el volumen del reproductor",
-      "options": {
-        "number": "El volumen que quieres establecer"
-      },
-      "messages": {
-        "invalid_number": "Por favor, proporciona un número válido.",
-        "too_low": "El volumen no puede ser inferior a 0.",
-        "too_high": "El volumen no puede ser superior a 200. ¿Quieres dañar tu audición o tus altavoces? Hmmm, no creo que sea una buena idea.",
-        "set": "Se ha establecido el volumen en {volume}"
-      }
-    },
-    "addsong": {
-      "description": "Añade una canción a la lista de reproducción",
-      "options": {
-        "playlist": "La lista de reproducción a la que quieres añadir",
-        "song": "La canción que quieres añadir"
-      },
-      "messages": {
-        "no_playlist": "Por favor, proporciona una lista de reproducción",
-        "no_song": "Por favor, proporciona una canción",
-        "playlist_not_found": "Esa lista de reproducción no existe",
-        "no_songs_found": "No se han encontrado canciones",
-        "added": "Se ha(n) añadido {count} canción(es) a {playlist}"
-      }
-    },
-    "create": {
-      "description": "Crea una lista de reproducción",
-      "options": {
-        "name": "El nombre de la lista de reproducción"
-      },
-      "messages": {
-        "name_too_long": "Los nombres de las listas de reproducción solo pueden tener 50 caracteres.",
-        "playlist_exists": "Ya existe una lista de reproducción con ese nombre. Por favor, usa un nombre diferente.",
-        "playlist_created": "Se ha creado la lista de reproducción **{name}**."
-      }
-    },
-    "delete": {
-      "description": "Elimina una lista de reproducción",
-      "options": {
-        "playlist": "La lista de reproducción que quieres eliminar"
-      },
-      "messages": {
-        "playlist_not_found": "Esa lista de reproducción no existe.",
-        "playlist_deleted": "Se ha eliminado la lista de reproducción **{playlistName}**."
-      }
-    },
-    "list": {
-      "description": "Recupera todas las listas de reproducción del usuario",
-      "options": {
-        "user": "El usuario cuyas listas de reproducción quieres recuperar"
-      },
-      "messages": {
-        "no_playlists": "Este usuario no tiene listas de reproducción.",
-        "your": "Tus",
-        "playlists_title": "Listas de reproducción de {username}",
-        "error": "Se ha producido un error al recuperar las listas de reproducción."
-      }
-    },
-    "load": {
-      "description": "Carga una lista de reproducción",
-      "options": {
-        "playlist": "La lista de reproducción que quieres cargar"
-      },
-      "messages": {
-        "playlist_not_exist": "Esa lista de reproducción no existe.",
-        "playlist_empty": "Esa lista de reproducción está vacía.",
-        "playlist_loaded": "Se ha cargado `{name}` con `{count}` canciones."
-      }
-    },
-    "removesong": {
-      "description": "Elimina una canción de la lista de reproducción",
-      "options": {
-        "playlist": "La lista de reproducción de la que quieres eliminar",
-        "song": "La canción que quieres eliminar"
-      },
-      "messages": {
-        "provide_playlist": "Por favor, proporciona una lista de reproducción.",
-        "provide_song": "Por favor, proporciona una canción.",
-        "playlist_not_exist": "Esa lista de reproducción no existe.",
-        "song_not_found": "No se ha encontrado ninguna canción coincidente.",
-        "song_removed": "Se ha eliminado {song} de {playlist}.",
-        "error_occurred": "Se ha producido un error al eliminar la canción."
-      }
-    },
-    "steal": {
-      "description": "Roba una lista de reproducción de otro usuario y la añade a tus listas de reproducción",
-      "options": {
-        "playlist": "La lista de reproducción que quieres robar",
-        "user": "El usuario del que quieres robar la lista de reproducción"
-      },
-      "messages": {
-        "provide_playlist": "Por favor, proporciona un nombre de lista de reproducción.",
-        "provide_user": "Por favor, menciona a un usuario.",
-        "playlist_not_exist": "Esa lista de reproducción no existe para el usuario mencionado.",
-        "playlist_stolen": "Se ha robado correctamente la lista de reproducción `{playlist}` de {user}.",
-        "error_occurred": "Se ha producido un error al robar la lista de reproducción."
-      }
-    },
-    "language": {
-      "description": "Establece el idioma del bot",
-      "invalid_language": "Por favor, proporciona un idioma válido. Ejemplo: `EnglishUS` para inglés (Estados Unidos)\n\nPuedes encontrar la lista de idiomas compatibles [aquí](https://discord.com/developers/docs/reference#locales)\n\n**Idiomas disponibles:**\n{languages}",
-      "already_set": "El idioma ya está establecido en `{language}`",
-      "not_set": "El idioma no está establecido. Por favor, establece un idioma.",
-      "set": "`✅` | El idioma se ha establecido en `{language}`",
-      "reset": "`✅` | El idioma se ha restablecido al idioma predeterminado",
-      "options": {
-        "set": "Establece el idioma del bot",
-        "language": "El idioma que quieres establecer",
-        "reset": "Cambia el idioma de nuevo al idioma predeterminado"
-      }
-    },
-    "lyrics": {
-      "description": "Obtiene la letra de la pista que se está reproduciendo actualmente",
-      "lyrics_track": "### Letra de: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
-      "searching": "`🔍` Buscando la letra de **{trackTitle}**...",
-      "errors": {
-        "no_results": "No se encontró la letra de la pista actual.",
-        "lyrics_error": "Se produjo un error al obtener la letra."
-      }
-    },
-    "fairplay": {
-      "description": "Configura el bot para reproducir música de forma justa",
-      "errors": {
-        "not_in_voice": "Debes estar en un canal de voz para usar este comando.",
-        "generic": "Se produjo un error al intentar ejecutar este comando."
-      },
-      "messages": {
-        "disabled": "`✅` | El modo de juego justo se ha `DESACTIVADO`.",
-        "enabled": "`✅` | El modo de juego justo se ha `ACTIVADO`."
-      }
-    },
-    "playlocal": {
-      "description": "Reproduce tus archivos de audio locales",
-      "options": {
-        "file": "El archivo de audio que quieres reproducir"
-      },
-      "loading": "Cargando...",
-      "errors": {
-        "empty_query": "Por favor, adjunta un archivo de audio para reproducir.",
-        "invalid_format": "Solo puedes reproducir archivos MP3, WAV, OGG, FLAC, AAC o M4A.",
-        "no_results": "No se pudo reproducir el archivo de audio. Puede estar dañado."
-      },
-      "added_to_queue": "Añadido [{title}]({url}) a la cola"
-    },
-    "loop_current": {
-      "description": "Repite la canción que se está reproduciendo actualmente"
-    },
-    "loop_queue": {
-      "description": "Repite toda la cola"
-    },
-    "vote": {
-      "description": "Gestionar el sistema de votación para comandos de música",
-      "options": {
-        "toggle": "Activar o desactivar el sistema de votación",
-        "status": "Verificar el estado actual del sistema de votación"
-      }
-    },
-    "livelyrics": {
-      "description": "Mostrar letras sincronizadas en tiempo real para la pista actual con modo karaoke",
-      "aliases": "karaoke, syncedlyrics",
-      "errors": {
-        "no_player": "No hay música reproduciéndose en este momento.",
-        "no_synced": "No se encontraron letras sincronizadas para esta pista."
-      }
-    }
-  },
-  "buttons": {
-    "invite": "Invitar",
-    "support": "Servidor de soporte",
-    "previous": "Anterior",
-    "resume": "Reanudar",
-    "stop": "Detener",
-    "skip": "Saltar",
-    "loop": "Bucle",
-    "errors": {
-      "not_author": "No puedes usar este botón."
-    }
-  },
-  "player": {
-    "errors": {
-      "no_player": "No hay ningún reproductor activo en este servidor.",
-      "no_channel": "Debes estar en un canal de voz para usar este comando.",
-      "queue_empty": "La cola está vacía.",
-      "no_previous": "No hay canciones anteriores en la cola.",
-      "no_song": "No hay canciones en la cola.",
-      "already_paused": "La canción ya está en pausa."
-    },
-    "trackStart": {
-      "now_playing": "Ahora se está reproduciendo",
-      "requested_by": "Solicitado por {user}",
-      "duration": "Duración",
-      "author": "Autor",
-      "not_connected_to_voice_channel": "No estás conectado a <#{channel}> para usar estos botones.",
-      "need_dj_role": "Debes tener el rol de DJ para usar este comando.",
-      "previous_by": "Anterior por {user}",
-      "no_previous_song": "No hay ninguna canción anterior.",
-      "paused_by": "Pausado por {user}",
-      "resumed_by": "Reanudado por {user}",
-      "skipped_by": "Saltado por {user}",
-      "no_more_songs_in_queue": "No hay más canciones en la cola.",
-      "looping_by": "Poniendo en bucle por {user}",
-      "looping_queue_by": "Poniendo en bucle la cola por {user}",
-      "looping_off_by": "Bucle desactivado por {user}"
-    },
-    "setupStart": {
-      "now_playing": "Ahora se está reproduciendo",
-      "description": "[{title}]({uri}) de {author} • `[{length}]` - Solicitado por <@{requester}>",
-      "error_searching": "Se produjo un error al buscar.",
-      "no_results": "No se encontraron resultados.",
-      "nothing_playing": "No se está reproduciendo nada ahora mismo",
-      "queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
-      "playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones.",
-      "added_to_queue": "Se añadió [{title}]({uri}) a la cola.",
-      "added_playlist_to_queue": "Se añadieron [{length}] canciones de la lista de reproducción a la cola."
-    },
-    "lavaconfig": {
-      "description": "¡Gestiona la configuración de LavaSrc en tiempo de ejecución! Actualiza servicios sobre la marcha ⚙️",
-      "errors": {
-        "service_unavailable": "El servicio Lavalink no está disponible. ¡Asegúrate de que Lavalink esté ejecutándose! 🔧",
-        "missing_subcommand": "¡Por favor, proporciona un subcomando! Prueba: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view o nodes",
-        "missing_node": "¡Por favor, proporciona un nombre de nodo! Usa 'nodes' para ver los nodos disponibles 📋",
-        "unknown_subcommand": "¡Subcomando desconocido! Prueba: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view o nodes"
-      },
-      "messages": {
-        "processing": "Procesando tu solicitud... ⚙️",
-        "config_updated_title": "✅ Configuración de {source} Actualizada",
-        "config_updated_desc": "¡Configuración de {source} actualizada exitosamente para el nodo **{nodeId}**! Cambios aplicados ✅",
-        "updated_config": "Configuración Actualizada",
-        "view_title": "📋 Configuración LavaSrc - {nodeId}",
-        "nodes_title": "Nodos Lavalink Disponibles",
-        "no_nodes": "¡No hay nodos Lavalink disponibles! Asegúrate de que Lavalink esté conectado 🔌",
-        "total_nodes": "Total de nodos: {count}"
-      },
-      "fields": {
-        "client_id": "ID de Cliente",
-        "client_secret": "Secreto de Cliente",
-        "api_key": "Clave API",
-        "decode_track": "Decodificar Pista",
-        "country_code": "Código de País",
-        "playlist_limit": "Límite de Playlist",
-        "album_limit": "Límite de Álbum",
-        "search_limit": "Límite de Búsqueda",
-        "isrc_search": "Búsqueda ISRC",
-        "fallback_search": "Búsqueda de Respaldo",
-        "load_timeout": "Tiempo de Carga",
-        "spotify_enabled": "Spotify Activado",
-        "apple_enabled": "Apple Music Activado",
-        "deezer_enabled": "Deezer Activado"
-      },
-      "usage": {
-        "title": "Uso",
-        "value": "`/lavaconfig <subcomando> <nodo> [opciones]`\nUsa los subcomandos para configurar diferentes servicios."
-      }
-    },
-    "youtubeconfig": {
-      "description": "¡Gestiona la configuración de fuente YouTube en tiempo de ejecución! Controla ajustes de OAuth y poToken 🎬",
-      "errors": {
-        "service_unavailable": "El servicio Lavalink no está disponible. ¡Asegúrate de que Lavalink esté ejecutándose! 🔧",
-        "missing_subcommand": "¡Por favor, proporciona un subcomando! Prueba: oauth, potoken, view o nodes",
-        "missing_node": "¡Por favor, proporciona un nombre de nodo! Usa 'nodes' para ver los nodos disponibles 📋",
-        "unknown_subcommand": "¡Subcomando desconocido! Prueba: oauth, potoken, view o nodes",
-        "missing_oauth_option": "¡Por favor, proporciona una opción OAuth! Prueba: email, authorization o skip",
-        "missing_potoken_pair": "¡Por favor, proporciona tanto poToken como visitorData para la opción pair!",
-        "missing_refresh_token": "¡Falta el token de actualización! La configuración OAuth requiere un token de actualización."
-      },
-      "messages": {
-        "processing": "Procesando tu solicitud... ⚙️",
-        "oauth_updated_title": "✅ Configuración YouTube OAuth Actualizada",
-        "oauth_updated_desc": "Configuración YouTube OAuth actualizada exitosamente para el nodo **{nodeId}** ✅",
-        "potoken_updated_title": "✅ Configuración YouTube poToken Actualizada",
-        "potoken_updated_desc": "Configuración YouTube poToken actualizada exitosamente para el nodo **{nodeId}** ✅",
-        "token_refreshed_title": "✅ Token OAuth Actualizado",
-        "token_refreshed_desc": "Token OAuth actualizado exitosamente para el nodo **{nodeId}** ✅",
-        "view_title": "📋 Configuración de Fuente YouTube - {nodeId}",
-        "nodes_title": "📡 Nodos Lavalink",
-        "no_nodes": "No hay nodos disponibles.",
-        "total_nodes": "Total: {count} nodo(s)",
-        "not_set": "No Establecido",
-        "na": "N/D"
-      },
-      "fields": {
-        "refresh_token": "Token de Actualización",
-        "skip_initialization": "Saltar Inicialización",
-        "potoken": "poToken",
-        "visitor_data": "Datos de Visitante",
-        "po_token": "poToken",
-        "visitor_data_short": "Datos de Visitante",
-        "oauth_email": "Email OAuth",
-        "authorization": "Autorización",
-        "skip": "Saltar",
-        "pair": "Par",
-        "refresh": "Actualizar",
-        "email": "Email",
-        "authorization_code": "Código de Autorización",
-        "status": "Estado",
-        "enabled": "ACTIVADO",
-        "disabled": "DESACTIVADO",
-        "last_updated": "Última Actualización",
-        "token_type": "Tipo de Token",
-        "expires_in": "Expira En",
-        "scope": "Ámbito",
-        "access_token_truncated": "Access Token (truncado)",
-        "updated": "✅ Actualizado",
-        "not_changed": "⚪ No Cambiado",
-        "yes": "✅ Sí",
-        "no": "❌ No",
-        "important": "⚠️ Importante",
-        "oauth_warning": "Los tokens OAuth deben mantenerse en secreto. Considera usar una cuenta YouTube desechable.",
-        "how_to_generate": "💡 Cómo Generar",
-        "generator_link": "Usa [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) para obtener estos valores.",
-        "note": "ℹ️ Nota",
-        "api_note": "La API solo devuelve el refresh token. poToken y visitorData no se exponen."
-      },
-      "usage": {
-        "title": "Uso",
-        "value": "`/youtubeconfig <subcomando> <nodo> [opciones]`\nUsa oauth para configurar OAuth, potoken para ajustes de poToken."
-      }
-    }
-  },
-  "event": {
-    "interaction": {
-      "setup_channel": "No puedes usar este comando en el canal de configuración.",
-      "no_send_message": "No tengo el permiso **`SendMessage`** en `{guild}`\ncanal: {channel}.",
-      "no_embed_links": "No tengo el permiso **`EmbedLinks`**.",
-      "no_permission": "No tengo suficientes permisos para ejecutar este comando.",
-      "no_user_permission": "No tienes suficientes permisos para usar este comando.",
-      "no_voice_channel": "Debes estar conectado a un canal de voz para usar este comando `{command}`.",
-      "no_connect_permission": "No tengo permisos `CONNECT` para ejecutar este comando `{command}`.",
-      "no_speak_permission": "No tengo permisos `SPEAK` para ejecutar este comando `{command}`.",
-      "no_request_to_speak": "No tengo permiso `REQUEST TO SPEAK` para ejecutar este comando `{command}`.",
-      "different_voice_channel": "No estás conectado a {channel} para usar este comando `{command}`.",
-      "no_music_playing": "No se está reproduciendo nada ahora mismo.",
-      "no_dj_role": "El rol de DJ no está configurado.",
-      "no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
-      "cooldown": "Por favor, espera {time} segundo(s) más antes de volver a usar el comando `{command}`.",
-      "error": "Se ha producido un error: `{error}`",
-      "vote_button": "¡Vota por mí!",
-      "vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
-      "slash_deprecated": "¡Los comandos slash han sido descontinuados! Por favor, usa `{prefix}{command}` en su lugar. 🎵",
-      "periodic_message_vote_only": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¡Tu voto nos ayuda a crecer! ❤️\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
-      "periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
-      "voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-      "no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!",
-      "no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
-      "maintenance": "The bot is under maintenance! Check back soon 🔧",
-      "delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
-    },
-    "message": {
-      "prefix_mention": "Hola, mi prefijo para este servidor es `{prefix}`. ¿Quieres más información? Entonces escribe `{prefix}help`\n¡Mantente seguro, mantente genial!",
-      "no_send_message": "No tengo el permiso **`SendMessage`** en `{guild}`\ncanal: {channel}.",
-      "no_embed_links": "No tengo el permiso **`EmbedLinks`**.",
-      "no_permission": "No tengo suficientes permisos para ejecutar este comando.",
-      "no_user_permission": "No tienes suficientes permisos para usar este comando.",
-      "no_voice_channel": "Debes estar conectado a un canal de voz para usar este comando `{command}`.",
-      "no_connect_permission": "No tengo permisos `CONNECT` para ejecutar este comando `{command}`.",
-      "no_speak_permission": "No tengo permisos `SPEAK` para ejecutar este comando `{command}`.",
-      "no_request_to_speak": "No tengo permiso `REQUEST TO SPEAK` para ejecutar este comando `{command}`.",
-      "different_voice_channel": "No estás conectado a {channel} para usar este comando `{command}`.",
-      "no_music_playing": "No se está reproduciendo nada ahora mismo.",
-      "no_dj_role": "El rol de DJ no está configurado.",
-      "no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
-      "missing_arguments": "Argumentos que faltan",
-      "missing_arguments_description": "Por favor, proporciona los argumentos necesarios para el comando `{command}`.\n\nEjemplos:\n{examples}",
-      "syntax_footer": "Sintaxis: [] = opcional, <> = requerido • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "cooldown": "Por favor, espera {time} segundo(s) más antes de volver a usar el comando `{command}`.",
-      "no_mention_everyone": "No puedes usar este comando con @everyone o @here.",
-      "error": "Se ha producido un error: `{error}`",
-      "no_voice_channel_queue": "No estás conectado a un canal de voz para poner canciones en cola.",
-      "no_permission_connect_speak": "No tengo suficientes permisos para conectarme/hablar en <#{channel}>.",
-      "different_voice_channel_queue": "No estás conectado a <#{channel}> para poner canciones en cola.",
-      "vote_button": "¡Vota por mí!",
-      "vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
-      "no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
-      "no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!"
-    },
-    "setupButton": {
-      "no_voice_channel_button": "No estás conectado a un canal de voz para usar este botón.",
-      "different_voice_channel_button": "No estás conectado a {channel} para usar estos botones.",
-      "now_playing": "Ahora se está reproduciendo",
-      "live": "EN DIRECTO",
-      "requested_by": "Solicitado por <@{requester}>",
-      "no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
-      "volume_set": "Volumen establecido en {vol}%",
-      "volume_footer": "Volumen: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "paused": "Pausado",
-      "resumed": "Reanudado",
-      "pause_resume": "{name} la música.",
-      "pause_resume_footer": "{name} por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "no_music_to_skip": "No hay música para saltar.",
-      "skipped": "Se ha saltado la música.",
-      "skipped_footer": "Saltado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "stopped": "Se ha detenido la música.",
-      "stopped_footer": "Detenido por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "nothing_playing": "No se está reproduciendo nada ahora mismo",
-      "loop_set": "Bucle establecido en {loop}.",
-      "loop_footer": "Bucle establecido en {loop} por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "shuffled": "Se ha barajado la cola.",
-      "no_previous_track": "No hay ninguna pista anterior.",
-      "playing_previous": "Reproduciendo la pista anterior.",
-      "previous_footer": "Reproduciendo la pista anterior por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "rewinded": "Se ha rebobinado la música.",
-      "rewind_footer": "Rebobinado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "forward_limit": "No puedes avanzar la música más de la duración de la canción.",
-      "forwarded": "Se ha adelantado la música.",
-      "forward_footer": "Adelantado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-      "button_not_available": "Este botón no está disponible.",
-      "no_music_playing": "No se está reproduciendo nada ahora mismo."
-    },
-    "voice_state_update": {
-      "kicked": "El bot ha sido expulsado del canal de voz <#{channelId}>.",
-      "moved": "El bot ha sido movido a <#{channelId}>.",
-      "left_due_to_timeout_no_listeners": "El bot ha abandonado el canal de voz <#{channelId}> debido a inactividad (sin oyentes).",
-      "left_due_to_timeout_no_songs": "El bot ha abandonado el canal de voz <#{channelId}> debido a inactividad (sin canciones)."
-    }
-  },
-  "will_leave": {
-    "no_listeners": "El bot se irá en {time} minutos debido a la falta de oyentes.",
-    "no_songs": "El bot se irá en {time} minutos debido a la falta de canciones."
-  },
-  "Evaluate code": "Evaluar código",
-  "Leave a guild": "Abandonar un servidor",
-  "List all guilds the bot is in": "Listar todos los servidores en los que está el bot",
-  "Restart the bot": "Reiniciar el bot",
-  "The loop mode you want to set": "El modo de bucle que quieres establecer",
-  "Show current maintenance status": "Mostrar el estado de mantenimiento actual",
-  "Show current maintenance status.": "Show current maintenance status.",
-  "Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
-  "Update Spotify configuration": "Update Spotify configuration",
-  "Update Apple Music configuration": "Update Apple Music configuration",
-  "Update Deezer configuration": "Update Deezer configuration",
-  "Update Yandex Music configuration": "Update Yandex Music configuration",
-  "Update VK Music configuration": "Update VK Music configuration",
-  "Update Qobuz configuration": "Update Qobuz configuration",
-  "Update yt-dlp configuration": "Update yt-dlp configuration",
-  "View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
-  "List all available Lavalink nodes": "List all available Lavalink nodes",
-  "The Lavalink node ID": "The Lavalink node ID",
-  "Spotify client ID": "Spotify client ID",
-  "Spotify client secret": "Spotify client secret",
-  "Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
-  "Prefer anonymous token": "Prefer anonymous token",
-  "Custom token endpoint URL": "Custom token endpoint URL",
-  "Apple Music media API token": "Apple Music media API token",
-  "Deezer ARL cookie value": "Deezer ARL cookie value",
-  "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
-  "Yandex Music access token": "Yandex Music access token",
-  "VK Music user token": "VK Music user token",
-  "Qobuz user OAuth token": "Qobuz user OAuth token",
-  "Qobuz application ID": "Qobuz application ID",
-  "Qobuz application secret": "Qobuz application secret",
-  "Path to yt-dlp executable": "Path to yt-dlp executable",
-  "Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
-  "Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
-  "Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
-  "Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
-  "Update YouTube poToken configuration": "Update YouTube poToken configuration",
-  "View current YouTube source configuration": "View current YouTube source configuration",
-  "Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
-  "YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
-  "Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
-  "Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
-  "Visitor data associated with the poToken": "Visitor data associated with the poToken",
-  "The refresh token to use": "The refresh token to use",
-  "LIVE_LYRICS": {
-    "NO_PLAYER": "No hay música reproduciéndose en este momento.",
-    "NO_LYRICS": "No se encontraron letras sincronizadas para esta pista.",
-    "TITLE": "🎵 Letras en Vivo",
-    "CURRENT": "Actual",
-    "STOPPED": "Letras en vivo detenidas.",
-    "REFRESHED": "¡Letras en vivo actualizadas!",
-    "ERROR": "Ocurrió un error al obtener las letras.",
-    "ENDED": "Letras en vivo finalizadas.",
-    "PAUSED": "Letras en vivo pausadas.",
-    "SEARCHING": "Buscando letras sincronizadas...",
-    "NO_SYNCED_TITLE": "Sin Letras Sincronizadas Disponibles",
-    "NO_SYNCED_DESCRIPTION": "Esta pista no tiene letras sincronizadas (con marca de tiempo) disponibles. Puedes probar el comando normal `{prefix}lyrics` para letras de texto plano.",
-    "ALREADY_RUNNING": "¡Las letras en vivo ya están ejecutándose para este servidor!",
-    "STARTED": "¡Letras en vivo iniciadas! La visualización se actualizará automáticamente mientras se reproduce la canción.",
-    "PROGRESS": "Progreso",
-    "UPDATE_INTERVAL": "Actualizaciones cada {seconds} segundos",
-    "CLICK_REFRESH": "Haz clic en Actualizar para actualización instantánea",
-    "NO_LYRICS_AVAILABLE": "Sin letras disponibles",
-    "REFRESH_BUTTON": "Actualizar",
-    "STOP_BUTTON": "Detener"
-  }
+	"cmd": {
+		"247": {
+			"description": "Configura el bot para que permanezca en el canal de voz",
+			"errors": {
+				"not_in_voice": "Debes estar en un canal de voz para usar este comando.",
+				"generic": "Se produjo un error al intentar ejecutar este comando."
+			},
+			"messages": {
+				"disabled": "`✅` | El modo 24/7 se ha `DESACTIVADO`",
+				"enabled": "`✅` | El modo 24/7 se ha `ACTIVADO`. \n**El bot no dejará el canal de voz incluso si no hay nadie en el canal de voz.**"
+			}
+		},
+		"ping": {
+			"description": "Muestra el ping del bot.",
+			"content": "Poniendo a prueba...",
+			"bot_latency": "Latencia del Bot",
+			"api_latency": "Latencia de la API",
+			"requested_by": "Solicitado por {author}"
+		},
+		"lavalink": {
+			"description": "Muestra las estadísticas actuales de Lavalink.",
+			"title": "Estadísticas de Lavalink",
+			"content": "Reproductores: {players}\nReproductores en reproducción: {playingPlayers}\nTiempo de actividad: {uptime}\nNúcleos: {cores} Núcleo(s)\nUso de memoria: {used} / {reservable}\nCarga del sistema: {systemLoad}%\nCarga de Lavalink: {lavalinkLoad}%",
+			"page_info": "Página {index} de {total}"
+		},
+		"invite": {
+			"description": "Obtén el enlace de invitación del bot.",
+			"content": "Puedes invitarme haciendo clic en el botón de abajo. ¿Algún error o interrupción? ¡Únete al servidor de soporte!"
+		},
+		"help": {
+			"description": "Muestra el menú de ayuda.",
+			"options": {
+				"command": "El comando sobre el que quieres obtener información"
+			},
+			"content": "¡Hola! Soy {bot}, un bot de música hecho con [MultiBungoBot](https://github.com/ductridev/multi-distube-bots) y Discord. Puedes usar `{prefix}help <command>` para obtener más información sobre un comando.",
+			"title": "Menú de Ayuda",
+			"not_found": "Este comando `{cmdName}` no existe.",
+			"help_cmd": "**Descripción:** {description}\n**Uso:** {usage}\n**Ejemplos:** {examples}\n**Alias:** {aliases}\n**Categoría:** {category}\n**Tiempo de espera:** {cooldown} segundos\n**Permisos:** {premUser}\n**Permisos del Bot:** {premBot}\n**Solo para desarrolladores:** {dev}\n**Comando Slash:** {slash}\n**Args:** {args}\n**Reproductor:** {player}\n**DJ:** {dj}\n**Permisos de DJ:** {djPerm}\n**Voz:** {voice}",
+			"footer": "Usa {prefix}help <command> para obtener más información sobre un comando • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️"
+		},
+		"botinfo": {
+			"description": "Información sobre el bot",
+			"content": "Información del Bot:\n- **Sistema operativo**: {osInfo}\n- **Tiempo de actividad**: {osUptime}\n- **Nombre de host**: {osHostname}\n- **Arquitectura de la CPU**: {cpuInfo}\n- **Uso de la CPU**: {cpuUsed}%\n- **Uso de la memoria**: {memUsed} / {memTotal}\n- **Versión de Node**: {nodeVersion}\n- **Versión de Discord**: {discordJsVersion}\n- **Conectado a** {guilds} servidores, {channels} canales y {users} usuarios\n- **Total de comandos**: {commands}"
+		},
+		"about": {
+			"description": "Muestra información sobre el bot",
+			"fields": {
+				"creator": "Creador",
+				"repository": "Repositorio",
+				"support": "Soporte",
+				"description": "Realmente quería hacer su primer proyecto de código abierto para obtener más experiencia en programación. En este proyecto, se desafió a sí mismo a hacer un proyecto con menos errores. ¡Espero que disfrutes usando MultiBungoBot!"
+			}
+		},
+		"dj": {
+			"description": "Gestiona el modo DJ y los roles asociados",
+			"errors": {
+				"provide_role": "Por favor, proporciona un rol.",
+				"no_roles": "El rol de DJ está vacío.",
+				"invalid_subcommand": "Por favor, proporciona un subcomando válido."
+			},
+			"messages": {
+				"role_exists": "El rol de DJ <@&{roleId}> ya está añadido.",
+				"role_added": "Se ha añadido el rol de DJ <@&{roleId}>.",
+				"role_not_found": "El rol de DJ <@&{roleId}> no está añadido.",
+				"role_removed": "Se ha eliminado el rol de DJ <@&{roleId}>.",
+				"all_roles_cleared": "Se han eliminado todos los roles de DJ.",
+				"toggle": "El modo DJ se ha cambiado a {status}."
+			},
+			"options": {
+				"add": "El rol de DJ que quieres añadir",
+				"remove": "El rol de DJ que quieres eliminar",
+				"clear": "Borra todos los roles de DJ",
+				"toggle": "Activa/desactiva el rol de DJ",
+				"role": "El rol de DJ"
+			},
+			"subcommands": "Subcomandos"
+		},
+		"prefix": {
+			"description": "Muestra o establece el prefijo del bot",
+			"errors": {
+				"prefix_too_long": "El prefijo no puede tener más de 3 caracteres."
+			},
+			"messages": {
+				"current_prefix": "El prefijo para este servidor es `{prefix}`",
+				"prefix_set": "El prefijo para este servidor es ahora `{prefix}`",
+				"prefix_reset": "El prefijo para este servidor es ahora `{prefix}`"
+			},
+			"options": {
+				"set": "Establece el prefijo",
+				"prefix": "El prefijo que quieres establecer",
+				"reset": "Restablece el prefijo al predeterminado"
+			}
+		},
+		"setup": {
+			"description": "Configura el bot",
+			"errors": {
+				"channel_exists": "El canal de solicitud de canciones ya existe.",
+				"channel_not_exists": "El canal de solicitud de canciones no existe.",
+				"channel_delete_fail": "El canal de solicitud de canciones ha sido eliminado. Si el canal no se elimina normalmente, por favor, elimínalo tú mismo."
+			},
+			"messages": {
+				"channel_created": "Se ha creado el canal de solicitud de canciones en <#{channelId}>.",
+				"channel_deleted": "Se ha eliminado el canal de solicitud de canciones.",
+				"channel_info": "El canal de solicitud de canciones es <#{channelId}>."
+			},
+			"options": {
+				"create": "Crea el canal de solicitud de canciones",
+				"delete": "Elimina el canal de solicitud de canciones",
+				"info": "Muestra el canal de solicitud de canciones"
+			}
+		},
+		"8d": {
+			"description": "Activar/desactivar filtro 8d",
+			"messages": {
+				"filter_enabled": "`✅` | El filtro 8D se ha `ACTIVADO`.",
+				"filter_disabled": "`✅` | El filtro 8D se ha `DESACTIVADO`."
+			}
+		},
+		"bassboost": {
+			"description": "Activar/desactivar filtro de refuerzo de graves",
+			"options": {
+				"level": "El nivel de refuerzo de graves que deseas establecer"
+			},
+			"messages": {
+				"high": "`✅` | El filtro de refuerzo de graves alto se ha `ACTIVADO`.",
+				"low": "`✅` | El filtro de refuerzo de graves bajo se ha `ACTIVADO`.",
+				"medium": "`✅` | El filtro de refuerzo de graves medio se ha `ACTIVADO`.",
+				"off": "`✅` | El filtro de refuerzo de graves se ha `DESACTIVADO`."
+			}
+		},
+		"distortion": {
+			"description": "Activar/desactivar filtro de distorsión",
+			"messages": {
+				"filter_enabled": "`✅` | El filtro de distorsión se ha `ACTIVADO`.",
+				"filter_disabled": "`✅` | El filtro de distorsión se ha `DESACTIVADO`."
+			}
+		},
+		"karaoke": {
+			"description": "Activar/desactivar filtro de karaoke",
+			"messages": {
+				"filter_enabled": "`✅` | El filtro de karaoke se ha `ACTIVADO`.",
+				"filter_disabled": "`✅` | El filtro de karaoke se ha `DESACTIVADO`."
+			}
+		},
+		"lowpass": {
+			"description": "Activar/desactivar filtro de paso bajo",
+			"messages": {
+				"filter_enabled": "`✅` | El filtro de paso bajo se ha `ACTIVADO`.",
+				"filter_disabled": "`✅` | El filtro de paso bajo se ha `DESACTIVADO`."
+			}
+		},
+		"nightcore": {
+			"description": "Activar/desactivar filtro nightcore",
+			"messages": {
+				"filter_enabled": "`✅` | El filtro nightcore se ha `ACTIVADO`.",
+				"filter_disabled": "`✅` | El filtro nightcore se ha `DESACTIVADO`."
+			}
+		},
+		"pitch": {
+			"description": "Activar/desactivar filtro de tono",
+			"options": {
+				"pitch": "El número al que quieres establecer el tono (entre 0,5 y 5)"
+			},
+			"errors": {
+				"invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5."
+			},
+			"messages": {
+				"pitch_set": "`✅` | El tono se ha establecido en **{pitch}**."
+			}
+		},
+		"rate": {
+			"description": "Cambiar la velocidad de la canción",
+			"options": {
+				"rate": "El número al que quieres establecer la velocidad (entre 0,5 y 5)"
+			},
+			"errors": {
+				"invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5."
+			},
+			"messages": {
+				"rate_set": "`✅` | La velocidad se ha establecido en **{rate}**."
+			}
+		},
+		"reset": {
+			"description": "Restablece los filtros activos",
+			"messages": {
+				"filters_reset": "`✅` | Se han restablecido los filtros."
+			}
+		},
+		"rotation": {
+			"description": "Activar/desactivar filtro de rotación",
+			"messages": {
+				"enabled": "`✅` | El filtro de rotación se ha `ACTIVADO`.",
+				"disabled": "`✅` | El filtro de rotación se ha `DESACTIVADO`."
+			}
+		},
+		"speed": {
+			"description": "Cambiar la velocidad de la canción",
+			"options": {
+				"speed": "La velocidad que quieres establecer"
+			},
+			"messages": {
+				"invalid_number": "Por favor, proporciona un número válido entre 0,5 y 5.",
+				"set_speed": "`✅` | La velocidad se ha establecido en **{speed}**."
+			}
+		},
+		"tremolo": {
+			"description": "Activar/desactivar filtro de trémolo",
+			"messages": {
+				"enabled": "`✅` | El filtro de trémolo se ha `ACTIVADO`.",
+				"disabled": "`✅` | El filtro de trémolo se ha `DESACTIVADO`."
+			}
+		},
+		"vibrato": {
+			"description": "Activar/desactivar filtro de vibrato",
+			"messages": {
+				"enabled": "`✅` | El filtro de vibrato se ha `ACTIVADO`.",
+				"disabled": "`✅` | El filtro de vibrato se ha `DESACTIVADO`."
+			}
+		},
+		"autoplay": {
+			"description": "Activa/desactiva la reproducción automática",
+			"messages": {
+				"enabled": "`✅` | La reproducción automática se ha `ACTIVADO`.",
+				"disabled": "`✅` | La reproducción automática se ha `DESACTIVADO`."
+			}
+		},
+		"clearqueue": {
+			"description": "Borra la cola",
+			"messages": {
+				"cleared": "La cola se ha borrado."
+			}
+		},
+		"grab": {
+			"description": "Obtiene la canción que se está reproduciendo actualmente en tu DM",
+			"loading": "Cargando...",
+			"content": "**Duración:** {length}\n**Solicitado por:** <@{requester}>\n**Enlace:** [Haz clic aquí]({uri})",
+			"check_dm": "Por favor, revisa tu DM.",
+			"dm_failed": "No pude enviarte un DM."
+		},
+		"join": {
+			"description": "Únete al canal de voz",
+			"already_connected": "Ya estoy conectado a <#{channelId}>.",
+			"no_voice_channel": "Debes estar en un canal de voz para usar este comando.",
+			"joined": "Se ha unido correctamente a <#{channelId}>."
+		},
+		"leave": {
+			"description": "Deja el canal de voz",
+			"left": "Se ha salido correctamente de <#{channelId}>.",
+			"not_in_channel": "No estoy en ningún canal de voz."
+		},
+		"loop": {
+			"description": "Bucle de la canción actual o de la cola",
+			"looping_song": "**Poniendo en bucle la canción.**",
+			"looping_queue": "**Poniendo en bucle la cola.**",
+			"looping_off": "**El bucle ahora está desactivado.**"
+		},
+		"nowplaying": {
+			"description": "Muestra la canción que se está reproduciendo actualmente",
+			"now_playing": "Ahora se está reproduciendo",
+			"track_info": "[{title}]({uri}) - Solicitado por: <@{requester}>\n\n`{bar}`"
+		},
+		"pause": {
+			"description": "Pausa la canción actual",
+			"successfully_paused": "La canción se ha pausado correctamente.",
+			"messages": {
+				"vote_embed": "Vota para pausar: **{votes}/{needed}**\n✅ para pausar, ❌ para seguir reproduciendo.",
+				"button_yes": "✅ Pausar",
+				"button_no": "❌ Continuar",
+				"already_voted": "Ya has votado."
+			}
+		},
+		"play": {
+			"description": "Reproduce una canción de YouTube, Spotify o http",
+			"options": {
+				"song": "La canción que quieres reproducir"
+			},
+			"loading": "Cargando...",
+			"errors": {
+				"search_error": "Se ha producido un error durante la búsqueda.",
+				"no_results": "No se han encontrado resultados.",
+				"queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
+				"playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones."
+			},
+			"added_to_queue": "Se ha añadido [{title}]({uri}) a la cola.",
+			"added_playlist_to_queue": "Se han añadido {length} canciones a la cola.",
+			"warnings": {
+				"longtrack_warning": "⚠️ **Advertencia:** Una o más pistas en los resultados de búsqueda superan los 30 minutos de duración. Asegúrate de que deseas reproducir estas pistas largas ya que pueden afectar tu experiencia de escucha."
+			}
+		},
+		"playnext": {
+			"description": "Añade la canción para reproducirla a continuación en la cola",
+			"options": {
+				"song": "La canción que quieres reproducir"
+			},
+			"loading": "Cargando...",
+			"errors": {
+				"search_error": "Se ha producido un error durante la búsqueda.",
+				"no_results": "No se han encontrado resultados.",
+				"queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
+				"playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones."
+			},
+			"added_to_play_next": "Se ha añadido [{title}]({uri}) para reproducirla a continuación en la cola.",
+			"added_playlist_to_play_next": "Se han añadido {length} canciones para reproducirlas a continuación en la cola."
+		},
+		"queue": {
+			"description": "Muestra la cola actual",
+			"now_playing": "Ahora se está reproduciendo: [{title}]({uri}) - Solicitado por: <@{requester}> - Duración: {duration}",
+			"live": "EN DIRECTO",
+			"track_info": "{index}. [{title}]({uri}) - Solicitado por: <@{requester}> - Duración: {duration}",
+			"title": "Cola",
+			"page_info": "Página {index} de {total}",
+			"duration": "Duración de la Cola: `{totalDuration}`"
+		},
+		"remove": {
+			"description": "Elimina una canción de la cola",
+			"options": {
+				"song": "El número de la canción que quieres eliminar"
+			},
+			"errors": {
+				"no_songs": "No hay canciones en la cola.",
+				"invalid_number": "Por favor, proporciona un número de canción válido."
+			},
+			"messages": {
+				"removed": "Se ha eliminado la canción número {songNumber} de la cola."
+			}
+		},
+		"region": {
+			"description": "Ver o cambiar la región del servidor de audio para mejor calidad 🌐",
+			"options": {
+				"region": "La región a la que cambiar (ej: EU, VN)"
+			},
+			"info_title": "🌐 Región del Servidor de Audio",
+			"current_region": "**Nodo actual:** `{nodeId}`\n**Región:** {region}\n**Ping:** `{ping}ms`",
+			"available_regions": "Regiones disponibles",
+			"region_field": "{nodeCount} nodo(s), {playerCount} reproductor(es)\n{nodes}",
+			"current_indicator": " (actual)",
+			"switched": "¡Cambiado a la región {region}!\n**Nodo:** `{oldNode}` → `{newNode}`\n**Ping:** `{oldPing}ms` → `{newPing}ms`",
+			"already_on_region": "¡Ya estás en un nodo {region} (`{nodeId}`)!",
+			"no_nodes_in_region": "¡No hay nodos disponibles en la región {region}!",
+			"invalid_region": "Región desconocida `{region}`. Disponibles: {available}",
+			"switch_failed": "Error al cambiar de región. ¡Inténtalo de nuevo!"
+		},
+		"replay": {
+			"description": "Vuelve a reproducir la pista actual",
+			"errors": {
+				"not_seekable": "No se puede reproducir de nuevo esta pista porque no se puede buscar."
+			},
+			"messages": {
+				"replaying": "Vuelve a reproducir la pista actual."
+			}
+		},
+		"resume": {
+			"description": "Reanuda la canción actual",
+			"errors": {
+				"not_paused": "El reproductor no está en pausa."
+			},
+			"messages": {
+				"resumed": "Se ha reanudado el reproductor.",
+				"vote_embed": "Vota para reanudar: **{votes}/{needed}**\n✅ para reanudar, ❌ para mantener en pausa.",
+				"button_yes": "✅ Reanudar",
+				"button_no": "❌ Mantener en Pausa",
+				"already_voted": "Ya has votado."
+			}
+		},
+		"search": {
+			"description": "Busca una canción",
+			"options": {
+				"song": "La canción que quieres buscar"
+			},
+			"select": "Por favor selecciona la canción que quieres reproducir",
+			"errors": {
+				"no_results": "No se han encontrado resultados.",
+				"search_error": "Se ha producido un error durante la búsqueda."
+			},
+			"messages": {
+				"added_to_queue": "Se ha añadido [{title}]({uri}) a la cola."
+			}
+		},
+		"seek": {
+			"description": "Busca en un momento determinado de la canción",
+			"options": {
+				"duration": "La duración a la que quieres buscar"
+			},
+			"errors": {
+				"invalid_format": "Formato de tiempo no válido. Ejemplos: seek 1m, seek 1h 30m",
+				"not_seekable": "Esta pista no se puede buscar.",
+				"beyond_duration": "No se puede buscar más allá de la duración de la canción de {length}."
+			},
+			"messages": {
+				"seeked_to": "Se ha buscado en {duration}"
+			}
+		},
+		"shuffle": {
+			"description": "Mezcla la cola",
+			"errors": {
+				"fairplay": "El modo de juego justo está activado. No puedes mezclar la cola."
+			},
+			"messages": {
+				"shuffled": "Se ha mezclado la cola."
+			}
+		},
+		"skip": {
+			"description": "Salta la canción actual",
+			"messages": {
+				"skipped": "Se ha saltado [{title}]({uri}).",
+				"vote_embed": "Vota para saltar: **{votes}/{needed}**\n✅ para saltar, ❌ para seguir reproduciendo.",
+				"button_skip": "👍 Saltar",
+				"button_keep": "👎 Mantener",
+				"button_yes": "✅ Saltar",
+				"button_no": "❌ Mantener",
+				"already_voted": "Ya has votado."
+			}
+		},
+		"skipto": {
+			"description": "Salta a una canción específica de la cola",
+			"options": {
+				"number": "El número de la canción a la que quieres saltar"
+			},
+			"errors": {
+				"invalid_number": "Por favor, proporciona un número válido."
+			},
+			"messages": {
+				"skipped_to": "Se ha saltado a la canción número {number}."
+			}
+		},
+		"stop": {
+			"description": "Detiene la música y vacía la cola",
+			"messages": {
+				"stopped": "Se ha detenido la música y se ha vaciado la cola.",
+				"vote_embed": "Vota para detener: **{votes}/{needed}**\n✅ para detener, ❌ para seguir reproduciendo.",
+				"button_stop": "🛑 Detener",
+				"button_keep": "👎 Mantener",
+				"button_yes": "✅ Detener",
+				"button_no": "❌ Mantener",
+				"already_voted": "Ya has votado."
+			}
+		},
+		"volume": {
+			"description": "Establece el volumen del reproductor",
+			"options": {
+				"number": "El volumen que quieres establecer"
+			},
+			"messages": {
+				"invalid_number": "Por favor, proporciona un número válido.",
+				"too_low": "El volumen no puede ser inferior a 0.",
+				"too_high": "El volumen no puede ser superior a 200. ¿Quieres dañar tu audición o tus altavoces? Hmmm, no creo que sea una buena idea.",
+				"set": "Se ha establecido el volumen en {volume}"
+			}
+		},
+		"addsong": {
+			"description": "Añade una canción a la lista de reproducción",
+			"options": {
+				"playlist": "La lista de reproducción a la que quieres añadir",
+				"song": "La canción que quieres añadir"
+			},
+			"messages": {
+				"no_playlist": "Por favor, proporciona una lista de reproducción",
+				"no_song": "Por favor, proporciona una canción",
+				"playlist_not_found": "Esa lista de reproducción no existe",
+				"no_songs_found": "No se han encontrado canciones",
+				"added": "Se ha(n) añadido {count} canción(es) a {playlist}"
+			}
+		},
+		"create": {
+			"description": "Crea una lista de reproducción",
+			"options": {
+				"name": "El nombre de la lista de reproducción"
+			},
+			"messages": {
+				"name_too_long": "Los nombres de las listas de reproducción solo pueden tener 50 caracteres.",
+				"playlist_exists": "Ya existe una lista de reproducción con ese nombre. Por favor, usa un nombre diferente.",
+				"playlist_created": "Se ha creado la lista de reproducción **{name}**."
+			}
+		},
+		"delete": {
+			"description": "Elimina una lista de reproducción",
+			"options": {
+				"playlist": "La lista de reproducción que quieres eliminar"
+			},
+			"messages": {
+				"playlist_not_found": "Esa lista de reproducción no existe.",
+				"playlist_deleted": "Se ha eliminado la lista de reproducción **{playlistName}**."
+			}
+		},
+		"list": {
+			"description": "Recupera todas las listas de reproducción del usuario",
+			"options": {
+				"user": "El usuario cuyas listas de reproducción quieres recuperar"
+			},
+			"messages": {
+				"no_playlists": "Este usuario no tiene listas de reproducción.",
+				"your": "Tus",
+				"playlists_title": "Listas de reproducción de {username}",
+				"error": "Se ha producido un error al recuperar las listas de reproducción."
+			}
+		},
+		"load": {
+			"description": "Carga una lista de reproducción",
+			"options": {
+				"playlist": "La lista de reproducción que quieres cargar"
+			},
+			"messages": {
+				"playlist_not_exist": "Esa lista de reproducción no existe.",
+				"playlist_empty": "Esa lista de reproducción está vacía.",
+				"playlist_loaded": "Se ha cargado `{name}` con `{count}` canciones."
+			}
+		},
+		"removesong": {
+			"description": "Elimina una canción de la lista de reproducción",
+			"options": {
+				"playlist": "La lista de reproducción de la que quieres eliminar",
+				"song": "La canción que quieres eliminar"
+			},
+			"messages": {
+				"provide_playlist": "Por favor, proporciona una lista de reproducción.",
+				"provide_song": "Por favor, proporciona una canción.",
+				"playlist_not_exist": "Esa lista de reproducción no existe.",
+				"song_not_found": "No se ha encontrado ninguna canción coincidente.",
+				"song_removed": "Se ha eliminado {song} de {playlist}.",
+				"error_occurred": "Se ha producido un error al eliminar la canción."
+			}
+		},
+		"steal": {
+			"description": "Roba una lista de reproducción de otro usuario y la añade a tus listas de reproducción",
+			"options": {
+				"playlist": "La lista de reproducción que quieres robar",
+				"user": "El usuario del que quieres robar la lista de reproducción"
+			},
+			"messages": {
+				"provide_playlist": "Por favor, proporciona un nombre de lista de reproducción.",
+				"provide_user": "Por favor, menciona a un usuario.",
+				"playlist_not_exist": "Esa lista de reproducción no existe para el usuario mencionado.",
+				"playlist_stolen": "Se ha robado correctamente la lista de reproducción `{playlist}` de {user}.",
+				"error_occurred": "Se ha producido un error al robar la lista de reproducción."
+			}
+		},
+		"language": {
+			"description": "Establece el idioma del bot",
+			"invalid_language": "Por favor, proporciona un idioma válido. Ejemplo: `EnglishUS` para inglés (Estados Unidos)\n\nPuedes encontrar la lista de idiomas compatibles [aquí](https://discord.com/developers/docs/reference#locales)\n\n**Idiomas disponibles:**\n{languages}",
+			"already_set": "El idioma ya está establecido en `{language}`",
+			"not_set": "El idioma no está establecido. Por favor, establece un idioma.",
+			"set": "`✅` | El idioma se ha establecido en `{language}`",
+			"reset": "`✅` | El idioma se ha restablecido al idioma predeterminado",
+			"options": {
+				"set": "Establece el idioma del bot",
+				"language": "El idioma que quieres establecer",
+				"reset": "Cambia el idioma de nuevo al idioma predeterminado"
+			}
+		},
+		"lyrics": {
+			"description": "Obtiene la letra de la pista que se está reproduciendo actualmente",
+			"lyrics_track": "### Letra de: [{trackTitle}]({trackUrl})\n**`{lyrics}`**",
+			"searching": "`🔍` Buscando la letra de **{trackTitle}**...",
+			"errors": {
+				"no_results": "No se encontró la letra de la pista actual.",
+				"lyrics_error": "Se produjo un error al obtener la letra."
+			}
+		},
+		"fairplay": {
+			"description": "Configura el bot para reproducir música de forma justa",
+			"errors": {
+				"not_in_voice": "Debes estar en un canal de voz para usar este comando.",
+				"generic": "Se produjo un error al intentar ejecutar este comando."
+			},
+			"messages": {
+				"disabled": "`✅` | El modo de juego justo se ha `DESACTIVADO`.",
+				"enabled": "`✅` | El modo de juego justo se ha `ACTIVADO`."
+			}
+		},
+		"playlocal": {
+			"description": "Reproduce tus archivos de audio locales",
+			"options": {
+				"file": "El archivo de audio que quieres reproducir"
+			},
+			"loading": "Cargando...",
+			"errors": {
+				"empty_query": "Por favor, adjunta un archivo de audio para reproducir.",
+				"invalid_format": "Solo puedes reproducir archivos MP3, WAV, OGG, FLAC, AAC o M4A.",
+				"no_results": "No se pudo reproducir el archivo de audio. Puede estar dañado."
+			},
+			"added_to_queue": "Añadido [{title}]({url}) a la cola"
+		},
+		"loop_current": {
+			"description": "Repite la canción que se está reproduciendo actualmente"
+		},
+		"loop_queue": {
+			"description": "Repite toda la cola"
+		},
+		"vote": {
+			"description": "Gestionar el sistema de votación para comandos de música",
+			"options": {
+				"toggle": "Activar o desactivar el sistema de votación",
+				"status": "Verificar el estado actual del sistema de votación"
+			}
+		},
+		"livelyrics": {
+			"description": "Mostrar letras sincronizadas en tiempo real para la pista actual con modo karaoke",
+			"aliases": "karaoke, syncedlyrics",
+			"errors": {
+				"no_player": "No hay música reproduciéndose en este momento.",
+				"no_synced": "No se encontraron letras sincronizadas para esta pista."
+			}
+		}
+	},
+	"buttons": {
+		"invite": "Invitar",
+		"support": "Servidor de soporte",
+		"previous": "Anterior",
+		"resume": "Reanudar",
+		"stop": "Detener",
+		"skip": "Saltar",
+		"loop": "Bucle",
+		"errors": {
+			"not_author": "No puedes usar este botón."
+		}
+	},
+	"player": {
+		"errors": {
+			"no_player": "No hay ningún reproductor activo en este servidor.",
+			"no_channel": "Debes estar en un canal de voz para usar este comando.",
+			"queue_empty": "La cola está vacía.",
+			"no_previous": "No hay canciones anteriores en la cola.",
+			"no_song": "No hay canciones en la cola.",
+			"already_paused": "La canción ya está en pausa."
+		},
+		"trackStart": {
+			"now_playing": "Ahora se está reproduciendo",
+			"requested_by": "Solicitado por {user}",
+			"duration": "Duración",
+			"author": "Autor",
+			"not_connected_to_voice_channel": "No estás conectado a <#{channel}> para usar estos botones.",
+			"need_dj_role": "Debes tener el rol de DJ para usar este comando.",
+			"previous_by": "Anterior por {user}",
+			"no_previous_song": "No hay ninguna canción anterior.",
+			"paused_by": "Pausado por {user}",
+			"resumed_by": "Reanudado por {user}",
+			"skipped_by": "Saltado por {user}",
+			"no_more_songs_in_queue": "No hay más canciones en la cola.",
+			"looping_by": "Poniendo en bucle por {user}",
+			"looping_queue_by": "Poniendo en bucle la cola por {user}",
+			"looping_off_by": "Bucle desactivado por {user}"
+		},
+		"setupStart": {
+			"now_playing": "Ahora se está reproduciendo",
+			"description": "[{title}]({uri}) de {author} • `[{length}]` - Solicitado por <@{requester}>",
+			"error_searching": "Se produjo un error al buscar.",
+			"no_results": "No se encontraron resultados.",
+			"nothing_playing": "No se está reproduciendo nada ahora mismo",
+			"queue_too_long": "La cola es demasiado larga. La longitud máxima es de {maxQueueSize} canciones.",
+			"playlist_too_long": "La lista de reproducción es demasiado larga. La longitud máxima es de {maxPlaylistSize} canciones.",
+			"added_to_queue": "Se añadió [{title}]({uri}) a la cola.",
+			"added_playlist_to_queue": "Se añadieron [{length}] canciones de la lista de reproducción a la cola."
+		},
+		"lavaconfig": {
+			"description": "¡Gestiona la configuración de LavaSrc en tiempo de ejecución! Actualiza servicios sobre la marcha ⚙️",
+			"errors": {
+				"service_unavailable": "El servicio Lavalink no está disponible. ¡Asegúrate de que Lavalink esté ejecutándose! 🔧",
+				"missing_subcommand": "¡Por favor, proporciona un subcomando! Prueba: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view o nodes",
+				"missing_node": "¡Por favor, proporciona un nombre de nodo! Usa 'nodes' para ver los nodos disponibles 📋",
+				"unknown_subcommand": "¡Subcomando desconocido! Prueba: spotify, applemusic, deezer, yandexmusic, flowerytts, ttsloc, view o nodes"
+			},
+			"messages": {
+				"processing": "Procesando tu solicitud... ⚙️",
+				"config_updated_title": "Configuración LavaSrc Actualizada",
+				"config_updated_desc": "¡Configuración de {service} actualizada exitosamente para el nodo **{node}**! Cambios aplicados ✅",
+				"view_title": "Configuración LavaSrc",
+				"nodes_title": "Nodos Lavalink Disponibles",
+				"no_nodes": "¡No hay nodos Lavalink disponibles! Asegúrate de que Lavalink esté conectado 🔌",
+				"total_nodes": "Total de nodos: {count}"
+			},
+			"fields": {
+				"client_id": "ID de Cliente",
+				"client_secret": "Secreto de Cliente",
+				"api_key": "Clave API",
+				"decode_track": "Decodificar Pista",
+				"country_code": "Código de País",
+				"playlist_limit": "Límite de Playlist",
+				"album_limit": "Límite de Álbum",
+				"search_limit": "Límite de Búsqueda",
+				"isrc_search": "Búsqueda ISRC",
+				"fallback_search": "Búsqueda de Respaldo",
+				"load_timeout": "Tiempo de Carga",
+				"spotify_enabled": "Spotify Activado",
+				"apple_enabled": "Apple Music Activado",
+				"deezer_enabled": "Deezer Activado"
+			},
+			"usage": {
+				"title": "Uso",
+				"value": "`/lavaconfig <subcomando> <nodo> [opciones]`\nUsa los subcomandos para configurar diferentes servicios."
+			}
+		},
+		"youtubeconfig": {
+			"description": "¡Gestiona la configuración de fuente YouTube en tiempo de ejecución! Controla ajustes de OAuth y poToken 🎬",
+			"errors": {
+				"service_unavailable": "El servicio Lavalink no está disponible. ¡Asegúrate de que Lavalink esté ejecutándose! 🔧",
+				"missing_subcommand": "¡Por favor, proporciona un subcomando! Prueba: oauth, potoken, view o nodes",
+				"missing_node": "¡Por favor, proporciona un nombre de nodo! Usa 'nodes' para ver los nodos disponibles 📋",
+				"unknown_subcommand": "¡Subcomando desconocido! Prueba: oauth, potoken, view o nodes",
+				"missing_oauth_option": "¡Por favor, proporciona una opción OAuth! Prueba: email, authorization o skip",
+				"missing_potoken_pair": "¡Por favor, proporciona tanto poToken como visitorData para la opción pair!",
+				"missing_refresh_token": "¡Falta el token de actualización! La configuración OAuth requiere un token de actualización."
+			},
+			"messages": {
+				"processing": "Procesando tu solicitud... ⚙️",
+				"oauth_updated_title": "YouTube OAuth Actualizado",
+				"potoken_updated_title": "YouTube poToken Actualizado",
+				"token_refreshed_title": "Token de YouTube Actualizado",
+				"view_title": "Configuración de Fuente YouTube",
+				"nodes_title": "Nodos Lavalink Disponibles",
+				"not_set": "No Establecido",
+				"na": "N/D"
+			},
+			"fields": {
+				"refresh_token": "Token de Actualización",
+				"skip_initialization": "Saltar Inicialización",
+				"potoken": "poToken",
+				"visitor_data": "Datos de Visitante",
+				"po_token": "poToken",
+				"visitor_data_short": "Datos de Visitante",
+				"oauth_email": "Email OAuth",
+				"authorization": "Autorización",
+				"skip": "Saltar",
+				"pair": "Par",
+				"refresh": "Actualizar",
+				"email": "Email",
+				"authorization_code": "Código de Autorización",
+				"status": "Estado",
+				"enabled": "ACTIVADO",
+				"disabled": "DESACTIVADO",
+				"last_updated": "Última Actualización"
+			},
+			"usage": {
+				"title": "Uso",
+				"value": "`/youtubeconfig <subcomando> <nodo> [opciones]`\nUsa oauth para configurar OAuth, potoken para ajustes de poToken."
+			}
+		}
+	},
+	"event": {
+		"interaction": {
+			"setup_channel": "No puedes usar este comando en el canal de configuración.",
+			"no_send_message": "No tengo el permiso **`SendMessage`** en `{guild}`\ncanal: {channel}.",
+			"no_embed_links": "No tengo el permiso **`EmbedLinks`**.",
+			"no_permission": "No tengo suficientes permisos para ejecutar este comando.",
+			"no_user_permission": "No tienes suficientes permisos para usar este comando.",
+			"no_voice_channel": "Debes estar conectado a un canal de voz para usar este comando `{command}`.",
+			"no_connect_permission": "No tengo permisos `CONNECT` para ejecutar este comando `{command}`.",
+			"no_speak_permission": "No tengo permisos `SPEAK` para ejecutar este comando `{command}`.",
+			"no_request_to_speak": "No tengo permiso `REQUEST TO SPEAK` para ejecutar este comando `{command}`.",
+			"different_voice_channel": "No estás conectado a {channel} para usar este comando `{command}`.",
+			"no_music_playing": "No se está reproduciendo nada ahora mismo.",
+			"no_dj_role": "El rol de DJ no está configurado.",
+			"no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
+			"cooldown": "Por favor, espera {time} segundo(s) más antes de volver a usar el comando `{command}`.",
+			"error": "Se ha producido un error: `{error}`",
+			"vote_button": "¡Vota por mí!",
+			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
+			"slash_deprecated": "¡Los comandos slash han sido descontinuados! Por favor, usa `{prefix}{command}` en su lugar. 🎵",
+			"periodic_message_vote_only": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¡Tu voto nos ayuda a crecer! ❤️\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
+			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
+			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
+			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!",
+			"no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
+			"maintenance": "The bot is under maintenance! Check back soon 🔧",
+			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+		},
+		"message": {
+			"prefix_mention": "Hola, mi prefijo para este servidor es `{prefix}`. ¿Quieres más información? Entonces escribe `{prefix}help`\n¡Mantente seguro, mantente genial!",
+			"no_send_message": "No tengo el permiso **`SendMessage`** en `{guild}`\ncanal: {channel}.",
+			"no_embed_links": "No tengo el permiso **`EmbedLinks`**.",
+			"no_permission": "No tengo suficientes permisos para ejecutar este comando.",
+			"no_user_permission": "No tienes suficientes permisos para usar este comando.",
+			"no_voice_channel": "Debes estar conectado a un canal de voz para usar este comando `{command}`.",
+			"no_connect_permission": "No tengo permisos `CONNECT` para ejecutar este comando `{command}`.",
+			"no_speak_permission": "No tengo permisos `SPEAK` para ejecutar este comando `{command}`.",
+			"no_request_to_speak": "No tengo permiso `REQUEST TO SPEAK` para ejecutar este comando `{command}`.",
+			"different_voice_channel": "No estás conectado a {channel} para usar este comando `{command}`.",
+			"no_music_playing": "No se está reproduciendo nada ahora mismo.",
+			"no_dj_role": "El rol de DJ no está configurado.",
+			"no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
+			"missing_arguments": "Argumentos que faltan",
+			"missing_arguments_description": "Por favor, proporciona los argumentos necesarios para el comando `{command}`.\n\nEjemplos:\n{examples}",
+			"syntax_footer": "Sintaxis: [] = opcional, <> = requerido • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"cooldown": "Por favor, espera {time} segundo(s) más antes de volver a usar el comando `{command}`.",
+			"no_mention_everyone": "No puedes usar este comando con @everyone o @here.",
+			"error": "Se ha producido un error: `{error}`",
+			"no_voice_channel_queue": "No estás conectado a un canal de voz para poner canciones en cola.",
+			"no_permission_connect_speak": "No tengo suficientes permisos para conectarme/hablar en <#{channel}>.",
+			"different_voice_channel_queue": "No estás conectado a <#{channel}> para poner canciones en cola.",
+			"vote_button": "¡Vota por mí!",
+			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
+			"no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
+			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!"
+		},
+		"setupButton": {
+			"no_voice_channel_button": "No estás conectado a un canal de voz para usar este botón.",
+			"different_voice_channel_button": "No estás conectado a {channel} para usar estos botones.",
+			"now_playing": "Ahora se está reproduciendo",
+			"live": "EN DIRECTO",
+			"requested_by": "Solicitado por <@{requester}>",
+			"no_dj_permission": "Debes tener el rol de DJ para usar este comando.",
+			"volume_set": "Volumen establecido en {vol}%",
+			"volume_footer": "Volumen: {vol}% • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"paused": "Pausado",
+			"resumed": "Reanudado",
+			"pause_resume": "{name} la música.",
+			"pause_resume_footer": "{name} por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"no_music_to_skip": "No hay música para saltar.",
+			"skipped": "Se ha saltado la música.",
+			"skipped_footer": "Saltado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"stopped": "Se ha detenido la música.",
+			"stopped_footer": "Detenido por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"nothing_playing": "No se está reproduciendo nada ahora mismo",
+			"loop_set": "Bucle establecido en {loop}.",
+			"loop_footer": "Bucle establecido en {loop} por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"shuffled": "Se ha barajado la cola.",
+			"no_previous_track": "No hay ninguna pista anterior.",
+			"playing_previous": "Reproduciendo la pista anterior.",
+			"previous_footer": "Reproduciendo la pista anterior por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"rewinded": "Se ha rebobinado la música.",
+			"rewind_footer": "Rebobinado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"forward_limit": "No puedes avanzar la música más de la duración de la canción.",
+			"forwarded": "Se ha adelantado la música.",
+			"forward_footer": "Adelantado por {displayName} • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
+			"button_not_available": "Este botón no está disponible.",
+			"no_music_playing": "No se está reproduciendo nada ahora mismo."
+		},
+		"voice_state_update": {
+			"kicked": "El bot ha sido expulsado del canal de voz <#{channelId}>.",
+			"moved": "El bot ha sido movido a <#{channelId}>.",
+			"left_due_to_timeout_no_listeners": "El bot ha abandonado el canal de voz <#{channelId}> debido a inactividad (sin oyentes).",
+			"left_due_to_timeout_no_songs": "El bot ha abandonado el canal de voz <#{channelId}> debido a inactividad (sin canciones)."
+		}
+	},
+	"will_leave": {
+		"no_listeners": "El bot se irá en {time} minutos debido a la falta de oyentes.",
+		"no_songs": "El bot se irá en {time} minutos debido a la falta de canciones."
+	},
+	"Evaluate code": "Evaluar código",
+	"Leave a guild": "Abandonar un servidor",
+	"List all guilds the bot is in": "Listar todos los servidores en los que está el bot",
+	"Restart the bot": "Reiniciar el bot",
+	"The loop mode you want to set": "El modo de bucle que quieres establecer",
+	"Show current maintenance status": "Mostrar el estado de mantenimiento actual",
+	"Show current maintenance status.": "Show current maintenance status.",
+	"Manage LavaSrc configuration at runtime": "Manage LavaSrc configuration at runtime",
+	"Update Spotify configuration": "Update Spotify configuration",
+	"Update Apple Music configuration": "Update Apple Music configuration",
+	"Update Deezer configuration": "Update Deezer configuration",
+	"Update Yandex Music configuration": "Update Yandex Music configuration",
+	"Update VK Music configuration": "Update VK Music configuration",
+	"Update Qobuz configuration": "Update Qobuz configuration",
+	"Update yt-dlp configuration": "Update yt-dlp configuration",
+	"View current LavaSrc configuration for a node": "View current LavaSrc configuration for a node",
+	"List all available Lavalink nodes": "List all available Lavalink nodes",
+	"The Lavalink node ID": "The Lavalink node ID",
+	"Spotify client ID": "Spotify client ID",
+	"Spotify client secret": "Spotify client secret",
+	"Spotify sp_dc cookie value": "Spotify sp_dc cookie value",
+	"Prefer anonymous token": "Prefer anonymous token",
+	"Custom token endpoint URL": "Custom token endpoint URL",
+	"Apple Music media API token": "Apple Music media API token",
+	"Deezer ARL cookie value": "Deezer ARL cookie value",
+	"Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)": "Comma-separated formats (FLAC,MP3_320,MP3_256,MP3_128,MP3_64,AAC_64)",
+	"Yandex Music access token": "Yandex Music access token",
+	"VK Music user token": "VK Music user token",
+	"Qobuz user OAuth token": "Qobuz user OAuth token",
+	"Qobuz application ID": "Qobuz application ID",
+	"Qobuz application secret": "Qobuz application secret",
+	"Path to yt-dlp executable": "Path to yt-dlp executable",
+	"Custom load arguments (comma-separated)": "Custom load arguments (comma-separated)",
+	"Custom playback arguments (comma-separated)": "Custom playback arguments (comma-separated)",
+	"Manage YouTube source configuration at runtime": "Manage YouTube source configuration at runtime",
+	"Update YouTube OAuth configuration": "Update YouTube OAuth configuration",
+	"Update YouTube poToken configuration": "Update YouTube poToken configuration",
+	"View current YouTube source configuration": "View current YouTube source configuration",
+	"Refresh an OAuth token using a refresh token": "Refresh an OAuth token using a refresh token",
+	"YouTube OAuth2 refresh token": "YouTube OAuth2 refresh token",
+	"Skip OAuth initialization flow (recommended when providing token)": "Skip OAuth initialization flow (recommended when providing token)",
+	"Proof of Origin token (generate with youtube-trusted-session-generator)": "Proof of Origin token (generate with youtube-trusted-session-generator)",
+	"Visitor data associated with the poToken": "Visitor data associated with the poToken",
+	"The refresh token to use": "The refresh token to use",
+	"LIVE_LYRICS": {
+		"NO_PLAYER": "No hay música reproduciéndose en este momento.",
+		"NO_LYRICS": "No se encontraron letras sincronizadas para esta pista.",
+		"TITLE": "🎵 Letras en Vivo",
+		"CURRENT": "Actual",
+		"STOPPED": "Letras en vivo detenidas.",
+		"REFRESHED": "¡Letras en vivo actualizadas!",
+		"ERROR": "Ocurrió un error al obtener las letras.",
+		"ENDED": "Letras en vivo finalizadas.",
+		"PAUSED": "Letras en vivo pausadas.",
+		"SEARCHING": "Buscando letras sincronizadas...",
+		"NO_SYNCED_TITLE": "Sin Letras Sincronizadas Disponibles",
+		"NO_SYNCED_DESCRIPTION": "Esta pista no tiene letras sincronizadas (con marca de tiempo) disponibles. Puedes probar el comando normal `{prefix}lyrics` para letras de texto plano.",
+		"ALREADY_RUNNING": "¡Las letras en vivo ya están ejecutándose para este servidor!",
+		"STARTED": "¡Letras en vivo iniciadas! La visualización se actualizará automáticamente mientras se reproduce la canción.",
+		"PROGRESS": "Progreso",
+		"UPDATE_INTERVAL": "Actualizaciones cada {seconds} segundos",
+		"CLICK_REFRESH": "Haz clic en Actualizar para actualización instantánea",
+		"NO_LYRICS_AVAILABLE": "Sin letras disponibles",
+		"REFRESH_BUTTON": "Actualizar",
+		"STOP_BUTTON": "Detener"
+	}
 }

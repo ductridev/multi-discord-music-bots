@@ -36,7 +36,8 @@ let changed = 0;
 
 for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json'))) {
 	const full = path.join(LOCALES_DIR, file);
-	const json = JSON.parse(fs.readFileSync(full, 'utf8'));
+	const originalContent = fs.readFileSync(full, 'utf8');
+	const json = JSON.parse(originalContent);
 
 	json.event = json.event || {};
 	json.event.interaction = json.event.interaction || {};
@@ -62,7 +63,35 @@ for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json')))
 	}
 
 	if (added.length > 0) {
-		fs.writeFileSync(full, `${JSON.stringify(json, null, 2)}\n`, 'utf8');
+		// Stringify with tab indent, no trailing newline — matches the existing files
+		// byte for byte, so the diff shows only the added keys instead of reformatting
+		// all ~16k lines across 19 files.
+		let content = JSON.stringify(json, null, '\t');
+
+		// For files with mixed indentation (tab + spaces at some levels), try to
+		// restore the original alternating pattern. This preserves formatting for
+		// files like Italian.json that have unusual indentation.
+		if (originalContent.includes('\t  ') && file === 'Italian.json') {
+			// Italian.json has a specific pattern: \t at level 1, \t  (tab+2spaces)
+			// at level 2, \t\t at level 3, \t\t  at level 4, etc.
+			// Post-process to restore this pattern.
+			const contentLines = content.split('\n');
+			const origLines = originalContent.split('\n');
+
+			for (let i = 0; i < Math.min(contentLines.length, origLines.length); i++) {
+				const origLine = origLines[i];
+				const contentLine = contentLines[i];
+
+				// Detect the pattern: if original has tab+2spaces (level 2, 4, 6...) but
+				// content has pure tabs, replace it.
+				if (origLine.match(/^\t  [^\t]/) && contentLine.match(/^\t\t[^\t]/)) {
+					contentLines[i] = '\t  ' + contentLine.substring(2);
+				}
+			}
+			content = contentLines.join('\n');
+		}
+
+		fs.writeFileSync(full, content, 'utf8');
 		changed++;
 		console.log(`${file}: added ${added.join(', ')}`);
 	} else {
