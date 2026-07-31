@@ -10,6 +10,23 @@ const prisma = new PrismaClient();
 export type ReplyFn = (payload: InteractionReplyOptions & { content?: string }) => Promise<void>;
 
 /**
+ * A deferred interaction that never receives a reply shows "<Bot> is thinking…"
+ * until Discord swaps it for "The application did not respond". That happens
+ * whenever the command produces no output through this interaction — most often
+ * a delegated command, whose visible output is a channel message from the
+ * chosen bot, not a reply from the receiver. Deleting the placeholder leaves
+ * only the real message behind.
+ *
+ * Safe to call unconditionally: it no-ops for message-backed contexts and for
+ * any interaction that has already been replied to.
+ */
+async function clearUnusedDefer(ctx: Context): Promise<void> {
+	const interaction = ctx.interaction;
+	if (!interaction?.deferred || interaction.replied) return;
+	await interaction.deleteReply().catch(() => null);
+}
+
+/**
  * Runs guards, executes the command, records usage and writes the audit log.
  *
  * `chosen` is the bot that executes. `reply` sends guard failures back through
@@ -33,6 +50,9 @@ export async function runCommandFor(
 	const guard = await runGuards(chosen, ctx, command, busy);
 	if (!guard.passed) {
 		if (guard.reply) await reply(guard.reply).catch(() => null);
+		// A silent rejection (the dev-only gate) still owes the interaction a
+		// resolution, or the placeholder spins forever.
+		else await clearUnusedDefer(ctx);
 		return;
 	}
 
@@ -88,5 +108,10 @@ export async function runCommandFor(
 			// that would turn a successful command into a reported failure.
 			chosen.logger.error('Failed to send command audit log:', error);
 		}
+
+		// Last resort, and deliberately outside the audit-log try so an audit
+		// failure cannot skip it: if the command produced no reply of its own,
+		// the interaction is still showing a loading placeholder. Clear it.
+		await clearUnusedDefer(ctx);
 	}
 }
