@@ -172,3 +172,44 @@ Validation degrades rather than throws. `env.ts` types `DEFAULT_LANGUAGE` as a b
 So `maintenance.*` was added to `EnglishUS.json` — all 16 keys the code actually references, placeholders `{author}` and `{count}/{total}` preserved. Adding it to the default locale fixes every locale at once through the retry, for 16 strings instead of 256. The other 15 now show English there, which is the same fallback posture as the rest of this branch and better than the Vietnamese they showed before. Verified: Norwegian and Turkish resolve English maintenance text, ChineseCN keeps its own.
 
 **`updateFiles: false`.** i18n defaults it to true, which makes a missing key write itself into `locales/*.json` at runtime and a `T()` call with an unknown locale mint a whole new file. That is what created the stray `locales/vi.json` found earlier in this branch — and it bit again during this round: a single `T('Norwegian', 'event.interaction.nonexistent_key_xyz')` probe silently added that key to both `Norwegian.json` and `EnglishUS.json` on disk. Both were reverted, and the setting now closes the class. `missingKeyFn` already handles missing keys without touching disk.
+
+## CLAUDE.md rewritten against the actual code (2026-07-31)
+
+`/init` on a repo that already had a `CLAUDE.md`. Audited every claim in it rather than appending to it; enough was wrong that a rewrite was the smaller change.
+
+**Corrections, not additions.** Four claims were false or half-true and were actively misleading:
+
+- *"Required: `DATABASE_URL`, `NODES`."* Only `NODES` is required. `DATABASE_URL` is `.optional()` in `env.ts:38` despite Prisma needing it.
+- *"`restoreSessions()` recreates players from `playerData-*.json`."* It reads `sessions-map.json` and stores raw strings; player recreation happens in `src/events/node/Connect.ts`. These are two unrelated systems that the old doc merged into one.
+- The global-state list omitted `vcLocks` and `updateSession` — while the same document's "Critical Patterns" section used `vcLocks`.
+- `registerBot` was attributed to `index.ts`; it is called from inside the client after login (`Lavamusic.ts:148`).
+
+**The `dist/` gotcha promoted to the top.** `loadCommands`/`loadEvents` read `process.cwd()/dist`, including under `npm run dev`. Editing a command in `src/` and running `npm run dev` does nothing. This was in no doc anywhere and is the single most likely way to waste an hour here, so it leads the Architecture section rather than sitting in Pitfalls.
+
+**Broken tooling documented as broken.** The old doc listed `npm run lint` as a normal workflow command. It exits 2 — there is no `eslint.config.*` and never was in git history. Dashboard `npm run lint` also fails, because `next lint` was removed in Next 16. Writing "use `npx eslint .` from `dashboard/`, root has no config" is more useful than a command that fails, and stops the next session from trying to fix its own environment. Same for `biome.json` and `tsup.config.ts`: present, uninstalled, uninvoked — labelled dead so nobody edits them expecting effect.
+
+**Tests exist now and had no entry.** `src/utils/BotResolver.spec.ts` is a self-executing `node:assert` script with no runner and no npm script. Documented with the exact invocation plus the convention to follow, since "no test framework" would otherwise keep being rediscovered and a runner keeps getting proposed.
+
+**Left out deliberately.** `.github/copilot-instructions.md` covers the same architecture at ~700 lines. CLAUDE.md is read on every session, so it stays scannable and points at the long version rather than duplicating it. Per-model tables, the full endpoint list and the service inventory are all discoverable and were cut.
+
+**Flagged, not fixed.** The prefix half of `MessageCreate.ts` (lines ~213-692) is a second implementation of routing, guards and audit logging that the slash and mention paths no longer share. A guard changed only in `CommandGuards.ts` will silently not apply to prefix commands. Documented as a pitfall; the real fix is to route the prefix path through `runCommandFor` or to finish deleting it.
+
+## Prefix path routed through the shared helpers (2026-07-31)
+
+The flagged duplicate: `MessageCreate.ts` lines 213-692 were a second implementation of routing, guards, audit logging and usage tracking that the slash and mention paths had already moved into `BotResolver`/`CommandGuards`/`CommandRunner`. A guard changed in one place silently did not apply to prefix commands. 545 lines out of `MessageCreate.ts`, 475 deletions net across the change.
+
+**No delegation on the prefix path, deliberately.** The slash and mention paths delegate by swapping four fields of `Context` onto the chosen bot's caches, because only the receiving bot got the event. Prefix is different: every bot receives the message and runs the same resolution, so the chosen bot can handle its own event and the rest return on one line. Adding a delegation limb would have meant a third copy of the identity-swap logic on a code path scheduled for deletion when the MessageContent intent is revoked. The gate stays on the *chosen* bot rather than moving to the receiver, which also preserves exactly who answers today.
+
+**`pickReceiver` extracted rather than inlined.** The old selection ladder mixed "which bot did the user address" (prefix match, global-prefix hash) with "which bot is free" (VC occupancy, idle). `resolveBot` already owned the second half, so only the first needed a home. It went into `BotResolver.ts` as a generic pure function specifically so it could be tested: every instance must derive the same receiver from the same message or one command gets answered twice, and that property was previously untested. Tests 14-17 cover named prefix, hash distribution and its cross-instance stability, an unknown prefix, and duplicate prefixes.
+
+**The busy gate now only applies to voice commands** (`CommandGuards.ts` check 10). This is a behaviour change to the slash path too, and it is the one place the unification could not be purely mechanical. Old prefix code only set `valid = false` inside the `userVCId` branch, so a user *not* in a voice channel never saw "all bots are busy"; `resolveBot` returns `all_busy` regardless. Routing the prefix path through the shared guard unchanged would have made `!help` fail whenever every bot happened to be playing elsewhere. Gating on `command.player?.voice` fixes that for both paths at once: busy only matters when a bot has to join something. Commands with `player.active` are unaffected — check 6 runs first and reports "nothing playing", which is the accurate message.
+
+**Smaller things settled along the way.**
+
+- The missing-arguments embed is a local `missingArgsEmbed` helper shared by the mention and prefix paths. It stayed out of `runGuards` on purpose: Discord enforces required options before a slash interaction is ever dispatched, and `ctx.args` there is an options array, so the same check would reject valid slash calls.
+- The deprecation notice moved from a `finally` to `onGuardsPassed`. Same condition — the old `finally` sat inside a block that guard failures returned before reaching — but it now prints before the command's output rather than after.
+- `if (this.client.childEnv.id === this.client.childEnv.id)` guarding the "no bots configured" reply was always true, so every instance replied. Now pinned to `activeBots[0]`.
+- Audit log author is `Message - Command Logs` rather than `Mention - Command Logs`, since message-backed contexts now cover both.
+- The prefix path emits `event.interaction.*` locale keys instead of `event.message.*`. Checked the pairs it now uses in `EnglishUS.json`: identical or near-identical wording, nothing slash-specific, so no user-visible change. The `event.message.*` equivalents are now unused but left in place.
+
+Verified: `npx tsc --noEmit` clean, `npx ts-node src/utils/BotResolver.spec.ts` passes 17 blocks. Not exercised against a live Discord connection — the manual test plan in `docs/superpowers/` still applies, and the prefix path's real risk is cross-instance agreement, which only shows up with the fleet running.

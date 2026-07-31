@@ -58,6 +58,43 @@ export function buildBotMeta(bots: Lavamusic[], guild: Guild): {
 }
 
 /**
+ * Which bot a prefix command was addressed to, before availability is considered.
+ *
+ * A guild-specific prefix names exactly one bot. The global prefix names none,
+ * so those are spread across the fleet by message id rather than piling onto the
+ * first bot. Generic over the bot type so it can be tested as plain data.
+ *
+ * Every instance runs this over the same message and the same bot list, so all
+ * of them must reach the same answer — that agreement is what stops two bots
+ * answering one command.
+ *
+ * `prefixes[i]` is the guild prefix of `bots[i]`; the arrays must line up.
+ */
+export function pickReceiver<T>(
+	bots: T[],
+	prefixes: string[],
+	matchedPrefix: string,
+	globalPrefix: string,
+	messageId: string,
+): T {
+	// The prefix regex matches case-insensitively, so `B1!` typed by a user has
+	// to find the `b1!` stored in the database.
+	const wanted = matchedPrefix.toLowerCase();
+
+	const named = prefixes.findIndex(prefix => prefix.toLowerCase() === wanted);
+	if (named !== -1) return bots[named];
+	if (wanted === globalPrefix.toLowerCase()) {
+		// A snowflake is a decimal string whose trailing digits are the sequence
+		// counter, so they vary per message where the leading timestamp barely
+		// moves. Reading those digits as base 16 is arbitrary but harmless and
+		// predates this function — every instance computes the same index, which
+		// is the only property that matters here.
+		return bots[parseInt(messageId.slice(-4), 16) % bots.length];
+	}
+	return bots[0];
+}
+
+/**
  * Pure selection ladder. Every input is plain data so this is testable
  * without a Discord connection.
  *
