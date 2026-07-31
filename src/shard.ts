@@ -53,7 +53,33 @@ function clientOptionsFor(bot: BotConfig): ClientOptions {
 	};
 }
 
+function isDisallowedIntents(error: unknown): boolean {
+	const message = error instanceof Error ? error.message : String(error);
+	return message.includes('Used disallowed intents');
+}
+
 export async function shardStart(bot: BotConfig) {
-	const client = new Lavamusic(clientOptionsFor(bot), bot);
+	try {
+		const client = new Lavamusic(clientOptionsFor(bot), bot);
+		await client.start();
+		return;
+	} catch (error) {
+		if (!(bot.messageContentIntent && isDisallowedIntents(error))) throw error;
+	}
+
+	// Discord has revoked MessageContent for this application. Coming up without
+	// it beats staying offline: slash commands and @mention commands both work
+	// without any privileged intent. Only prefix commands are lost.
+	//
+	// Deliberately NOT persisted to BotConfig — a write from an error path would
+	// turn a transient Discord fault into a permanent silent downgrade. Flip
+	// messageContentIntent to false yourself once you have confirmed the
+	// revocation is real, and this retry stops happening.
+	const client = new Lavamusic(clientOptionsFor({ ...bot, messageContentIntent: false }), bot);
+	client.logger.error(
+		`${bot.name}: Discord rejected the MessageContent intent. Starting without it — ` +
+			'slash and @mention commands will work, prefix commands will not. ' +
+			`Set messageContentIntent=false on this bot's BotConfig row to make this permanent.`,
+	);
 	await client.start();
 }

@@ -203,7 +203,11 @@ try {
 		// shardStart(logger, bots[2]);
 		// shardStart(logger, bots[3]);
 		for (const bot of bots) {
-			shardStart(bot);
+			// One bot failing to log in must not surface as a bare unhandled
+			// rejection, and must not take the rest of the fleet down with it.
+			shardStart(bot).catch(error => {
+				logger.error(`[LAUNCH] ${bot.name} failed to start:`, error);
+			});
 		}
 
 		// Start periodic message system (once for all bots)
