@@ -116,6 +116,13 @@ export default class InteractionCreate extends Event {
 			ctx.setArgs(options);
 			ctx.guildLocale = locale;
 
+			// Announce a handoff only when a bot is about to JOIN the channel —
+			// that is the surprising part worth explaining. When the chosen bot is
+			// already sitting in the user's channel, it is visibly there and its
+			// own reply follows, so a preamble explains nothing and just adds a
+			// second message to every command.
+			const announceHandoff = !isSelf && resolved.reason !== 'in_user_vc';
+
 			// Guard failures and execution errors always answer through the
 			// interaction, delegated or not — the receiver is the bot the user
 			// actually invoked, and at guard time nothing has been announced yet.
@@ -125,9 +132,8 @@ export default class InteractionCreate extends Event {
 				command,
 				busy,
 				reply,
-				isSelf
-					? undefined
-					: async () => {
+				announceHandoff
+					? async () => {
 							// Guards passed, so the handoff is real and worth announcing.
 							// The chosen bot posts its own output as a normal channel
 							// message; this notice is all the interaction reply carries.
@@ -140,7 +146,8 @@ export default class InteractionCreate extends Event {
 									bot: chosen.user!.username,
 								}),
 							});
-						},
+						}
+					: undefined,
 			);
 		} catch (error) {
 			this.client.logger.error('Slash command handler threw:', error);

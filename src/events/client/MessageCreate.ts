@@ -167,6 +167,11 @@ export default class MessageCreate extends Event {
 				}
 			}
 
+			// Announce a handoff only when a bot is about to JOIN the channel. A bot
+			// already sitting in the user's channel is visibly there and its own
+			// reply follows, so a preamble explains nothing.
+			const announceHandoff = !isSelf && resolved.reason !== 'in_user_vc';
+
 			await runCommandFor(
 				chosen,
 				mentionCtx,
@@ -175,15 +180,15 @@ export default class MessageCreate extends Event {
 				async payload => {
 					await message.reply(payload as any).catch(() => null);
 				},
-				isSelf
-					? undefined
-					: async () => {
+				announceHandoff
+					? async () => {
 							await message.reply({
 								content: T(locale, 'event.interaction.delegated_to_bot', {
 									bot: chosen.user!.username,
 								}),
 							});
-						},
+						}
+					: undefined,
 			);
 			return;
 		}
