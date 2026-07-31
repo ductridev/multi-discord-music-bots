@@ -752,12 +752,7 @@
 			"bot_busy_different_vc": "I'm playing music in another channel right now! Use a different bot or wait till I'm free 🎵",
 			"bot_busy_get_more": "I'm busy in another channel! Add more bots to play in multiple rooms at once 🤖",
 			"get_more_bots_button": "Get More Bots ➕",
-			"slash_deprecated": "Slash commands have been deprecated! Please use `{prefix}{command}` instead. 🎵",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-			"no_bots_configured": "No music bots here yet! Invite a bot first 🎵",
-			"no_free_bots": "No bots available right now! Consider adding more bots to the server 🤖",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"slash_deprecated": "Slash commands have been deprecated! Please use `{prefix}{command}` instead. 🎵"
 		},
 		"message": {
 			"prefix_mention": "Hey! My prefix here is `{prefix}`. Want help? Try `{prefix}help`\nStay awesome! 🎉",

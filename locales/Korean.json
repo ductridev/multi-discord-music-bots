@@ -746,12 +746,8 @@
 			"vote_message": "잠깐! 이 명령어를 사용하려면 top.gg에서 투표해야 해요.",
 			"slash_deprecated": "빗금 명령어가 더 이상 사용되지 않아요! 대신 `{prefix}{command}`를 사용해 주세요. 🎵",
 			"periodic_message_vote_only": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러분의 투표가 성장에 도움이 됩니다! ❤️\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요",
-			"periodic_message_with_bots": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러 방에서 음악을 듣고 싶나요? 봇을 더 추가하세요! 🎶\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-			"no_bots_configured": "아직 이 서버에 음악 봇이 추가되지 않았어요. 먼저 봇을 초대해 주세요!",
-			"no_free_bots": "현재 사용 가능한 봇이 없어요. 이 서버에 더 많은 봇을 추가해 보세요.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"periodic_message_with_bots": "🎵 음악이 마음에 드시나요? Top.gg에서 투표해 주세요! 여러 방에서 음악을 듣고 싶나요? 봇을 더 추가하세요! 🎶\n오디오가 불안정한가요? `bregion`을 사용하여 더 가까운 지역으로 전환하세요"
+
 		},
 		"message": {
 			"prefix_mention": "이 서버의 접두사는 `{prefix}`예요. 더 많은 정보를 원하시나요? `{prefix}help`를 사용하세요.\n안전하게 지내시고, 멋진 하루 보내세요!",

@@ -662,9 +662,10 @@
 			},
 			"messages": {
 				"processing": "Procesando tu solicitud... ⚙️",
-				"config_updated_title": "Configuración LavaSrc Actualizada",
-				"config_updated_desc": "¡Configuración de {service} actualizada exitosamente para el nodo **{node}**! Cambios aplicados ✅",
-				"view_title": "Configuración LavaSrc",
+				"config_updated_title": "✅ Configuración de {source} Actualizada",
+				"config_updated_desc": "¡Configuración de {source} actualizada exitosamente para el nodo **{nodeId}**! Cambios aplicados ✅",
+				"updated_config": "Configuración Actualizada",
+				"view_title": "📋 Configuración LavaSrc - {nodeId}",
 				"nodes_title": "Nodos Lavalink Disponibles",
 				"no_nodes": "¡No hay nodos Lavalink disponibles! Asegúrate de que Lavalink esté conectado 🔌",
 				"total_nodes": "Total de nodos: {count}"
@@ -703,11 +704,16 @@
 			},
 			"messages": {
 				"processing": "Procesando tu solicitud... ⚙️",
-				"oauth_updated_title": "YouTube OAuth Actualizado",
-				"potoken_updated_title": "YouTube poToken Actualizado",
-				"token_refreshed_title": "Token de YouTube Actualizado",
-				"view_title": "Configuración de Fuente YouTube",
-				"nodes_title": "Nodos Lavalink Disponibles",
+				"oauth_updated_title": "✅ Configuración YouTube OAuth Actualizada",
+				"oauth_updated_desc": "Configuración YouTube OAuth actualizada exitosamente para el nodo **{nodeId}** ✅",
+				"potoken_updated_title": "✅ Configuración YouTube poToken Actualizada",
+				"potoken_updated_desc": "Configuración YouTube poToken actualizada exitosamente para el nodo **{nodeId}** ✅",
+				"token_refreshed_title": "✅ Token OAuth Actualizado",
+				"token_refreshed_desc": "Token OAuth actualizado exitosamente para el nodo **{nodeId}** ✅",
+				"view_title": "📋 Configuración de Fuente YouTube - {nodeId}",
+				"nodes_title": "📡 Nodos Lavalink",
+				"no_nodes": "No hay nodos disponibles.",
+				"total_nodes": "Total: {count} nodo(s)",
 				"not_set": "No Establecido",
 				"na": "N/D"
 			},
@@ -728,7 +734,21 @@
 				"status": "Estado",
 				"enabled": "ACTIVADO",
 				"disabled": "DESACTIVADO",
-				"last_updated": "Última Actualización"
+				"last_updated": "Última Actualización",
+				"token_type": "Tipo de Token",
+				"expires_in": "Expira En",
+				"scope": "Ámbito",
+				"access_token_truncated": "Access Token (truncado)",
+				"updated": "✅ Actualizado",
+				"not_changed": "⚪ No Cambiado",
+				"yes": "✅ Sí",
+				"no": "❌ No",
+				"important": "⚠️ Importante",
+				"oauth_warning": "Los tokens OAuth deben mantenerse en secreto. Considera usar una cuenta YouTube desechable.",
+				"how_to_generate": "💡 Cómo Generar",
+				"generator_link": "Usa [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) para obtener estos valores.",
+				"note": "ℹ️ Nota",
+				"api_note": "La API solo devuelve el refresh token. poToken y visitorData no se exponen."
 			},
 			"usage": {
 				"title": "Uso",
@@ -757,12 +777,8 @@
 			"vote_message": "¡Espera! Necesitas votar en top.gg para usar este comando. Gracias.",
 			"slash_deprecated": "¡Los comandos slash han sido descontinuados! Por favor, usa `{prefix}{command}` en su lugar. 🎵",
 			"periodic_message_vote_only": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¡Tu voto nos ayuda a crecer! ❤️\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
-			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-			"no_bots_configured": "Aún no se han agregado bots de música a este servidor. ¡Por favor invita un bot primero!",
-			"no_free_bots": "No hay bots disponibles en este momento. Es posible que desees agregar más bots a este servidor.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"periodic_message_with_bots": "🎵 ¿Te gusta la música? ¡Vota por nosotros en Top.gg! ¿Quieres música en varias salas? ¡Añade más bots! 🎶\n¿Audio inestable? Usa `bregion` para cambiar a una región más cercana"
+
 		},
 		"message": {
 			"prefix_mention": "Hola, mi prefijo para este servidor es `{prefix}`. ¿Quieres más información? Entonces escribe `{prefix}help`\n¡Mantente seguro, mantente genial!",

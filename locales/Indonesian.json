@@ -749,12 +749,8 @@
 			"vote_message": "Tunggu! Anda perlu memberikan vote di top.gg untuk menggunakan perintah ini. Terima kasih.",
 			"slash_deprecated": "Perintah slash sudah tidak digunakan lagi! Silakan gunakan `{prefix}{command}` sebagai gantinya. 🎵",
 			"periodic_message_vote_only": "🎵 Suka musiknya? Vote kami di Top.gg! Vote kamu membantu kami berkembang! ❤️\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
-			"periodic_message_with_bots": "🎵 Suka musiknya? Vote kami di Top.gg! Ingin musik di banyak ruangan? Tambahkan lebih banyak bot! 🎶\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-			"no_bots_configured": "Belum ada bot musik yang ditambahkan ke server ini. Silakan undang bot terlebih dahulu!",
-			"no_free_bots": "Tidak ada bot yang tersedia saat ini. Anda mungkin ingin menambahkan lebih banyak bot ke server ini.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"periodic_message_with_bots": "🎵 Suka musiknya? Vote kami di Top.gg! Ingin musik di banyak ruangan? Tambahkan lebih banyak bot! 🎶\nAudio tidak stabil? Gunakan `bregion` untuk beralih ke region yang lebih dekat"
+
 		},
 		"message": {
 			"prefix_mention": "Hai, prefix saya untuk server ini adalah `{prefix}`. Ingin informasi lebih lanjut? Lakukan `{prefix}help`\nTetap Aman, Tetap Luar Biasa!",

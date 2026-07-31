@@ -663,9 +663,10 @@
 			},
 			"messages": {
 				"processing": "Đang xử lý yêu cầu của bạn... ⚙️",
-				"config_updated_title": "Đã Cập Nhật Cấu Hình LavaSrc",
-				"config_updated_desc": "Đã cập nhật cấu hình {service} cho node **{node}** thành công! Thay đổi đã được áp dụng ✅",
-				"view_title": "Cấu Hình LavaSrc",
+				"config_updated_title": "✅ Đã Cập Nhật Cấu Hình {source}",
+				"config_updated_desc": "Đã cập nhật cấu hình {source} cho node **{nodeId}** thành công! Thay đổi đã được áp dụng ✅",
+				"updated_config": "Cấu Hình Đã Cập Nhật",
+				"view_title": "📋 Cấu Hình LavaSrc - {nodeId}",
 				"nodes_title": "Các Node Lavalink Khả Dụng",
 				"no_nodes": "Không có node Lavalink nào! Đảm bảo Lavalink đã kết nối nhé 🔌",
 				"total_nodes": "Tổng số node: {count}"
@@ -704,11 +705,16 @@
 			},
 			"messages": {
 				"processing": "Đang xử lý yêu cầu của bạn... ⚙️",
-				"oauth_updated_title": "Đã Cập Nhật YouTube OAuth",
-				"potoken_updated_title": "Đã Cập Nhật YouTube poToken",
-				"token_refreshed_title": "Đã Làm Mới YouTube Token",
-				"view_title": "Cấu Hình Nguồn YouTube",
-				"nodes_title": "Các Node Lavalink Khả Dụng",
+				"oauth_updated_title": "✅ Đã Cập Nhật Cấu Hình YouTube OAuth",
+				"oauth_updated_desc": "Đã cập nhật cấu hình YouTube OAuth cho node **{nodeId}** thành công ✅",
+				"potoken_updated_title": "✅ Đã Cập Nhật Cấu Hình YouTube poToken",
+				"potoken_updated_desc": "Đã cập nhật cấu hình YouTube poToken cho node **{nodeId}** thành công ✅",
+				"token_refreshed_title": "✅ Đã Làm Mới OAuth Token",
+				"token_refreshed_desc": "Đã làm mới OAuth token cho node **{nodeId}** thành công ✅",
+				"view_title": "📋 Cấu Hình Nguồn YouTube - {nodeId}",
+				"nodes_title": "📡 Các Node Lavalink",
+				"no_nodes": "Không có node nào khả dụng.",
+				"total_nodes": "Tổng: {count} node",
 				"not_set": "Chưa Đặt",
 				"na": "N/A"
 			},
@@ -729,7 +735,21 @@
 				"status": "Trạng Thái",
 				"enabled": "Bật",
 				"disabled": "Tắt",
-				"last_updated": "Cập Nhật Lần Cuối"
+				"last_updated": "Cập Nhật Lần Cuối",
+				"token_type": "Loại Token",
+				"expires_in": "Hết Hạn Sau",
+				"scope": "Phạm Vi",
+				"access_token_truncated": "Access Token (rút gọn)",
+				"updated": "✅ Đã Cập Nhật",
+				"not_changed": "⚪ Không Đổi",
+				"yes": "✅ Có",
+				"no": "❌ Không",
+				"important": "⚠️ Quan Trọng",
+				"oauth_warning": "Token OAuth phải được giữ bí mật. Nên dùng tài khoản YouTube phụ.",
+				"how_to_generate": "💡 Cách Tạo",
+				"generator_link": "Dùng [youtube-trusted-session-generator](https://github.com/iv-org/youtube-trusted-session-generator) để lấy các giá trị này.",
+				"note": "ℹ️ Lưu Ý",
+				"api_note": "Chỉ refresh token được API trả về. poToken và visitorData không lộ ra."
 			},
 			"usage": {
 				"title": "Cách Dùng",
@@ -768,12 +788,7 @@
 			"bot_busy_different_vc": "Mình đang phát nhạc ở kênh khác rồi! Dùng bot khác hoặc chờ mình rảnh nhé 🎶",
 			"bot_busy_get_more": "Mình bận rồi! Thêm nhiều bot để phát nhạc nhiều phòng cùng lúc nhé! 🎵",
 			"get_more_bots_button": "Thêm Bot ➕",
-			"slash_deprecated": "Lệnh slash đã bị loại bỏ! Vui lòng dùng `{prefix}{command}` thay thế. 🎵",
-			"voice_channel_full": "Kênh <#{channel}> đầy rồi! Sang kênh khác hoặc tăng giới hạn thành viên 😅",
-			"no_bots_configured": "Chưa có bot nhạc nào trong server! Mời bot vào trước nhé 🎵",
-			"no_free_bots": "Không có bot nào rảnh! Thêm bot khác vào server xem 🤖",
-			"maintenance": "Bot đang bảo trì! Quay lại sau nhé 🔧",
-			"delegated_to_bot": "**{bot}** sẽ xử lý lệnh này — bot đó đang rảnh và sắp vào kênh của bạn 🎶"
+			"slash_deprecated": "Lệnh slash đã bị loại bỏ! Vui lòng dùng `{prefix}{command}` thay thế. 🎵"
 		},
 		"message": {
 			"cooldown": "Chờ {time} giây nữa nhé! Lệnh `{command}` đang cooldown ⏱️",

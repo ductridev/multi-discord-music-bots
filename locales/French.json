@@ -558,7 +558,11 @@
 			}
 		},
 		"livelyrics": {
-			"description": "Activer ou désactiver la synchronisation des paroles en direct"
+			"description": "Affiche les paroles synchronisées en direct pour la piste actuelle ! Mode karaoké 🎤",
+			"errors": {
+				"no_player": "Aucune musique n'est en cours de lecture.",
+				"no_synced": "Aucune parole synchronisée trouvée pour cette piste."
+			}
 		},
 		"fairplay": {
 			"description": "Configure le bot pour jouer de la musique de manière équitable",
@@ -670,6 +674,9 @@
 				"toggle": "Activer ou désactiver le système de vote",
 				"status": "Vérifier l'état actuel du système de vote"
 			}
+		},
+		"livelyrics": {
+			"description": "Activer ou désactiver la synchronisation des paroles en direct"
 		}
 	},
 	"buttons": {
@@ -743,12 +750,8 @@
 			"vote_message": "Attendez ! Vous devez voter sur top.gg pour utiliser cette commande. Merci.",
 			"slash_deprecated": "Les commandes slash sont obsolètes ! Veuillez utiliser `{prefix}{command}` à la place. 🎵",
 			"periodic_message_vote_only": "🎵 Vous aimez la musique ? Votez pour nous sur Top.gg ! Votre vote nous aide à grandir ! ❤️\nAudio instable ? Utilisez `bregion` pour changer de région plus proche de vous",
-			"periodic_message_with_bots": "🎵 Vous aimez la musique ? Votez pour nous sur Top.gg ! Envie de musique dans plusieurs salons ? Ajoutez plus de bots ! 🎶\nAudio instable ? Utilisez `bregion` pour changer de région plus proche de vous",
-			"voice_channel_full": "Channel <#{channel}> is full! Try another channel or raise the user limit 😅",
-			"no_bots_configured": "Aucun bot musical n'a encore été ajouté à ce serveur. Veuillez d'abord inviter un bot !",
-			"no_free_bots": "Aucun bot n'est disponible pour le moment. Vous voudrez peut-être ajouter plus de bots à ce serveur.",
-			"maintenance": "The bot is under maintenance! Check back soon 🔧",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"periodic_message_with_bots": "🎵 Vous aimez la musique ? Votez pour nous sur Top.gg ! Envie de musique dans plusieurs salons ? Ajoutez plus de bots ! 🎶\nAudio instable ? Utilisez `bregion` pour changer de région plus proche de vous"
+
 		},
 		"message": {
 			"prefix_mention": "Hé, mon préfixe pour ce serveur est `{prefix}`. Vous voulez plus d'infos ? alors faites `{prefix}help`\nRestez en sécurité, restez génial !",

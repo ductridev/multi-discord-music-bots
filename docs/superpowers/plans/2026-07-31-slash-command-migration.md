@@ -549,6 +549,8 @@ fixes sendDeferMessage discarding its content argument."
 
 Create `scripts/add-interaction-locale-keys.js`. It copies from `event.message` where an equivalent already exists in that same file, falls back to Vietnamese, then to English, and never overwrites a key that is already present.
 
+**Formatting is load-bearing.** The existing locale files are **tab**-indented with **no trailing newline**. `JSON.stringify(json, null, '\t')` with no appended newline round-trips them byte-identically — verified against `locales/Vietnamese.json`. Writing 2-space indent instead reformats all ~16k lines across 19 files, producing a 1.7 MB diff for ~95 added lines and making review impossible.
+
 ```javascript
 const fs = require('node:fs');
 const path = require('node:path');
@@ -588,7 +590,8 @@ let changed = 0;
 
 for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json'))) {
 	const full = path.join(LOCALES_DIR, file);
-	const json = JSON.parse(fs.readFileSync(full, 'utf8'));
+	const raw = fs.readFileSync(full, 'utf8');
+	const json = JSON.parse(raw);
 
 	json.event = json.event || {};
 	json.event.interaction = json.event.interaction || {};
@@ -614,7 +617,13 @@ for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json')))
 	}
 
 	if (added.length > 0) {
-		fs.writeFileSync(full, `${JSON.stringify(json, null, 2)}\n`, 'utf8');
+		// Reuse whatever indentation this file already uses, and append no
+		// trailing newline — these files do not end with one. The first indented
+		// line of a JSON object is one unit deep, so its leading whitespace is
+		// the unit. 16 of the 19 files round-trip byte-identically this way.
+		const indentMatch = raw.match(/\n([ \t]+)/);
+		const indent = indentMatch ? indentMatch[1] : '\t';
+		fs.writeFileSync(full, JSON.stringify(json, null, indent), 'utf8');
 		changed++;
 		console.log(`${file}: added ${added.join(', ')}`);
 	} else {
@@ -1609,7 +1618,8 @@ let changed = 0;
 
 for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json'))) {
 	const full = path.join(LOCALES_DIR, file);
-	const json = JSON.parse(fs.readFileSync(full, 'utf8'));
+	const raw = fs.readFileSync(full, 'utf8');
+	const json = JSON.parse(raw);
 
 	json.event = json.event || {};
 	json.event.message = json.event.message || {};
@@ -1628,7 +1638,13 @@ for (const file of fs.readdirSync(LOCALES_DIR).filter(f => f.endsWith('.json')))
 	}
 
 	if (touched) {
-		fs.writeFileSync(full, `${JSON.stringify(json, null, 2)}\n`, 'utf8');
+		// Reuse whatever indentation this file already uses, and append no
+		// trailing newline — these files do not end with one. The first indented
+		// line of a JSON object is one unit deep, so its leading whitespace is
+		// the unit. 16 of the 19 files round-trip byte-identically this way.
+		const indentMatch = raw.match(/\n([ \t]+)/);
+		const indent = indentMatch ? indentMatch[1] : '\t';
+		fs.writeFileSync(full, JSON.stringify(json, null, indent), 'utf8');
 		changed++;
 		console.log(`${file}: updated`);
 	} else {

@@ -567,7 +567,11 @@
 			}
 		},
 		"livelyrics": {
-			"description": "啟用或停用即時歌詞同步"
+			"description": "顯示當前曲目的即時同步歌詞！卡拉OK模式 🎤",
+			"errors": {
+				"no_player": "目前沒有播放音樂。",
+				"no_synced": "這首歌沒有找到同步歌詞。"
+			}
 		},
 		"fairplay": {
 			"description": "設定機器人公平播放音樂",
@@ -693,6 +697,9 @@
 				"title": "用法",
 				"value": "`!youtubeconfig <子命令> [選項]`\n示例: `!youtubeconfig oauth node:main refreshToken:xxx`"
 			}
+		},
+		"livelyrics": {
+			"description": "啟用或停用即時歌詞同步"
 		}
 	},
 	"buttons": {
@@ -766,12 +773,8 @@
 			"vote_message": "等等！您需要在 top.gg 上為機器人投票才能使用此指令。謝謝。",
 			"slash_deprecated": "斜線指令已棄用！請改用 `{prefix}{command}`。🎵",
 			"periodic_message_vote_only": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票吧！您的支持讓我們更強大！❤️\n音訊不穩定？使用 `bregion` 切換到離你更近的地區",
-			"periodic_message_with_bots": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票！想在多個房間播放音樂？添加更多機器人吧！🎶\n音訊不穩定？使用 `bregion` 切換到離你更近的地區",
-			"voice_channel_full": "語音頻道 <#{channel}> 已滿。請切換到其他頻道或增加成員限制。",
-			"no_bots_configured": "此伺服器尚未新增任何音樂機器人。請先邀請機器人！",
-			"no_free_bots": "目前沒有可用的機器人。您可能需要向此伺服器新增更多機器人。",
-			"maintenance": "機器人正在維護中。請稍後再試。",
-			"delegated_to_bot": "**{bot}** will handle this — it is free and joining your channel 🎶"
+			"periodic_message_with_bots": "🎵 喜歡音樂嗎？在 Top.gg 上為我們投票！想在多個房間播放音樂？添加更多機器人吧！🎶\n音訊不穩定？使用 `bregion` 切換到離你更近的地區"
+
 		},
 		"message": {
 			"prefix_mention": "嘿，我這個伺服器的前綴是 `{prefix}`。想要了解更多資訊？請執行 `{prefix}help`\n注意安全，保持出色！",
