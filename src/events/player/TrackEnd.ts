@@ -5,6 +5,7 @@ import { updateSetup } from '../../utils/SetupSystem';
 import { T } from '../../structures/I18n';
 import { dashboardSocket } from '../../api/websocket/DashboardSocket';
 import { PrismaClient } from '@prisma/client';
+import { isTrackLoopReplay } from '../../utils/TrackLoop';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +16,7 @@ export default class TrackEnd extends Event {
 		});
 	}
 
-	public async run(player: Player, _track: Track | null, _payload: TrackStartEvent): Promise<void> {
+	public async run(player: Player, track: Track | null, _payload: TrackStartEvent): Promise<void> {
 		// Stop live lyrics session if active
 		if (this.client.liveLyricsService) {
 			this.client.liveLyricsService.handleTrackEnd(player.guildId);
@@ -60,8 +61,11 @@ export default class TrackEnd extends Event {
 			}
 		}
 
-		// For track loop mode, don't delete message - trackStart will reuse it
-		if (player.repeatMode === 'track') {
+		// Track loop replaying the same track: don't delete the message, trackStart
+		// will reuse it. lavalink-client has already advanced the queue by now, so a
+		// skip while looping leaves a different queue.current and falls through to
+		// the delete path below.
+		if (isTrackLoopReplay(player.repeatMode, player.queue.current?.encoded, track?.encoded)) {
 			// Still save player queue
 			await player.queue.utils.save();
 			return;
