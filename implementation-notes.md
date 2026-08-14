@@ -213,3 +213,49 @@ The flagged duplicate: `MessageCreate.ts` lines 213-692 were a second implementa
 - The prefix path emits `event.interaction.*` locale keys instead of `event.message.*`. Checked the pairs it now uses in `EnglishUS.json`: identical or near-identical wording, nothing slash-specific, so no user-visible change. The `event.message.*` equivalents are now unused but left in place.
 
 Verified: `npx tsc --noEmit` clean, `npx ts-node src/utils/BotResolver.spec.ts` passes 17 blocks. Not exercised against a live Discord connection — the manual test plan in `docs/superpowers/` still applies, and the prefix path's real risk is cross-instance agreement, which only shows up with the fleet running.
+
+## Now-playing embed stuck on the old track after a skip during track loop (2026-08-13)
+
+Reported symptom: single song on loop, press skip, and the now-playing embed
+stays on the old song with the footer `⏭ Bỏ qua bài hát bởi {user}`. No embed
+appears for the track that actually started.
+
+**Root cause: `repeatMode === 'track'` is not the same thing as "the same track
+is replaying".** `Player.skip()` in lavalink-client sets `internal_skipped`, and
+the library's own `trackEnd` handler advances the queue when that flag is set,
+*even in track-loop mode*, while leaving `repeatMode` at `'track'`. It also
+clears `internal_skipped` before emitting `trackEnd`, so application code cannot
+read the flag to tell the two cases apart.
+
+Both of our handlers keyed off `repeatMode` alone and so short-circuited on a
+skip:
+
+- `TrackEnd.ts` returned early and never deleted the old message.
+- `TrackStart.ts` returned early and never posted a new one.
+
+The `skipped_by` footer the user saw was written by the skip button handler onto
+the message that then never got replaced. The `/skip` command path had the same
+dead end, differing only in that it also posted its own reply.
+
+**Fix: gate on track identity, via one shared predicate.** `isTrackLoopReplay`
+(`src/utils/TrackLoop.ts`) requires `repeatMode === 'track'` *and* a matching
+encoded track. `TrackStart` compares the incoming track against a new
+`messageTrack` player value stamped alongside `messageId`; `TrackEnd` compares
+`player.queue.current?.encoded` against the ended track, which works because the
+library has already advanced the queue by the time the event is emitted.
+
+**Why a shared helper rather than two inline conditions.** The two call sites
+make the same decision from different inputs, and the decision is the whole bug.
+One exported function is also the only way to test it: `TrackLoop.spec.ts`
+covers the loop replay, the skip-while-looping case that was broken, a missing
+previous track, queue/off repeat modes, and a null current track.
+
+**Deliberately unchanged.** `Skip.ts`, the skip button handler and
+`SetupButtons.ts` need no edit — once the two events stop short-circuiting, the
+normal delete-then-post flow resumes for every entry point. `Stop.ts` and
+`Skip.ts` clear only `messageId`; a stale `messageTrack` is harmless because
+both guards require a live `messageId`. The setup-channel path in
+`SetupSystem.ts` edits one persistent message and was never affected.
+
+Verified: `npx tsc --noEmit` clean, `npx ts-node src/utils/TrackLoop.spec.ts`
+passes, `npm run build` clean. Not exercised against a live Discord connection.

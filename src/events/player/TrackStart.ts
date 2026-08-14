@@ -24,6 +24,7 @@ import { VoiceStateHelper } from '../../utils/VoiceStateHelper';
 import { dashboardSocket } from '../../api/websocket/DashboardSocket';
 import { PrismaClient } from '@prisma/client';
 import { PeriodicMessageSystem } from '../../utils/PeriodicMessageSystem';
+import { isTrackLoopReplay } from '../../utils/TrackLoop';
 
 const prisma = new PrismaClient();
 
@@ -210,9 +211,12 @@ export default class TrackStart extends Event {
 			}
 		} else {
 			const previousMessageId = player.get<string | undefined>('messageId');
+			const previousMessageTrack = player.get<string | undefined>('messageTrack');
 
-			// For track loop mode: nothing changes, just return (message already exists)
-			if (player.repeatMode === 'track' && previousMessageId) {
+			// Track loop replaying the same track: message already exists, reuse it.
+			// A skip while looping advances the queue, so the track differs and needs
+			// a fresh message.
+			if (previousMessageId && isTrackLoopReplay(player.repeatMode, track.encoded, previousMessageTrack)) {
 				return;
 			}
 
@@ -236,6 +240,7 @@ export default class TrackStart extends Event {
 			});
 
 			player.set('messageId', message.id);
+			player.set('messageTrack', track.encoded);
 			createCollector(message, player, track, embed, this.client, locale);
 		}
 	}
