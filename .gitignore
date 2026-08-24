@@ -529,6 +529,9 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Lavamusic
+playerData*.json
+playerData*.json.bak
+.env.server
 Lavalink/logs
 Lavalink/plugins
 Lavalink/application.yml

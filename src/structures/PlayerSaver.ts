@@ -1,9 +1,19 @@
 import { PlayerJson } from "lavalink-client";
 import { JSONStore } from "./JSONStore";
+import { env } from "../env";
 
 export class PlayerSaver extends JSONStore {
     constructor(name: string) {
-        super(`${process.cwd()}/playerData-${name}.json`);
+        super(
+            `${process.cwd()}/playerData-${name}.json`,
+            env.REDIS_URL
+                ? {
+                    url: env.REDIS_URL,
+                    keyPrefix: `playerdata:${name}:`,
+                    ttlSeconds: env.PLAYER_SESSION_TTL,
+                }
+                : undefined,
+        );
     }
 
     /**

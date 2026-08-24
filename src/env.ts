@@ -36,6 +36,15 @@ const envSchema = z.object({
 	LOG_CHANNEL_ID: z.string().optional(),
 	LOG_COMMANDS_ID: z.string().optional(),
 	DATABASE_URL: z.string().optional(),
+	// When set, player-session persistence uses Redis (per-guild keys) instead of
+	// a single per-bot JSON file. Required in prod to avoid an unbounded blob file.
+	REDIS_URL: z.string().optional(),
+	// TTL (seconds) for persisted player sessions in Redis. Auto-prunes stale
+	// entries so a crash-restart loop can't accumulate dead sessions. Default 7 days.
+	PLAYER_SESSION_TTL: z.preprocess(
+		val => (typeof val === 'string' ? Number(val) : val),
+		z.number().int().positive().default(604800),
+	),
 	SEARCH_ENGINE: z.preprocess(
 		val => {
 			if (typeof val === 'string') {
