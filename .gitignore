@@ -530,6 +530,7 @@ FodyWeavers.xsd
 
 # Lavamusic
 playerData*.json
+playerData*.json.bak
 .env.server
 Lavalink/logs
 Lavalink/plugins

@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
-import { mkdtempSync, rmSync, existsSync } from "node:fs";
+import { mkdtempSync, rmSync, existsSync, readFileSync } from "node:fs";
 import { writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -16,6 +16,8 @@ import { JSONStore, type RedisStoreOptions } from "./JSONStore";
 class FakeRedis extends EventEmitter {
     public store = new Map<string, string>();
     public down = false;
+    /** Namespaced keys whose set/del should reject, independent of `down`. */
+    public failKeys = new Set<string>();
 
     constructor(seed?: Record<string, string>) {
         super();
@@ -34,12 +36,12 @@ class FakeRedis extends EventEmitter {
         return keys.map((k) => this.store.get(k) ?? null);
     }
     async set(key: string, value: string): Promise<string> {
-        if (this.down) throw new Error("redis down");
+        if (this.down || this.failKeys.has(key)) throw new Error("redis down");
         this.store.set(key, value);
         return "OK";
     }
     async del(key: string): Promise<number> {
-        if (this.down) throw new Error("redis down");
+        if (this.down || this.failKeys.has(key)) throw new Error("redis down");
         return this.store.delete(key) ? 1 : 0;
     }
     disconnect(): void {}
@@ -135,4 +137,70 @@ test("delete during outage is replayed as DEL on reconnect", async () => {
     store.fake.emit("ready");
     await tick();
     assert.ok(!store.fake.store.has("test:g5"), "DEL replayed on ready");
+});
+
+test("migration preserves a failed write and the remaining entries for later flush", async () => {
+    nextFake = new FakeRedis();
+    nextFake.failKeys.add("test:g2"); // second entry fails mid-migration
+    const file = tempFile({ g1: "v1", g2: "v2", g3: "v3" });
+    const store = new TestStore(file, opts());
+    await store.ensureLoaded();
+
+    assert.equal(store.fake.store.get("test:g1"), "v1", "first entry migrated");
+    assert.ok(!store.fake.store.has("test:g2"), "failed entry not in Redis");
+    assert.ok(!store.fake.store.has("test:g3"), "remaining entry held back");
+    assert.equal(store.get("g2"), "v2", "failed entry kept in mirror");
+    assert.equal(store.get("g3"), "v3", "remaining entry kept in mirror");
+    assert.ok(existsSync(file), "file not retired after a failed migration");
+
+    store.fake.failKeys.clear();
+    store.fake.emit("ready");
+    await tick();
+    assert.equal(store.fake.store.get("test:g2"), "v2", "failed entry replayed on reconnect");
+    assert.equal(store.fake.store.get("test:g3"), "v3", "remaining entry replayed on reconnect");
+    rmSync(file, { force: true });
+    rmSync(`${file}.bak`, { force: true });
+});
+
+test("overlapping fallback writes both persist and replay (no clobber)", async () => {
+    nextFake = new FakeRedis();
+    const file = tempFile();
+    const store = new TestStore(file, opts());
+    await store.ensureLoaded();
+
+    store.fake.down = true;
+    await Promise.all([store.set("a", "1"), store.set("b", "2")]);
+    assert.equal(store.get("a"), "1");
+    assert.equal(store.get("b"), "2");
+    // both diverged keys survive — not just the last writer
+    assert.deepEqual(JSON.parse(readFileSync(file, "utf-8")), { a: "1", b: "2" });
+
+    store.fake.down = false;
+    store.fake.emit("ready");
+    await tick();
+    assert.equal(store.fake.store.get("test:a"), "1");
+    assert.equal(store.fake.store.get("test:b"), "2");
+    assert.ok(!existsSync(file), "fallback file cleared after re-converge");
+});
+
+test("fallback stores only diverged keys, so an expired key isn't resurrected", async () => {
+    nextFake = new FakeRedis();
+    const file = tempFile();
+    const store = new TestStore(file, opts());
+    await store.ensureLoaded();
+
+    await store.set("keep", "v"); // lands in Redis, never diverges
+    assert.equal(store.fake.store.get("test:keep"), "v");
+
+    store.fake.down = true;
+    await store.set("new", "n"); // falls back to file
+    assert.deepEqual(JSON.parse(readFileSync(file, "utf-8")), { new: "n" }, "only the diverged key persisted");
+
+    store.fake.store.delete("test:keep"); // 'keep' expires in Redis during the outage
+
+    store.fake.down = false;
+    store.fake.emit("ready");
+    await tick();
+    assert.equal(store.fake.store.get("test:new"), "n", "diverged key replayed");
+    assert.ok(!store.fake.store.has("test:keep"), "expired key not resurrected with a fresh TTL");
 });

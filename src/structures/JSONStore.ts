@@ -1,6 +1,6 @@
 import { MiniMap } from "lavalink-client";
 import { readFileSync } from "node:fs";
-import { writeFile, rename } from "node:fs/promises";
+import { writeFile, rename, unlink } from "node:fs/promises";
 import IORedis, { type Redis, type RedisOptions } from "ioredis";
 
 export interface RedisStoreOptions {
@@ -39,6 +39,8 @@ export class JSONStore {
      */
     private dirtyKeys = new Set<string>();
     private flushing = false;
+    /** Serializes durable file writes so concurrent set/delete can't race the file. */
+    private writeChain: Promise<void> = Promise.resolve();
 
     constructor(filePath?: string, redisOpts?: RedisStoreOptions) {
         this.filePath = filePath ?? `${process.cwd()}/queueData.json`;
@@ -78,7 +80,7 @@ export class JSONStore {
 
         try {
             const raw = readFileSync(this.filePath, "utf-8");
-            const entries = this.JSONtoEntries(raw);
+            const entries = this.JSONtoEntries(raw).filter(([, v]) => v !== null) as [string, string][];
             this.data = new MiniMap<string, string>(entries);
             console.log(`[JSONStore] Loaded ${entries.length} entries from ${this.filePath}`);
         } catch (error) {
@@ -153,7 +155,7 @@ export class JSONStore {
     private async migrateFileIntoRedis(): Promise<void> {
         if (!this.redis || !this.redisOpts) return;
 
-        let entries: [string, string][];
+        let entries: [string, string | null][];
         try {
             entries = this.JSONtoEntries(readFileSync(this.filePath, "utf-8"));
         } catch {
@@ -162,16 +164,36 @@ export class JSONStore {
 
         const { ttlSeconds } = this.redisOpts;
         let migrated = 0;
-        for (const [key, value] of entries) {
-            if (this.data.has(key)) continue; // Redis already owns this key
+        for (let i = 0; i < entries.length; i++) {
+            const [key, value] = entries[i];
             try {
+                if (value === null) {
+                    // Delete tombstone recorded during an outage — replay the DEL.
+                    await this.redis.del(this.redisKey(key));
+                    this.data.delete(key);
+                    this.dirtyKeys.delete(key);
+                    continue;
+                }
+                if (this.data.has(key)) continue; // Redis already owns this key
                 await this.redis.set(this.redisKey(key), value, "EX", ttlSeconds);
                 this.data.set(key, value);
                 migrated++;
             } catch (error) {
-                // Redis went unreachable mid-migration: leave the file in place
-                // (not retired) so the remaining keys retry on the next boot.
+                // Redis went unreachable mid-migration. Preserve the failed record
+                // and every still-unprocessed one in the mirror and dirty set so
+                // the ready/flushDirty flow republishes them after reconnect; leave
+                // the file in place (not retired) as the durable copy until they land.
                 this.warnRedisFallback("migrate", error);
+                for (let j = i; j < entries.length; j++) {
+                    const [k, v] = entries[j];
+                    if (v === null) {
+                        this.data.delete(k);
+                        this.dirtyKeys.add(k);
+                    } else if (!this.data.has(k)) {
+                        this.data.set(k, v);
+                        this.dirtyKeys.add(k);
+                    }
+                }
                 return;
             }
         }
@@ -189,8 +211,8 @@ export class JSONStore {
     }
 
     /** Convert JSON string to entries array */
-    private JSONtoEntries(json: string): [string, string][] {
-        return Object.entries(JSON.parse(json));
+    private JSONtoEntries(json: string): [string, string | null][] {
+        return Object.entries(JSON.parse(json)) as [string, string | null][];
     }
 
     /** Convert map entries into JSON string */
@@ -199,45 +221,32 @@ export class JSONStore {
     }
 
     /**
-     * Persist a single key/value depending on backend. Persists the proposed
-     * value directly (Redis) or a snapshot of the map with the value applied
-     * (file), so the durable store commits before the in-memory mirror does.
+     * Persist the current diverged (dirty) key set to the fallback file as
+     * ordered SET/DEL records: `{ key: value }` for a set, `{ key: null }` as a
+     * delete tombstone. Only diverged keys are written — never a full mirror
+     * snapshot — so recovery never resurrects an unrelated key that has since
+     * expired in Redis with a fresh TTL, and concurrent fallbacks accumulate
+     * (write serialized via `enqueueWrite`) instead of clobbering one another.
      */
-    private async persistSet(key: string, value: string): Promise<void> {
-        if (this.redis && this.redisOpts) {
-            try {
-                await this.redis.set(this.redisKey(key), value, "EX", this.redisOpts.ttlSeconds);
-                this.dirtyKeys.delete(key);
-                return;
-            } catch (error) {
-                // Bounded failure: while the socket is down `enableOfflineQueue:
-                // false` rejects immediately (no timeout wait); `commandTimeout`
-                // only bounds a connected-but-slow server. Don't lose the write —
-                // persist to file this once and mark the key dirty so flushDirty
-                // re-converges Redis on the next `ready`. `redis` is left intact.
-                this.warnRedisFallback("set", error);
-                this.dirtyKeys.add(key);
-            }
+    private async writeFallbackFile(): Promise<void> {
+        const records: Record<string, string | null> = {};
+        for (const k of this.dirtyKeys) {
+            const v = this.data.get(k);
+            records[k] = v === undefined ? null : v;
         }
-        const snapshot = new MiniMap<string, string>(Array.from(this.data.entries()));
-        snapshot.set(key, value);
-        await writeFile(this.filePath, this.mapToJSON(snapshot), "utf-8");
+        await writeFile(this.filePath, JSON.stringify(records), "utf-8");
     }
 
-    private async persistDelete(key: string): Promise<void> {
-        if (this.redis && this.redisOpts) {
-            try {
-                await this.redis.del(this.redisKey(key));
-                this.dirtyKeys.delete(key);
-                return;
-            } catch (error) {
-                this.warnRedisFallback("del", error);
-                this.dirtyKeys.add(key);
-            }
-        }
-        const snapshot = new MiniMap<string, string>(Array.from(this.data.entries()));
-        snapshot.delete(key);
-        await writeFile(this.filePath, this.mapToJSON(snapshot), "utf-8");
+    /**
+     * Serialize durable file writes through a promise chain so concurrent
+     * set/delete calls can't tear the file or drop each other's keys. The task
+     * reads live mirror/dirty state at execution time, so the last write in a
+     * concurrent burst always reflects every committed change.
+     */
+    private enqueueWrite(task: () => Promise<void>): Promise<void> {
+        const run = this.writeChain.then(task, task);
+        this.writeChain = run.then(() => {}, () => {});
+        return run;
     }
 
     private warnRedisFallback(op: string, error: unknown): void {
@@ -277,6 +286,14 @@ export class JSONStore {
         } finally {
             this.flushing = false;
         }
+        // Reconcile the fallback file with what's still dirty: rewrite the
+        // remaining records, or remove the file once everything re-converged, so
+        // a later boot never replays a stale tombstone over a recreated key.
+        await this.enqueueWrite(() =>
+            this.dirtyKeys.size
+                ? this.writeFallbackFile()
+                : unlink(this.filePath).then(() => {}, () => {}),
+        );
     }
 
     /** Get a stored value by key */
@@ -286,15 +303,49 @@ export class JSONStore {
 
     /** Set a value (stringified JSON), update mirror and persist. */
     public async set(key: string, value: string): Promise<void> {
-        // Persist first; only commit to the mirror once durable, so a failed
-        // write can't leave the mirror ahead of the store.
-        await this.persistSet(key, value);
+        if (this.redis && this.redisOpts) {
+            try {
+                await this.redis.set(this.redisKey(key), value, "EX", this.redisOpts.ttlSeconds);
+                this.dirtyKeys.delete(key);
+                this.data.set(key, value);
+                return;
+            } catch (error) {
+                // Bounded failure: while the socket is down `enableOfflineQueue:
+                // false` rejects immediately. Don't lose the write — commit the
+                // mirror + dirty set, then persist the whole diverged set to the
+                // fallback file so flushDirty re-converges Redis on the next
+                // `ready`. Mirror-first here (not persist-first) is deliberate: it
+                // is what lets concurrent fallbacks accumulate without clobbering.
+                this.warnRedisFallback("set", error);
+                this.dirtyKeys.add(key);
+                this.data.set(key, value);
+                await this.enqueueWrite(() => this.writeFallbackFile());
+                return;
+            }
+        }
+        // File-only backend: the mirror is the store. Commit, then serialize a
+        // full snapshot of the live mirror so concurrent writes don't race.
         this.data.set(key, value);
+        await this.enqueueWrite(() => writeFile(this.filePath, this.mapToJSON(this.data), "utf-8"));
     }
 
-    /** Delete a key: persist first, then update the mirror. */
+    /** Delete a key: update mirror and persist. */
     public async delete(key: string): Promise<void> {
-        await this.persistDelete(key);
+        if (this.redis && this.redisOpts) {
+            try {
+                await this.redis.del(this.redisKey(key));
+                this.dirtyKeys.delete(key);
+                this.data.delete(key);
+                return;
+            } catch (error) {
+                this.warnRedisFallback("del", error);
+                this.dirtyKeys.add(key);
+                this.data.delete(key);
+                await this.enqueueWrite(() => this.writeFallbackFile());
+                return;
+            }
+        }
         this.data.delete(key);
+        await this.enqueueWrite(() => writeFile(this.filePath, this.mapToJSON(this.data), "utf-8"));
     }
 }
