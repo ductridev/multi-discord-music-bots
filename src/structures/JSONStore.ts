@@ -1,7 +1,7 @@
 import { MiniMap } from "lavalink-client";
 import { readFileSync } from "node:fs";
-import { writeFile } from "node:fs/promises";
-import IORedis, { type Redis } from "ioredis";
+import { writeFile, rename } from "node:fs/promises";
+import IORedis, { type Redis, type RedisOptions } from "ioredis";
 
 export interface RedisStoreOptions {
     /** Redis connection URL. When provided, persistence uses per-key Redis writes. */
@@ -31,6 +31,14 @@ export class JSONStore {
     private loadPromise: Promise<void>;
     private redis: Redis | null = null;
     private redisOpts: RedisStoreOptions | null = null;
+    /**
+     * Keys whose last Redis write failed (bounded op timeout / disconnect) and
+     * thus diverged from the mirror. Replayed from the mirror on the next
+     * `ready` event so Redis re-converges after an outage. `mirror.has(key)`
+     * decides SET vs DEL, so it stays correct for both set and delete.
+     */
+    private dirtyKeys = new Set<string>();
+    private flushing = false;
 
     constructor(filePath?: string, redisOpts?: RedisStoreOptions) {
         this.filePath = filePath ?? `${process.cwd()}/queueData.json`;
@@ -59,6 +67,9 @@ export class JSONStore {
                     `[JSONStore] Redis init failed for prefix ${this.redisOpts.keyPrefix}, falling back to file store:`,
                     error instanceof Error ? error.message : String(error),
                 );
+                // Tear down the half-open client so it doesn't keep retrying in
+                // the background (retryStrategy would otherwise reconnect forever).
+                this.redis?.disconnect();
                 this.redis = null;
                 this.redisOpts = null;
                 // fall through to file load
@@ -80,13 +91,22 @@ export class JSONStore {
     /** Connect to Redis and hydrate the in-memory mirror from all namespaced keys. */
     private async initRedis(): Promise<void> {
         const { url, keyPrefix } = this.redisOpts!;
-        this.redis = new IORedis(url, {
-            maxRetriesPerRequest: null,
+        this.redis = this.makeRedisClient(url, {
+            // Bound every command: reject after a few retries / a timeout, and
+            // don't buffer commands while disconnected, so a set/del settles
+            // within a fixed window instead of hanging indefinitely.
+            maxRetriesPerRequest: 3,
+            commandTimeout: 5_000,
+            connectTimeout: 10_000,
+            enableOfflineQueue: false,
             enableReadyCheck: false,
             lazyConnect: true,
             retryStrategy: (times) => Math.min(times * 50, 2000),
         });
         this.redis.on("error", (err) => console.error("[JSONStore][Redis] Error:", err));
+        // On (re)connect, push any keys that diverged during an outage back to
+        // Redis. Fires on first connect too (dirty set empty then — no-op).
+        this.redis.on("ready", () => void this.flushDirty());
         await this.redis.connect();
 
         const match = `${keyPrefix}*`;
@@ -107,6 +127,65 @@ export class JSONStore {
         } while (cursor !== "0");
 
         console.log(`[JSONStore][Redis] Loaded ${loaded} entries for prefix ${keyPrefix}`);
+
+        await this.migrateFileIntoRedis();
+    }
+
+    /** Overridable seam for the Redis client (kept small so tests can inject a fake). */
+    protected makeRedisClient(url: string, options: RedisOptions): Redis {
+        return new IORedis(url, options);
+    }
+
+    /**
+     * Seed the legacy/fallback JSON file into Redis for keys Redis doesn't
+     * already have, then retire the file. Runs once per Redis boot and covers
+     * two cases with one mechanism:
+     *  - First switch to a Redis backend: Redis is empty, so every file entry
+     *    is migrated in.
+     *  - Recovery after an outage: writes that fell back to the file while Redis
+     *    was down are pushed in.
+     *
+     * Redis stays authoritative — a key already present in the mirror (loaded
+     * from Redis) is never overwritten by the file. Retiring the file to `.bak`
+     * afterwards prevents an expired-then-stale key from being resurrected on
+     * every subsequent boot; a future outage recreates the file fresh.
+     */
+    private async migrateFileIntoRedis(): Promise<void> {
+        if (!this.redis || !this.redisOpts) return;
+
+        let entries: [string, string][];
+        try {
+            entries = this.JSONtoEntries(readFileSync(this.filePath, "utf-8"));
+        } catch {
+            return; // no file (or unreadable/corrupt) — nothing to migrate
+        }
+
+        const { ttlSeconds } = this.redisOpts;
+        let migrated = 0;
+        for (const [key, value] of entries) {
+            if (this.data.has(key)) continue; // Redis already owns this key
+            try {
+                await this.redis.set(this.redisKey(key), value, "EX", ttlSeconds);
+                this.data.set(key, value);
+                migrated++;
+            } catch (error) {
+                // Redis went unreachable mid-migration: leave the file in place
+                // (not retired) so the remaining keys retry on the next boot.
+                this.warnRedisFallback("migrate", error);
+                return;
+            }
+        }
+
+        try {
+            await rename(this.filePath, `${this.filePath}.bak`);
+        } catch (error) {
+            console.warn(
+                `[JSONStore][Redis] Migrated ${migrated} entries but could not retire ${this.filePath}:`,
+                error instanceof Error ? error.message : String(error),
+            );
+            return;
+        }
+        if (migrated) console.log(`[JSONStore][Redis] Migrated ${migrated} file entries into Redis`);
     }
 
     /** Convert JSON string to entries array */
@@ -119,20 +198,84 @@ export class JSONStore {
         return JSON.stringify(Object.fromEntries(Array.from(map.entries())));
     }
 
-    /** Persist the whole map / a single key depending on backend. */
-    private async persistSet(key: string): Promise<void> {
+    /**
+     * Persist a single key/value depending on backend. Persists the proposed
+     * value directly (Redis) or a snapshot of the map with the value applied
+     * (file), so the durable store commits before the in-memory mirror does.
+     */
+    private async persistSet(key: string, value: string): Promise<void> {
         if (this.redis && this.redisOpts) {
-            await this.redis.set(this.redisKey(key), this.data.get(key)!, "EX", this.redisOpts.ttlSeconds);
-        } else {
-            await writeFile(this.filePath, this.mapToJSON(this.data), "utf-8");
+            try {
+                await this.redis.set(this.redisKey(key), value, "EX", this.redisOpts.ttlSeconds);
+                this.dirtyKeys.delete(key);
+                return;
+            } catch (error) {
+                // Bounded failure: while the socket is down `enableOfflineQueue:
+                // false` rejects immediately (no timeout wait); `commandTimeout`
+                // only bounds a connected-but-slow server. Don't lose the write —
+                // persist to file this once and mark the key dirty so flushDirty
+                // re-converges Redis on the next `ready`. `redis` is left intact.
+                this.warnRedisFallback("set", error);
+                this.dirtyKeys.add(key);
+            }
         }
+        const snapshot = new MiniMap<string, string>(Array.from(this.data.entries()));
+        snapshot.set(key, value);
+        await writeFile(this.filePath, this.mapToJSON(snapshot), "utf-8");
     }
 
     private async persistDelete(key: string): Promise<void> {
         if (this.redis && this.redisOpts) {
-            await this.redis.del(this.redisKey(key));
-        } else {
-            await writeFile(this.filePath, this.mapToJSON(this.data), "utf-8");
+            try {
+                await this.redis.del(this.redisKey(key));
+                this.dirtyKeys.delete(key);
+                return;
+            } catch (error) {
+                this.warnRedisFallback("del", error);
+                this.dirtyKeys.add(key);
+            }
+        }
+        const snapshot = new MiniMap<string, string>(Array.from(this.data.entries()));
+        snapshot.delete(key);
+        await writeFile(this.filePath, this.mapToJSON(snapshot), "utf-8");
+    }
+
+    private warnRedisFallback(op: string, error: unknown): void {
+        console.warn(
+            `[JSONStore][Redis] ${op} failed, writing to file store this once:`,
+            error instanceof Error ? error.message : String(error),
+        );
+    }
+
+    /**
+     * Replay keys that diverged during an outage back to Redis, driven by the
+     * mirror: present => SET (with TTL), absent => DEL. Runs on `ready`. Keys
+     * that fail again stay dirty and retry on the next `ready`; a concurrent
+     * normal write may re-add a key, which the next pass picks up.
+     */
+    private async flushDirty(): Promise<void> {
+        if (this.flushing || !this.redis || !this.redisOpts) return;
+        if (this.dirtyKeys.size === 0) return;
+        this.flushing = true;
+        try {
+            const { ttlSeconds } = this.redisOpts;
+            for (const key of Array.from(this.dirtyKeys)) {
+                try {
+                    const value = this.data.get(key);
+                    if (value === undefined) {
+                        await this.redis.del(this.redisKey(key));
+                    } else {
+                        await this.redis.set(this.redisKey(key), value, "EX", ttlSeconds);
+                    }
+                    this.dirtyKeys.delete(key);
+                } catch (error) {
+                    // Still unreachable — keep the key dirty, stop this pass.
+                    this.warnRedisFallback("flush", error);
+                    break;
+                }
+            }
+        } finally {
+            this.flushing = false;
         }
     }
 
@@ -143,13 +286,15 @@ export class JSONStore {
 
     /** Set a value (stringified JSON), update mirror and persist. */
     public async set(key: string, value: string): Promise<void> {
+        // Persist first; only commit to the mirror once durable, so a failed
+        // write can't leave the mirror ahead of the store.
+        await this.persistSet(key, value);
         this.data.set(key, value);
-        await this.persistSet(key);
     }
 
-    /** Delete a key, update mirror and persist. */
+    /** Delete a key: persist first, then update the mirror. */
     public async delete(key: string): Promise<void> {
-        this.data.delete(key);
         await this.persistDelete(key);
+        this.data.delete(key);
     }
 }

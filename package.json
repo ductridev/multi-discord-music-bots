@@ -9,6 +9,7 @@
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:dashboard\"",
     "start": "node dist/index.js",
     "build": "tsc",
+    "test": "node --require ts-node/register --test src/**/*.test.ts",
     "build:dashboard": "cd dashboard && npm run build",
     "build:all": "npm run build && npm run build:dashboard",
     "db:push": "npx prisma db push",

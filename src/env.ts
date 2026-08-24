@@ -42,7 +42,7 @@ const envSchema = z.object({
 	// TTL (seconds) for persisted player sessions in Redis. Auto-prunes stale
 	// entries so a crash-restart loop can't accumulate dead sessions. Default 7 days.
 	PLAYER_SESSION_TTL: z.preprocess(
-		val => (typeof val === 'string' ? parseInt(val, 10) : val),
+		val => (typeof val === 'string' ? Number(val) : val),
 		z.number().int().positive().default(604800),
 	),
 	SEARCH_ENGINE: z.preprocess(
