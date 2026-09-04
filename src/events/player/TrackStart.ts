@@ -238,11 +238,15 @@ export default class TrackStart extends Event {
 				}
 			}
 
+			// The top-of-run isReady() guard can go stale: destroy() may land in
+			// the many awaits above, nulling the token before this send. Catch so a
+			// dead client fails quietly instead of crashing the process.
 			const message = await channel.send({
 				embeds: [embed],
 				components: [createButtonRow(player, this.client)],
 				flags: 4096
-			});
+			}).catch(() => null);
+			if (!message) return;
 
 			player.set('messageId', message.id);
 			player.set('messageTrack', track.encoded);
