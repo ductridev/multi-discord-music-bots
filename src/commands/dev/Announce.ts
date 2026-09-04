@@ -57,8 +57,12 @@ export default class Announce extends Command {
         for (const guildMap of sessionMap.values()) {
             for (const player of guildMap.values()) {
                 try {
-                    const textChannelId = (player as Player)!.textChannelId!;
-                    const guildId = (player as Player)!.guildId!;
+                    const textChannelId = (player as Player)?.textChannelId;
+                    const guildId = (player as Player)?.guildId;
+
+                    // A player without a bound text channel or guild can't receive
+                    // the announcement — skip it instead of upserting a null guildId.
+                    if (!textChannelId || !guildId) continue;
 
                     // Skip if already processed this channel
                     if (channelInfoMap.has(textChannelId)) {
@@ -91,10 +95,15 @@ export default class Announce extends Command {
         try {
             logger.info(`Translating announcement to ${languageArray.length} language(s): ${languageArray.join(', ')}`);
             
+            // Detect the source language so a guild already in that language keeps
+            // the original text verbatim instead of a Google round-trip that
+            // paraphrases it (e.g. Vietnamese -> Vietnamese).
+            const contentSource = await translationService.detectLanguage(content);
+
             // Translate both title and content to all languages
             [titleTranslations, contentTranslations] = await Promise.all([
                 translationService.translateToMany(originalTitle, languageArray, 'en'),
-                translationService.translateToMany(content, languageArray, 'auto'),
+                translationService.translateToMany(content, languageArray, contentSource),
             ]);
             
             logger.info('Translation completed successfully');
