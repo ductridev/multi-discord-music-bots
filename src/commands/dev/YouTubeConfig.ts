@@ -90,10 +90,13 @@ export default class YouTubeConfig extends Command {
             const source = ctx.options.getString('source') ?? '';
             const node = ctx.options.getString('node');
             const config = ctx.options.getString('config') ?? '';
+            // Keep config as a single arg and quote node: parseArgs joins args
+            // back with spaces, so splitting here would collapse whitespace inside
+            // quoted values and truncate multi-word node ids before the regex runs.
             args = [
                 source,
-                ...(node ? [`node:${node}`] : []),
-                ...(config ? config.split(/\s+/).filter(Boolean) : []),
+                ...(node ? [`node:"${node}"`] : []),
+                ...(config ? [config] : []),
             ];
         }
 

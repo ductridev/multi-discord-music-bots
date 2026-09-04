@@ -35,8 +35,12 @@ export default class Reconnect extends Command {
 
     public async run(_client: Lavamusic, ctx: Context, args: string[]): Promise<any> {
         // Get target node IDs if provided, else reconnect all disconnected nodes
+        // A slash string option arrives as one arg ("node-a node-b"); split it so
+        // each id matches. Node ids with spaces use the '_' convention.
         const targetNodeIds = args.length
-            ? args.map((arg) => arg.trim().replace(/^["']|["']$/g, '').replaceAll('_', ' '))
+            ? args.flatMap((arg) => arg.split(/\s+/))
+                .map((arg) => arg.trim().replace(/^["']|["']$/g, '').replaceAll('_', ' '))
+                .filter(Boolean)
             : null;
 
         const reconnectResults: Record<string, string[]> = {};
