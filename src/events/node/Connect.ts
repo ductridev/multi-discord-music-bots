@@ -179,8 +179,8 @@ export default class Connect extends Event {
 				await player.connect();
 
 				player.setRepeatMode(savedPlayerData.repeatMode);
-				player.set('autoplay', savedPlayerData.data!['autoplay'] === 'true' ? true : false);
-				player.set('summonUserId', savedPlayerData.data!['summonUserId']);
+				player.set('autoplay', savedPlayerData.data?.['autoplay'] === 'true' ? true : false);
+				player.set('summonUserId', savedPlayerData.data?.['summonUserId']);
 
 				// Initialize maps if they don't exist
 				if (!sessionMap.has(player.guildId)) sessionMap.set(player.guildId, new Map());
