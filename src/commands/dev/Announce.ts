@@ -31,8 +31,10 @@ export default class Announce extends Command {
                 client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
-            options: [],
+            slashCommand: true,
+            options: [
+                { name: 'message', description: 'Message to broadcast', type: 3, required: true },
+            ],
         });
     }
 

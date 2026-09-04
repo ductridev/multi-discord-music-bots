@@ -27,8 +27,10 @@ export default class Eval extends Command {
 				client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
 				user: [],
 			},
-			slashCommand: false,
-			options: [],
+			slashCommand: true,
+			options: [
+				{ name: 'code', description: 'Code to evaluate', type: 3, required: true },
+			],
 		});
 	}
 

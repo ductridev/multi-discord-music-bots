@@ -25,8 +25,10 @@ export default class CreateInvite extends Command {
 				client: ['SendMessages', 'CreateInstantInvite', 'ReadMessageHistory', 'EmbedLinks', 'ViewChannel'],
 				user: [],
 			},
-			slashCommand: false,
-			options: [],
+			slashCommand: true,
+			options: [
+				{ name: 'guild', description: 'Target guild ID', type: 3, required: true },
+			],
 		});
 	}
 

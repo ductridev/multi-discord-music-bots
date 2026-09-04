@@ -24,7 +24,7 @@ export default class PeriodicStatus extends Command {
 				client: ['SendMessages', 'EmbedLinks'],
 				user: [],
 			},
-			slashCommand: false,
+			slashCommand: true,
 			options: [],
 		});
 	}

@@ -26,8 +26,10 @@ export default class Reconnect extends Command {
                 client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
-            options: [],
+            slashCommand: true,
+            options: [
+                { name: 'nodes', description: 'Node IDs to reconnect (space-separated, optional)', type: 3, required: false },
+            ],
         });
     }
 

@@ -25,8 +25,19 @@ export default class Maintain extends Command {
                 client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
-            options: [],
+            slashCommand: true,
+            options: [
+                {
+                    name: 'state',
+                    description: 'Turn maintenance mode on or off',
+                    type: 3,
+                    required: true,
+                    choices: [
+                        { name: 'on', value: 'on' },
+                        { name: 'off', value: 'off' },
+                    ],
+                },
+            ],
         });
     }
 

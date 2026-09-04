@@ -44,6 +44,7 @@ export default class Lavamusic extends Client {
   public readonly emoji = config.emoji;
   public readonly color = config.color;
   public body: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+  public devBody: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
   public topGG!: Api;
   public utils = Utils;
   public env: typeof env = env;
@@ -284,7 +285,13 @@ export default class Lavamusic extends Client {
               }
             });
           }
-          this.body.push(data);
+          // Dev commands deploy to dev guild(s) only (see deployDevCommands),
+          // never global. Everything else is a global slash command.
+          if (command.permissions?.dev) {
+            this.devBody.push(data);
+          } else {
+            this.body.push(data);
+          }
         }
       }
     }
@@ -325,25 +332,63 @@ export default class Lavamusic extends Client {
       ? Routes.applicationGuildCommands(applicationId, guildId)
       : Routes.applicationCommands(applicationId);
 
+    // Manual guild deploys (the !deploy "Guild" button) get every command,
+    // dev included. The global route gets non-dev commands only; dev commands
+    // reach their dev guild(s) through deployDevCommands.
+    const commands = guildId ? [...this.body, ...this.devBody] : this.body;
+
     try {
       // Fetch existing commands to preserve Entry Point commands
       const existingCommands = await this.rest.get(route) as any[];
-      const entryPointCommands = existingCommands.filter((cmd: any) => 
+      const entryPointCommands = existingCommands.filter((cmd: any) =>
         cmd.integration_types?.includes(1) || cmd.contexts?.includes(1)
       );
-      
+
       // Merge our commands with existing Entry Point commands
       const commandsToUpdate = [
-        ...this.body,
-        ...entryPointCommands.filter((epc: any) => 
-          !this.body.some((cmd: any) => cmd.name === epc.name)
+        ...commands,
+        ...entryPointCommands.filter((epc: any) =>
+          !commands.some((cmd: any) => cmd.name === epc.name)
         )
       ];
-      
+
       await this.rest.put(route, { body: commandsToUpdate });
       this.logger.info("Successfully deployed slash commands!");
     } catch (error) {
       this.logger.error(error);
+    }
+  }
+
+  /**
+   * Deploy dev-only slash commands to the configured dev guild(s). Guild
+   * commands propagate instantly and stay invisible in every other guild, so
+   * commands like /eval or /shutdown never show up in the public picker.
+   */
+  public async deployDevCommands(): Promise<void> {
+    if (!this.application?.id) {
+      this.logger.error("Bot is not ready yet—application ID is missing.");
+      return;
+    }
+
+    const guildIds = this.env.DEV_GUILD_IDS;
+    if (!guildIds || guildIds.length === 0) {
+      this.logger.warn(
+        "DEV_GUILD_IDS is not set — dev slash commands were not deployed anywhere."
+      );
+      return;
+    }
+
+    const applicationId = this.application.id;
+    for (const guildId of guildIds) {
+      try {
+        await this.rest.put(
+          Routes.applicationGuildCommands(applicationId, guildId),
+          { body: this.devBody }
+        );
+        this.logger.info(`Deployed ${this.devBody.length} dev command(s) to guild ${guildId}.`);
+      } catch (error) {
+        this.logger.error(`Failed to deploy dev commands to guild ${guildId}:`, error);
+      }
     }
   }
 

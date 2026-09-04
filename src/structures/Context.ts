@@ -196,6 +196,15 @@ export default class Context {
 		getChannel: (name: string, required = true) => {
 			return (this.interaction as ChatInputCommandInteraction).options.get(name, required)?.channel;
 		},
+		getString: (name: string, required = false) => {
+			return (this.interaction as ChatInputCommandInteraction).options.get(name, required)?.value as string | undefined;
+		},
+		getBoolean: (name: string, required = false) => {
+			return (this.interaction as ChatInputCommandInteraction).options.get(name, required)?.value as boolean | undefined;
+		},
+		getInteger: (name: string, required = false) => {
+			return (this.interaction as ChatInputCommandInteraction).options.get(name, required)?.value as number | undefined;
+		},
 		getSubCommand: () => {
 			return (this.interaction as ChatInputCommandInteraction).options.data[0].name;
 		},

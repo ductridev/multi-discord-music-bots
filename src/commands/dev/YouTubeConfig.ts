@@ -23,7 +23,29 @@ export default class YouTubeConfig extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
+            slashCommand: true,
+            options: [
+                {
+                    name: 'source',
+                    description: 'Subcommand or action',
+                    type: 3,
+                    required: true,
+                    choices: [
+                        { name: 'oauth', value: 'oauth' },
+                        { name: 'potoken', value: 'potoken' },
+                        { name: 'view', value: 'view' },
+                        { name: 'refresh-token', value: 'refresh-token' },
+                        { name: 'list-nodes', value: 'list-nodes' },
+                    ],
+                },
+                { name: 'node', description: 'Target Lavalink node id', type: 3, required: false },
+                {
+                    name: 'config',
+                    description: 'key:value pairs, space-separated (e.g. refreshToken:xxx skipInitialization:true)',
+                    type: 3,
+                    required: false,
+                },
+            ],
         });
     }
 
@@ -62,6 +84,19 @@ export default class YouTubeConfig extends Command {
     }
 
     public async run(client: Lavamusic, ctx: Context, args: string[]): Promise<any> {
+        // Slash options are rebuilt into the prefix-style args array so the
+        // existing subcommand + key:value parser runs unchanged.
+        if (ctx.isInteraction) {
+            const source = ctx.options.getString('source') ?? '';
+            const node = ctx.options.getString('node');
+            const config = ctx.options.getString('config') ?? '';
+            args = [
+                source,
+                ...(node ? [`node:${node}`] : []),
+                ...(config ? config.split(/\s+/).filter(Boolean) : []),
+            ];
+        }
+
         const embed = this.client.embed()
             .setFooter({
                 text: "BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",

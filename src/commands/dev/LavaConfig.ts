@@ -20,7 +20,33 @@ export default class LavaConfig extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
+            slashCommand: true,
+            options: [
+                {
+                    name: 'source',
+                    description: 'Source to configure, or an action',
+                    type: 3,
+                    required: true,
+                    choices: [
+                        { name: 'spotify', value: 'spotify' },
+                        { name: 'applemusic', value: 'applemusic' },
+                        { name: 'deezer', value: 'deezer' },
+                        { name: 'yandexmusic', value: 'yandexmusic' },
+                        { name: 'vkmusic', value: 'vkmusic' },
+                        { name: 'qobuz', value: 'qobuz' },
+                        { name: 'ytdlp', value: 'ytdlp' },
+                        { name: 'view', value: 'view' },
+                        { name: 'list-nodes', value: 'list-nodes' },
+                    ],
+                },
+                { name: 'node', description: 'Target Lavalink node id', type: 3, required: false },
+                {
+                    name: 'config',
+                    description: 'key:value pairs, space-separated (e.g. clientId:xxx clientSecret:yyy)',
+                    type: 3,
+                    required: false,
+                },
+            ],
         });
     }
 
@@ -59,6 +85,19 @@ export default class LavaConfig extends Command {
     }
 
     public async run(client: Lavamusic, ctx: Context, args: string[]): Promise<any> {
+        // Slash options are rebuilt into the prefix-style args array so the
+        // existing subcommand + key:value parser runs unchanged.
+        if (ctx.isInteraction) {
+            const source = ctx.options.getString('source') ?? '';
+            const node = ctx.options.getString('node');
+            const config = ctx.options.getString('config') ?? '';
+            args = [
+                source,
+                ...(node ? [`node:${node}`] : []),
+                ...(config ? config.split(/\s+/).filter(Boolean) : []),
+            ];
+        }
+
         const embed = this.client.embed()
             .setFooter({
                 text: "BuNgo Music Bot 🎵 • Maded by Gúp Bu Ngô with ♥️",

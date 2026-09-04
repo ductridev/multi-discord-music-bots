@@ -26,7 +26,7 @@ export default class Restart extends Command {
 				client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
 				user: [],
 			},
-			slashCommand: false,
+			slashCommand: true,
 			options: [],
 		});
 	}
