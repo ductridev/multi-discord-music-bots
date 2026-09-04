@@ -26,19 +26,46 @@ export default class Reload extends Command {
         client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
         user: [],
       },
-      slashCommand: false,
-      options: [],
+      slashCommand: true,
+      options: [
+        {
+          name: 'target',
+          description: 'What to reload',
+          type: 3,
+          required: false,
+          choices: [
+            { name: 'commands', value: 'commands' },
+            { name: 'events', value: 'events' },
+            { name: 'plugins', value: 'plugins' },
+            { name: 'services', value: 'services' },
+            { name: 'all', value: 'all' },
+          ],
+        },
+        { name: 'all', description: 'Reload every bot in the fleet', type: 5, required: false },
+        { name: 'no_build', description: 'Skip the TypeScript build', type: 5, required: false },
+      ],
     });
   }
 
   public async run(client: Lavamusic, ctx: Context, args: string[]): Promise<any> {
-    const flags = args.filter(a => a.startsWith('--'));
-    const positional = args.filter(a => !a.startsWith('--'));
+    let target: 'commands' | 'events' | 'plugins' | 'services' | 'all';
+    let reloadAllBots: boolean;
+    let noBuild: boolean;
 
-    const target = (positional[0]?.toLowerCase() || 'commands') as 'commands' | 'events' | 'plugins' | 'services' | 'all';
-    const reloadAllBots = flags.includes('--all');
+    if (ctx.isInteraction) {
+      target = (ctx.options.getString('target') || 'commands') as typeof target;
+      reloadAllBots = ctx.options.getBoolean('all') ?? false;
+      noBuild = ctx.options.getBoolean('no_build') ?? false;
+    } else {
+      const flags = args.filter(a => a.startsWith('--'));
+      const positional = args.filter(a => !a.startsWith('--'));
+      target = (positional[0]?.toLowerCase() || 'commands') as typeof target;
+      reloadAllBots = flags.includes('--all');
+      noBuild = flags.includes('--no-build');
+    }
+
     const inDocker = isDockerEnvironment();
-    const skipBuild = inDocker || flags.includes('--no-build');
+    const skipBuild = inDocker || noBuild;
 
     if (!['commands', 'events', 'plugins', 'services', 'all'].includes(target)) {
       return ctx.sendMessage({

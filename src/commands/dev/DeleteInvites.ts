@@ -24,8 +24,10 @@ export default class DestroyInvites extends Command {
 				client: ['SendMessages', 'ManageGuild', 'ReadMessageHistory', 'ViewChannel'],
 				user: [],
 			},
-			slashCommand: false,
-			options: [],
+			slashCommand: true,
+			options: [
+				{ name: 'guild', description: 'Target guild ID', type: 3, required: true },
+			],
 		});
 	}
 

@@ -28,6 +28,7 @@ const envSchema = z.object({
 	DEFAULT_LANGUAGE: z.string().default('Vietnamese'),
 	OWNER_IDS: z.preprocess(val => (typeof val === 'string' ? JSON.parse(val) : val), z.string().array().optional()),
 	GUILD_IDS: z.preprocess(val => (typeof val === 'string' ? JSON.parse(val) : val), z.string().array().optional()),
+	DEV_GUILD_IDS: z.preprocess(val => (typeof val === 'string' ? JSON.parse(val) : val), z.string().array().optional()),
 	SKIP_VOTES_GUILDS: z.preprocess(val => (typeof val === 'string' ? JSON.parse(val) : val), z.string().array().optional()),
 	SKIP_VOTES_USERS: z.preprocess(val => (typeof val === 'string' ? JSON.parse(val) : val), z.string().array().optional()),
 	TOPGG: z.string().optional(),

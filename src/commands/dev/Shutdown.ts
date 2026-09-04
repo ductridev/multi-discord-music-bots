@@ -25,7 +25,7 @@ export default class Shutdown extends Command {
 				client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
 				user: [],
 			},
-			slashCommand: false,
+			slashCommand: true,
 			options: [],
 		});
 	}

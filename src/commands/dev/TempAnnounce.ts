@@ -114,12 +114,64 @@ export default class TempAnnounce extends Command {
         client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
         user: [],
       },
-      slashCommand: false,
-      options: [],
+      slashCommand: true,
+      options: [
+        {
+          name: 'action',
+          description: 'What to do',
+          type: 3,
+          required: true,
+          choices: [
+            { name: 'create', value: 'create' },
+            { name: 'list', value: 'list' },
+            { name: 'info', value: 'info' },
+            { name: 'delete', value: 'delete' },
+            { name: 'trigger', value: 'trigger' },
+            { name: 'cleanup', value: 'cleanup' },
+            { name: 'stats', value: 'stats' },
+          ],
+        },
+        { name: 'id', description: 'Announcement id (info/delete/trigger)', type: 3, required: false },
+        { name: 'title', description: 'Embed title (create)', type: 3, required: false },
+        { name: 'description', description: 'Embed description (create)', type: 3, required: false },
+        { name: 'duration', description: 'Time until expiry, e.g. 24h, 7d (create)', type: 3, required: false },
+        { name: 'interval', description: 'Time between sends, e.g. 30m (create)', type: 3, required: false },
+        {
+          name: 'filter',
+          description: 'List filter',
+          type: 3,
+          required: false,
+          choices: [
+            { name: 'all', value: 'all' },
+            { name: 'active', value: 'active' },
+            { name: 'expired', value: 'expired' },
+          ],
+        },
+      ],
     });
   }
 
   public async run(client: Lavamusic, ctx: Context, args: string[]): Promise<any> {
+    // Slash options are rebuilt into the prefix-style args array so the
+    // existing subcommand handlers run unchanged.
+    if (ctx.isInteraction) {
+      const action = (ctx.options.getString('action') ?? 'help').toLowerCase();
+      if (action === 'create') {
+        const title = ctx.options.getString('title') ?? '';
+        const description = ctx.options.getString('description') ?? '';
+        const duration = ctx.options.getString('duration') ?? '';
+        const interval = ctx.options.getString('interval');
+        args = ['create', `"${title}"`, `"${description}"`, duration, ...(interval ? [interval] : [])];
+      } else if (action === 'list') {
+        const filter = ctx.options.getString('filter');
+        args = ['list', ...(filter ? [filter] : [])];
+      } else if (['info', 'delete', 'trigger'].includes(action)) {
+        args = [action, ctx.options.getString('id') ?? ''];
+      } else {
+        args = [action];
+      }
+    }
+
     const subCommand = args[0]?.toLowerCase();
 
     switch (subCommand) {

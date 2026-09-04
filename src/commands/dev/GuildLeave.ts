@@ -25,8 +25,10 @@ export default class GuildLeave extends Command {
 				client: ['SendMessages', 'ReadMessageHistory', 'ViewChannel', 'EmbedLinks'],
 				user: [],
 			},
-			slashCommand: false,
-			options: [],
+			slashCommand: true,
+			options: [
+				{ name: 'guild', description: 'Guild ID to leave', type: 3, required: true },
+			],
 		});
 	}
 

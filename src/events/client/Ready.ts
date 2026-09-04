@@ -30,9 +30,11 @@ export default class Ready extends Event {
 			players: this.client.manager?.players.size || 0,
 		});
 
-		// Sync slash commands globally for this bot
+		// Sync slash commands on every boot: non-dev commands globally, dev-only
+		// commands to the configured dev guild(s).
 		try {
 			await this.client.deployCommands();
+			await this.client.deployDevCommands();
 			this.client.logger.info('Slash commands synced successfully!');
 		} catch (error) {
 			this.client.logger.error('Failed to sync slash commands:', error);

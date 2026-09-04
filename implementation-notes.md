@@ -259,3 +259,60 @@ both guards require a live `messageId`. The setup-channel path in
 
 Verified: `npx tsc --noEmit` clean, `npx ts-node src/utils/TrackLoop.spec.ts`
 passes, `npm run build` clean. Not exercised against a live Discord connection.
+
+## 2026-09-04 — Convert all dev commands to slash; scope dev commands to dev guild(s)
+
+### Why
+Bot boots without the MessageContent privileged intent (shard.ts falls back
+when Discord rejects it), so prefix/@mention paths can't read text — every
+dev command (all 17 were `slashCommand: false`) became unreachable. Slash
+commands don't need MessageContent, so converting removes the dependency.
+
+### Deploy routing change
+- `Lavamusic.loadCommands` now splits command bodies: dev commands
+  (`permissions.dev`) go to `this.devBody`, everything else to `this.body`.
+- `deployCommands(guildId?)`: global route (no guildId) deploys `this.body`
+  only; a manual guild deploy (the `!deploy` Guild button) deploys
+  `body + devBody` to that guild.
+- New `deployDevCommands()` PUTs `this.devBody` to each `DEV_GUILD_IDS` guild.
+  Guild commands propagate instantly and stay invisible elsewhere, so
+  `/eval`, `/shutdown`, etc. never appear in the public picker.
+- `Ready.ts` calls `deployCommands()` then `deployDevCommands()` every boot.
+- New env `DEV_GUILD_IDS` (JSON string array, optional). If unset, dev
+  commands deploy nowhere and a warning is logged.
+
+### Command conversions (17)
+- Pure flag flip (no args): GuildList, SaveSession, Shutdown, Restart,
+  periodicstatus, Deploy (button UI).
+- Single flat option, arg logic unchanged (setArgs maps option values
+  positionally to ctx.args): CreateInvite/DeleteInvites/GuildLeave (`guild`),
+  Eval (`code`), Announce (`message`), Reconnect (`nodes`), Maintain
+  (`state` with on/off choices).
+- Reload: added `target` (choices) + `all`/`no_build` booleans, with an
+  `isInteraction` branch (the old `--flag` parse can't see boolean options).
+- Subcommand/key:value commands (LavaConfig, YouTubeConfig, TempAnnounce):
+  instead of full slash subcommands (camelCase config keys are invalid slash
+  option names and would need a remap layer), added flat options and an
+  `isInteraction` block that **rebuilds the prefix-style `args` array** so the
+  existing subcommand + key:value parsers run verbatim. LavaConfig/YouTubeConfig
+  take `source`/`node`/`config` ("key:value key:value"); TempAnnounce takes
+  `action` + per-action options.
+
+### Context
+Added `getString`/`getBoolean`/`getInteger` to the `ctx.options` wrapper
+(only getRole/getMember/getChannel/get/getSubCommand existed). `.get(name)`
+resolves nested subcommand options in this discord.js version (proven by the
+working Dj.ts subcommand command).
+
+### Tradeoffs / follow-ups
+- Config commands take one `config` string of key:value pairs rather than
+  discrete typed slash options — acceptable for a dev-only tool, keeps the
+  flexible parser and avoids an 8-source × camelCase-key remap.
+- Reconnect's multi-node input is one space-separated string option instead
+  of repeated args; semantics preserved via the existing `.map(trim)`.
+- `DEV_GUILD_IDS` must be set in each bot's env or dev commands deploy
+  nowhere (logged as a warning, not an error).
+
+### Verified
+`npx tsc --noEmit` clean, `npm run build` clean. Not exercised against a live
+Discord connection.

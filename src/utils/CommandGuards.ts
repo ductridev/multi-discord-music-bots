@@ -139,7 +139,9 @@ export async function runGuards(
 		}
 	}
 
-	if (command.permissions?.dev && client.env.OWNER_IDS && !isDev) {
+	// Fail closed: a dev command with no OWNER_IDS configured must reject, not
+	// run for anyone. Otherwise any member of a dev guild reaches /eval.
+	if (command.permissions?.dev && !isDev) {
 		return { passed: false };
 	}
 

@@ -393,7 +393,33 @@ export class TranslationService {
 	 * @returns ISO 639-1 code or "en" as fallback
 	 */
 	public languageToIso(language: string): string {
-		return LANGUAGE_TO_ISO_MAP[language] || 'en';
+		if (LANGUAGE_TO_ISO_MAP[language]) return LANGUAGE_TO_ISO_MAP[language];
+		// Already an ISO code (e.g. a detected source language) — pass it through
+		// rather than defaulting to English, so it can match a target and skip a
+		// pointless same-language round-trip.
+		const lower = language.toLowerCase();
+		for (const iso of Object.values(LANGUAGE_TO_ISO_MAP)) {
+			if (iso.toLowerCase() === lower) return iso;
+		}
+		return 'en';
+	}
+
+	/**
+	 * Detect the ISO 639-1 language of a piece of text.
+	 * @param text The text to inspect
+	 * @returns The detected ISO code, or 'auto' if detection fails
+	 */
+	public async detectLanguage(text: string): Promise<string> {
+		if (!text || text.trim().length === 0) return 'auto';
+		try {
+			// google-translate-api-x reports the detected source on any translation;
+			// translating to English is the cheapest probe and its result is cached.
+			const result = await translate(text, { to: 'en', autoCorrect: false });
+			return (result as { from?: { language?: { iso?: string } } })?.from?.language?.iso || 'auto';
+		} catch (error) {
+			logger.error('Language detection failed:', error);
+			return 'auto';
+		}
 	}
 
 	/**
