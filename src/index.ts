@@ -116,9 +116,13 @@ export function getBotsForGuild(guildId: string): Lavamusic[] {
 		return [];
 	}
 
-	// Only return bots that are specifically configured for this guild
+	// Only return bots that are specifically configured for this guild AND are
+	// currently connected. activeBots is never pruned — a bot destroyed by the
+	// health monitor (or mid-restart) stays in it with a null token, so without
+	// the isReady() gate command delegation routes to a dead bot and every REST
+	// call it makes throws "Expected token to be set for this request".
 	const guildBots = activeBots.filter(bot =>
-		preferredClientIds.includes(bot.childEnv.clientId)
+		preferredClientIds.includes(bot.childEnv.clientId) && bot.isReady()
 	);
 
 	return guildBots;

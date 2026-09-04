@@ -36,6 +36,11 @@ export default class TrackStart extends Event {
 	}
 
 	public async run(player: Player, track: Track | null, _payload: TrackStartEvent): Promise<void> {
+		// A destroyed/restarting client has a null token; any REST call it makes
+		// (channel.send below) throws "Expected token to be set for this request".
+		// The player should already be gone, but guard the race.
+		if (!this.client.isReady()) return;
+
 		const guild = this.client.guilds.cache.get(player.guildId);
 		if (!player.options.customData) player.options.customData = {};
 		player.options.customData.botClientId = this.client.childEnv.clientId
@@ -233,11 +238,15 @@ export default class TrackStart extends Event {
 				}
 			}
 
+			// The top-of-run isReady() guard can go stale: destroy() may land in
+			// the many awaits above, nulling the token before this send. Catch so a
+			// dead client fails quietly instead of crashing the process.
 			const message = await channel.send({
 				embeds: [embed],
 				components: [createButtonRow(player, this.client)],
 				flags: 4096
-			});
+			}).catch(() => null);
+			if (!message) return;
 
 			player.set('messageId', message.id);
 			player.set('messageTrack', track.encoded);
