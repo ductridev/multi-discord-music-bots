@@ -36,6 +36,11 @@ export default class TrackStart extends Event {
 	}
 
 	public async run(player: Player, track: Track | null, _payload: TrackStartEvent): Promise<void> {
+		// A destroyed/restarting client has a null token; any REST call it makes
+		// (channel.send below) throws "Expected token to be set for this request".
+		// The player should already be gone, but guard the race.
+		if (!this.client.isReady()) return;
+
 		const guild = this.client.guilds.cache.get(player.guildId);
 		if (!player.options.customData) player.options.customData = {};
 		player.options.customData.botClientId = this.client.childEnv.clientId
