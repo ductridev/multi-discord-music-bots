@@ -1,10 +1,14 @@
 import { LavalinkManager, type LavalinkNodeOptions, type SearchPlatform, type SearchResult } from 'lavalink-client';
 import { autoPlayFunction, requesterTransformer } from '../utils/functions/player';
+import { QueueStore } from './QueueStore';
 import type Lavamusic from './Lavamusic';
 
 export default class LavalinkClient extends LavalinkManager {
 	public client: Lavamusic;
+	/** Persistent per-bot queue store so queue.utils.sync() survives restarts. */
+	public queueStore: QueueStore;
 	constructor(client: Lavamusic) {
+		const queueStore = new QueueStore(client.childEnv.name);
 		super({
 			nodes: (client.env.NODES as LavalinkNodeOptions[]).map(node => {
 				node.sessionId = client.playerSaver!.getAllLastNodeSessions().get(node.id!);
@@ -13,6 +17,7 @@ export default class LavalinkClient extends LavalinkManager {
 			sendToShard: async (guildId, payload) => (await client.guilds.fetch(guildId)).shard.send(payload),
 			queueOptions: {
 				maxPreviousTracks: 1000,
+				queueStore,
 			},
 			playerOptions: {
 				defaultSearchPlatform: client.env.SEARCH_ENGINE,
@@ -30,6 +35,7 @@ export default class LavalinkClient extends LavalinkManager {
 			}
 		});
 		this.client = client;
+		this.queueStore = queueStore;
 	}
 	/**
 	 * Searches for a song and returns the tracks.
