@@ -85,8 +85,9 @@ export default class Connect extends Event {
 							if (savedData.data?.['messageId']) player.set('messageId', savedData.data['messageId']);
 							if (savedData.filters) player.filterManager.data = savedData.filters;
 
-							this.restoreQueueState(player, null, savedData);
+							await this.restoreQueueState(player, null, savedData);
 
+							player.paused = savedData.paused;
 							if (!player.paused && player.queue.current) {
 								await player.play({ clientTrack: player.queue.current, position: savedData.lastPosition ?? 0 });
 							}
@@ -204,7 +205,7 @@ export default class Connect extends Event {
 				try {
 					await player.queue.utils.sync(true, false);
 				} catch {
-					this.restoreQueueState(player, fetchedPlayer, savedPlayerData);
+					await this.restoreQueueState(player, fetchedPlayer, savedPlayerData);
 				}
 				// The live Lavalink track is the source of truth for what is actually
 				// streaming; align current so position adoption below is correct.
@@ -239,7 +240,7 @@ export default class Connect extends Event {
 	 * source. Prefers the live Lavalink track for the current entry (so position
 	 * adoption matches what is actually streaming), falling back to saved data.
 	 */
-	private restoreQueueState(player: any, fetchedPlayer: LavalinkPlayer | null, savedPlayerData: PlayerJson): void {
+	private async restoreQueueState(player: any, fetchedPlayer: LavalinkPlayer | null, savedPlayerData: PlayerJson): Promise<void> {
 		const utils = this.client.manager.utils;
 		const fallbackRequester = this.client.user;
 
@@ -267,6 +268,10 @@ export default class Connect extends Event {
 				...savedPrevious.map((track) => utils.buildTrack(track as unknown as LavalinkTrack, (track as any).requester ?? fallbackRequester)),
 			);
 		}
+
+		// Persist the rebuilt queue so a second restart can sync() it instead of
+		// throwing on an empty store and rebuilding from playerData again.
+		await player.queue.utils.save();
 	}
 
 	/** Poll until the node has a sessionId from its `ready` handshake (REST calls need it). */
@@ -328,7 +333,9 @@ export default class Connect extends Event {
 				if (!hasVoice) {
 					// No cached voice server data — force Discord to re-issue it so the
 					// lavalink-client voice handler can forward it to the new session.
-					if (!player.connected) await player.connect();
+					// Call unconditionally: player.connected reflects stale pre-restart
+					// state, so a guard here would skip renegotiation and leave it silent.
+					await player.connect();
 				}
 
 				await player.play({
@@ -461,7 +468,7 @@ export default class Connect extends Event {
 				try {
 					await player.queue.utils.sync(true, false);
 				} catch {
-					this.restoreQueueState(player, null, playerData);
+					await this.restoreQueueState(player, null, playerData);
 				}
 
 				player.ping.lavalink = playerData.ping?.lavalink ?? 0;
