@@ -78,8 +78,13 @@ export class Utils {
 
 	public static progressBar(current: number, total: number, size = 20): string {
 		try {
-			const percent = Math.round((current / total) * 100);
-			const filledSize = Math.round((size * current) / total);
+			if (!total || total <= 0) return '0%';
+			// Clamp: position can exceed duration when Lavalink stops sending
+			// playerUpdate and lavalink-client free-runs position on wall clock.
+			// Unclamped, size - filledSize goes negative and .repeat() throws.
+			const ratio = Math.min(Math.max(current / total, 0), 1);
+			const percent = Math.round(ratio * 100);
+			const filledSize = Math.round(size * ratio);
 			const filledBar = '▓'.repeat(filledSize);
 			const emptyBar = '░'.repeat(size - filledSize);
 			return `${filledBar}${emptyBar} ${percent}%`;

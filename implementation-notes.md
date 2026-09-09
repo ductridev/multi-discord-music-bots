@@ -316,3 +316,128 @@ working Dj.ts subcommand command).
 ### Verified
 `npx tsc --noEmit` clean, `npm run build` clean. Not exercised against a live
 Discord connection.
+
+## Resume-on-restart: queue stopped instead of continuing (Connect.ts)
+
+### Symptom
+Queue playing → restart bot → track keeps playing during boot (Lavalink is a
+separate process, still streaming) → the moment the bot finishes starting the
+song stops and the queue dies. Now-playing embed left orphaned.
+
+### Root cause (chain)
+1. Bot-only restart: Lavalink holds the session, fires `resumed` on reconnect.
+2. The `resumed` handler called `player.queue.utils.sync(true,false)`, but the
+   queue store was the library default (in-memory MiniMap) — empty in a fresh
+   process — so `sync()` threw "No data found to sync" every restart.
+3. The catch block rebuilt `queue.tracks` but never set `queue.current`, then
+   called `player.play()`. With no args and an already-live session, `play()`
+   sends `updatePlayer` with `position:0, noReplace:false` → replaces the live
+   track (restart from 0), or drops it entirely when `fetchedPlayer.track` was
+   null at the resume instant → full stop.
+4. `messageId` (now-playing embed ref, stored via `player.set`) was not
+   restored, so TrackEnd/QueueEnd couldn't clean the old embed.
+
+### Fix
+- Adopt the live Lavalink session instead of replaying: if `fetchedPlayer.track`
+  is present, set position from `fetchedPlayer.state.position` and do NOT call
+  `play()`. Only `play()` when nothing is streaming (Lavalink also restarted).
+- Restore `messageId` in all three restore paths (resumed / 247 / fallback).
+- 247 path now skips restore+play when a track is already playing, so it can't
+  race the `resumed` handler and duplicate/restart the queue.
+
+### Follow-up implemented: persistent queue store
+- New `src/structures/QueueStore.ts` implements `QueueStoreManager` over the
+  existing `JSONStore` (file + optional Redis, same backend as PlayerSaver),
+  scoped per bot (`queueData-${name}.json` / `queuedata:${name}:` prefix).
+- Wired into `LavalinkClient` `queueOptions.queueStore`. Now `sync()` restores
+  current + tracks + previous + requesters natively on restart.
+- Restore paths use `sync()` as primary, `restoreQueueState()` (reads
+  `playerData` + live state) as fallback.
+
+### Decision / tradeoff
+- PlayerSaver's `playerData-*.json` already stores the full queue via
+  `toJSON()`, so the queue store partially duplicates it (both written on every
+  PlayerUpdate). Kept deliberately as resilience: queueStore is the primary
+  native-`sync()` source; `playerData.queue` is the fallback when the store is
+  empty/unreadable. Did NOT slim PlayerSaver — the fallback depends on it.
+- Prod should set `REDIS_URL`: file backend rewrites the whole map per queue
+  change (O(N)); Redis writes are O(1) with TTL self-pruning.
+
+### Verified
+`npx tsc --noEmit` clean, `npm run build` clean. Not exercised against a live
+Discord connection — needs a real restart-with-active-queue test.
+
+### Decision update (keys)
+Kept the two-key design (queueStore + playerData) despite the queue being
+stored in both. Rationale: it's the only design that keeps lavalink-client's
+native `queue.utils.sync()` as the restore path. On Redis the extra write is one
+O(1) SET, so cost is negligible.
+
+Why not one key: `StoredQueue` (queueStore) is a strict subset of `PlayerJson`
+(playerData) — it lacks the connection meta (channels, node/session, volume,
+filters, messageId, position) needed to rebuild a player, so the queue store
+can never be the sole source. A single non-redundant key would require either
+(A) dropping native sync and restoring by hand from playerData, or (B) splitting
+into meta-only + queue-only keys. Both viable; deferred.
+
+Future de-dup path: patch lavalink-client via the existing patch-package setup
+(`patches/lavalink-client+2.9.6.patch`) so the queue store and player store
+share one backing record. Tracked for later, not done now.
+
+## Lavalink-only restart: ghost players (2026-09-09)
+
+**Symptom.** After restarting *only* Lavalink (bot process stays up), every
+player is stuck: track never plays, progress bar free-runs *past* the track
+duration, skip jumps to the end and hangs, stop resets to 0% then keeps
+counting.
+
+**Root cause.** All prior resume logic assumed the *bot* restarted. When only
+Lavalink restarts it comes back with a fresh, empty session and sends `ready`
+with `resumed=false` (lavalink-client `index.cjs:2644`), so the `"resumed"`
+event never fires and the adopt path never runs. `handleResumeFallback` then
+skips every guild because `manager.getPlayer(guildId)` still returns the
+in-memory Player (the bot never restarted). Nothing is re-established on the
+new session, so the in-memory players become ghosts: `player.position` is a
+wall-clock estimate (`lastPosition + (now - lastPositionChange)`) that is only
+corrected by Lavalink `playerUpdate` packets — with no session behind the
+player, none arrive and position runs unbounded. skip/stop mutate local state
+and send REST ops Lavalink has no player for, so they hang/reset.
+
+**Fix.** New `reestablishGhostPlayers(node)` in `Connect.ts`, called at the top
+of `handleResumeFallback` (which only runs when `resumed` did not fire, i.e.
+Lavalink has no session for us — so any in-memory player is provably a ghost).
+For each in-memory player on the reconnected node it re-sends the cached
+Discord voice server data (`player.voice`) plus `queue.current` and the clamped
+position in one `play()` call, so Lavalink reconnects to voice and resumes
+without dropping the bot from the channel. Position is clamped to `[0, duration]`
+(0 for streams) to undo any wall-clock overrun. The existing disk-restore loop
+below still skips these guilds via its existing-player check, and on a real bot
+restart there are no in-memory players yet so this is a no-op.
+
+**Tradeoffs / ceiling.**
+- Cached-voice re-send is seamless but relies on the Discord voice token still
+  being valid, which holds for a *quick* Lavalink restart (Discord keeps the
+  bot's voice slot for a few minutes). If Lavalink is down long enough for
+  Discord to drop the voice connection, the cached token is stale; the code
+  falls back to `player.connect()` only when no cached voice exists at all, not
+  when a cached-but-stale token is rejected. If long outages prove a problem,
+  upgrade to: detect no `playerUpdate` within N seconds after re-play, then
+  force a voice renegotiation (disconnect + reconnect).
+- 7s latency before recovery (the existing `scheduleResumeFallback` timer).
+- Not unit-testable here (voice requires a live Lavalink + Discord); must be
+  verified live. Watch for the log line
+  `[LAVALINK RESUME] Re-established ghost player for guild <id> ...`.
+
+### Update: immediate, deterministic recovery (dropped the 7s wait)
+
+Moved ghost recovery out of the 7s `scheduleResumeFallback` timer and into the
+node connect handler (`run()`), fired on every reconnect. Detection is now
+deterministic instead of timer-based: `reestablishGhostPlayers` calls
+`node.fetchAllPlayers()` on the fresh session and only recovers in-memory
+players the session does **not** report. This removes the race against the
+`resumed` event entirely — if Lavalink genuinely resumed, it returns the
+players (live, skipped); if Lavalink restarted, it returns an empty set (all
+in-memory players are ghosts, recovered). `waitForSession` polls `node.sessionId`
+(≤5s) first because `fetchAllPlayers` needs it. No-op on first boot / full bot
+restart (no in-memory players). Recovery latency drops from ~7s to one REST
+round-trip after the session handshake.

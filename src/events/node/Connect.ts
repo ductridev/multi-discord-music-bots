@@ -27,6 +27,12 @@ export default class Connect extends Event {
 
 		updateSession.set(`${node.id}-${this.client.childEnv.clientId}`, interval);
 
+		// Lavalink-only restart: the bot stayed up, so its players are still in memory
+		// but stranded on the now-dead session. Recover them immediately on the fresh
+		// session (deterministic check against fetchAllPlayers — no 7s fallback wait).
+		// No-op on first boot / full bot restart (no in-memory players yet).
+		await this.reestablishGhostPlayers(node);
+
 		let data = await this.client.db.get_247(this.client.childEnv.clientId);
 		if (!data) {
 			sendLog(this.client, `Node ${node.id} is ready!`, 'success');
@@ -66,27 +72,25 @@ export default class Connect extends Event {
 						if (!player.connected) await player.connect();
 						player.set('autoplay', true);
 
-						// Restore queue from playerData if available (don't let empty 247 player overwrite saved state)
+						// Restore queue from playerData if available (don't let empty 247 player overwrite saved state).
+						// Skip when a track is already playing: the "resumed" handler adopted the live Lavalink
+						// session, so re-restoring here would duplicate the queue and restart the track from 0.
 						const savedData = this.client.playerSaver?.getPlayer(guild.id);
-						if (savedData?.queue?.current || (savedData?.queue?.tracks && savedData.queue.tracks.length > 0)) {
+						if (savedData && !player.queue.current && !player.playing &&
+							(savedData.queue?.current || (savedData.queue?.tracks?.length ?? 0) > 0)) {
 							this.client.logger.info(`[247 RESTORE] Restoring queue for guild ${guild.id} from saved playerData`);
 							player.setRepeatMode(savedData.repeatMode);
 							if (savedData.data?.['autoplay'] === 'true') player.set('autoplay', true);
 							if (savedData.data?.['summonUserId']) player.set('summonUserId', savedData.data['summonUserId']);
+							if (savedData.data?.['messageId']) player.set('messageId', savedData.data['messageId']);
 							if (savedData.filters) player.filterManager.data = savedData.filters;
 
-							// Restore current track
-							if (savedData.queue.current) {
-								player.queue.add(this.client.manager.utils.buildTrack(savedData.queue.current, player.queue.current?.requester || this.client.user));
-							}
-							// Restore queued tracks
-							if (savedData.queue.tracks?.length > 0) {
-								for (const track of savedData.queue.tracks) {
-									player.queue.add(this.client.manager.utils.buildTrack(track as unknown as LavalinkTrack, player.queue.current?.requester || this.client.user));
-								}
-							}
+							await this.restoreQueueState(player, null, savedData);
 
-							if (!player.paused && player.queue.tracks.length > 0) player.play();
+							player.paused = savedData.paused;
+							if (!player.paused && player.queue.current) {
+								await player.play({ clientTrack: player.queue.current, position: savedData.lastPosition ?? 0 });
+							}
 						}
 
 						// Save player session
@@ -181,6 +185,9 @@ export default class Connect extends Event {
 				player.setRepeatMode(savedPlayerData.repeatMode);
 				player.set('autoplay', savedPlayerData.data?.['autoplay'] === 'true' ? true : false);
 				player.set('summonUserId', savedPlayerData.data?.['summonUserId']);
+				// Restore the now-playing embed reference so TrackEnd/QueueEnd can clean it
+				// up instead of leaving an orphaned message and posting a duplicate.
+				if (savedPlayerData.data?.['messageId']) player.set('messageId', savedPlayerData.data['messageId']);
 
 				// Initialize maps if they don't exist
 				if (!sessionMap.has(player.guildId)) sessionMap.set(player.guildId, new Map());
@@ -190,42 +197,161 @@ export default class Connect extends Event {
 				voiceChannelMap.get(player.guildId)!.set(player.voiceChannelId!, this.client.childEnv.clientId);
 
 				player.filterManager.data = fetchedPlayer.filters; // override the filters data
+
+				// Restore the queue from the persistent queue store (current + tracks +
+				// previous + requesters). Falls back to reconstructing from playerData /
+				// live Lavalink state if the store is empty or unreadable.
+				await this.client.manager.queueStore.ensureLoaded();
 				try {
-					await player.queue.utils.sync(true, false); // get the queue data including the current track (for the requester)
-
-					this.client.logger.info(`Node ${node.id} has synced queue for guild ${fetchedPlayer.guildId}`);
-				} catch (error) {
-					this.client.logger.warn(error);
-
-					// override the current track with the data from lavalink
-					if (fetchedPlayer.track) player.queue.add(this.client.manager.utils.buildTrack(fetchedPlayer.track, player.queue.current?.requester || this.client.user));
-
-					this.client.logger.info(`Trying restore queue for guild ${fetchedPlayer.guildId} on node ${node.id} with saved session`);
-					const playingIdx = savedPlayerData.queue?.tracks.findIndex((track) => track === savedPlayerData.queue?.current);
-					this.client.logger.info(`Restoring queue for guild ${fetchedPlayer.guildId} on node ${node.id} with saved session`);
-					// Get all tracks after the current track
-					if (playingIdx !== -1)
-						savedPlayerData.queue?.tracks.slice(playingIdx).forEach((track) => player.queue.add(track));
-					else
-						savedPlayerData.queue?.tracks.forEach((track) => player.queue.add(track));
-
-					// override the position of the player
-					player.lastPosition = fetchedPlayer.state.position;
-					player.lastPositionChange = Date.now();
-
-					this.client.logger.info(`Node ${node.id} has synced position for guild ${fetchedPlayer.guildId}`);
+					await player.queue.utils.sync(true, false);
+				} catch {
+					await this.restoreQueueState(player, fetchedPlayer, savedPlayerData);
+				}
+				// The live Lavalink track is the source of truth for what is actually
+				// streaming; align current so position adoption below is correct.
+				if (fetchedPlayer.track) {
+					player.queue.current = this.client.manager.utils.buildTrack(fetchedPlayer.track, player.queue.current?.requester ?? this.client.user);
 				}
 
 				// you can also override the ping of the player, or wait about 30s till it's done automatically
 				player.ping.lavalink = fetchedPlayer.state.ping;
-
-				// important to have skipping work correctly later
 				player.paused = fetchedPlayer.paused;
-				if (!player.paused && player.queue.tracks.length > 0) player.play();
+
+				if (fetchedPlayer.track) {
+					// Lavalink is still streaming this track (bot-only restart): adopt its live
+					// position. Calling play() here would replace the track and restart from 0.
+					player.lastPosition = fetchedPlayer.state.position;
+					player.lastPositionChange = Date.now();
+					this.client.logger.info(`Node ${node.id} adopted live playback for guild ${fetchedPlayer.guildId} at ${fetchedPlayer.state.position}ms`);
+				} else if (!player.paused && player.queue.current) {
+					// Nothing playing on Lavalink but we have a restored queue — start it.
+					await player.play({ clientTrack: player.queue.current, position: savedPlayerData.lastPosition ?? 0 });
+					this.client.logger.info(`Node ${node.id} restarted playback for guild ${fetchedPlayer.guildId}`);
+				}
 			}
 
 			this.client.logger.info(`Node ${node.id} has resumed all players`);
 		})
+	}
+
+	/**
+	 * Restore player.queue.current and player.queue.tracks from persisted data.
+	 * The in-memory queue store is empty after a restart, so this is the reliable
+	 * source. Prefers the live Lavalink track for the current entry (so position
+	 * adoption matches what is actually streaming), falling back to saved data.
+	 */
+	private async restoreQueueState(player: any, fetchedPlayer: LavalinkPlayer | null, savedPlayerData: PlayerJson): Promise<void> {
+		const utils = this.client.manager.utils;
+		const fallbackRequester = this.client.user;
+
+		const savedCurrent = savedPlayerData.queue?.current;
+		if (fetchedPlayer?.track) {
+			player.queue.current = utils.buildTrack(fetchedPlayer.track, (savedCurrent as any)?.requester ?? fallbackRequester);
+		} else if (savedCurrent) {
+			player.queue.current = utils.buildTrack(savedCurrent as unknown as LavalinkTrack, (savedCurrent as any).requester ?? fallbackRequester);
+		}
+
+		const savedTracks = savedPlayerData.queue?.tracks ?? [];
+		if (savedTracks.length > 0) {
+			player.queue.tracks.splice(
+				0,
+				player.queue.tracks.length,
+				...savedTracks.map((track) => utils.buildTrack(track as unknown as LavalinkTrack, (track as any).requester ?? fallbackRequester)),
+			);
+		}
+
+		const savedPrevious = savedPlayerData.queue?.previous ?? [];
+		if (savedPrevious.length > 0) {
+			player.queue.previous.splice(
+				0,
+				player.queue.previous.length,
+				...savedPrevious.map((track) => utils.buildTrack(track as unknown as LavalinkTrack, (track as any).requester ?? fallbackRequester)),
+			);
+		}
+
+		// Persist the rebuilt queue so a second restart can sync() it instead of
+		// throwing on an empty store and rebuilding from playerData again.
+		await player.queue.utils.save();
+	}
+
+	/** Poll until the node has a sessionId from its `ready` handshake (REST calls need it). */
+	private async waitForSession(node: LavalinkNode, timeoutMs = 5000): Promise<boolean> {
+		const start = Date.now();
+		while (!node.sessionId && Date.now() - start < timeoutMs) {
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		}
+		return !!node.sessionId;
+	}
+
+	/**
+	 * Recover players when Lavalink itself restarted while the bot process stayed up.
+	 *
+	 * Lavalink comes back with a fresh, empty session, so it sends `ready` with
+	 * `resumed=false` and the "resumed" event never fires. The bot's Player objects
+	 * still live in memory, but on Lavalink's side the session, player and voice
+	 * connection are gone — they are "ghosts": position free-runs on the wall clock,
+	 * no audio, and skip/stop hang because Lavalink has nothing to act on.
+	 *
+	 * Re-send the cached Discord voice data (still valid across a quick restart, since
+	 * Discord holds the bot's voice slot) plus the current track and position to the
+	 * new session in one updatePlayer, so Lavalink reconnects to voice and resumes
+	 * without dropping the bot from the channel.
+	 */
+	private async reestablishGhostPlayers(node: LavalinkNode): Promise<void> {
+		// Only relevant when the bot already holds players in memory (Lavalink-only
+		// restart). On first boot / full bot restart there are none yet.
+		const mine = [...this.client.manager.players.values()].filter(p => p.node?.id === node.id);
+		if (mine.length === 0) return;
+
+		// Ask the fresh session what it actually has. If it returns our players, it
+		// genuinely resumed and they are live — not ghosts. Any in-memory player the
+		// session does NOT know about was stranded by a Lavalink restart.
+		if (!(await this.waitForSession(node))) return;
+		let liveGuilds: Set<string>;
+		try {
+			const live = await node.fetchAllPlayers();
+			liveGuilds = new Set((live as LavalinkPlayer[]).map(p => p.guildId));
+		} catch (error) {
+			this.client.logger.warn(`[LAVALINK RESUME] Could not fetch live players on node ${node.id}, skipping ghost recovery:`, error);
+			return;
+		}
+
+		for (const player of mine) {
+			if (liveGuilds.has(player.guildId)) continue;
+			const current = player.queue.current;
+			if (!current?.encoded) continue;
+
+			const guildId = player.guildId;
+			try {
+				const duration = current.info?.duration ?? 0;
+				const position = current.info?.isStream || duration <= 0
+					? 0
+					: Math.min(Math.max(player.position, 0), duration);
+
+				const v = player.voice;
+				const hasVoice = !!(v?.token && v?.endpoint && v?.sessionId);
+				if (!hasVoice) {
+					// No cached voice server data — force Discord to re-issue it so the
+					// lavalink-client voice handler can forward it to the new session.
+					// Call unconditionally: player.connected reflects stale pre-restart
+					// state, so a guard here would skip renegotiation and leave it silent.
+					await player.connect();
+				}
+
+				await player.play({
+					clientTrack: current,
+					position,
+					paused: player.paused,
+					...(hasVoice ? { voice: { token: v.token!, endpoint: v.endpoint!, sessionId: v.sessionId! } } : {}),
+				});
+
+				this.client.logger.info(
+					`[LAVALINK RESUME] Re-established ghost player for guild ${guildId} at ${position}ms on node ${node.id} (voice=${hasVoice ? 'cached' : 'renegotiated'})`,
+				);
+			} catch (error) {
+				this.client.logger.error(`[LAVALINK RESUME] Failed to re-establish player for guild ${guildId}:`, error);
+			}
+		}
 	}
 
 	private async handleResumeFallback(node: LavalinkNode): Promise<void> {
@@ -323,6 +449,8 @@ export default class Connect extends Event {
 				player.setRepeatMode(playerData.repeatMode);
 				player.set('autoplay', playerData.data?.['autoplay'] === 'true' ? true : false);
 				player.set('summonUserId', playerData.data?.['summonUserId']);
+				// Restore the now-playing embed reference so cleanup works and no duplicate is posted.
+				if (playerData.data?.['messageId']) player.set('messageId', playerData.data['messageId']);
 
 				// Initialize maps
 				if (!sessionMap.has(player.guildId)) sessionMap.set(player.guildId, new Map());
@@ -334,35 +462,21 @@ export default class Connect extends Event {
 				// Restore filters
 				if (playerData.filters) player.filterManager.data = playerData.filters;
 
-				// Restore queue from saved data
+				// Lavalink also restarted here (resumed never fired), so nothing is streaming.
+				// Restore the queue from the persistent store, falling back to playerData.
+				await this.client.manager.queueStore.ensureLoaded();
 				try {
 					await player.queue.utils.sync(true, false);
-					this.client.logger.info(`[RESUME FALLBACK] Synced queue for guild ${guildId}`);
-				} catch (error) {
-					this.client.logger.warn(`[RESUME FALLBACK] Queue sync failed for guild ${guildId}, restoring from saved data`);
-
-					// Restore current track from saved data
-					if (playerData.queue?.current) {
-						player.queue.add(this.client.manager.utils.buildTrack(playerData.queue.current, player.queue.current?.requester || this.client.user));
-					}
-
-					// Restore queued tracks
-					if (playerData.queue?.tracks && playerData.queue.tracks.length > 0) {
-						for (const track of playerData.queue.tracks) {
-							player.queue.add(this.client.manager.utils.buildTrack(track as unknown as LavalinkTrack, player.queue.current?.requester || this.client.user));
-						}
-					}
-
-					player.lastPosition = playerData.lastPosition;
-					player.lastPositionChange = Date.now();
+				} catch {
+					await this.restoreQueueState(player, null, playerData);
 				}
 
 				player.ping.lavalink = playerData.ping?.lavalink ?? 0;
 				player.paused = playerData.paused;
 
-				if (!player.paused && player.queue.tracks.length > 0) {
-					player.play();
-					this.client.logger.info(`[RESUME FALLBACK] Resumed playback for guild ${guildId} (${player.queue.tracks.length} tracks in queue)`);
+				if (!player.paused && player.queue.current) {
+					await player.play({ clientTrack: player.queue.current, position: playerData.lastPosition ?? 0 });
+					this.client.logger.info(`[RESUME FALLBACK] Resumed playback for guild ${guildId} (${player.queue.tracks.length} tracks queued)`);
 				}
 
 				restoredCount++;
