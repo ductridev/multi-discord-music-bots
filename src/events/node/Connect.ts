@@ -329,7 +329,10 @@ export default class Connect extends Event {
 					: Math.min(Math.max(player.position, 0), duration);
 
 				const v = player.voice;
-				const hasVoice = !!(v?.token && v?.endpoint && v?.sessionId);
+				// channelId is required by the Lavalink v4 VoiceState schema; a play()
+				// carrying voice without it is rejected (400) and the player never resumes.
+				const channelId = v?.channelId ?? player.voiceChannelId ?? undefined;
+				const hasVoice = !!(v?.token && v?.endpoint && v?.sessionId && channelId);
 				if (!hasVoice) {
 					// No cached voice server data — force Discord to re-issue it so the
 					// lavalink-client voice handler can forward it to the new session.
@@ -342,7 +345,7 @@ export default class Connect extends Event {
 					clientTrack: current,
 					position,
 					paused: player.paused,
-					...(hasVoice ? { voice: { token: v.token!, endpoint: v.endpoint!, sessionId: v.sessionId! } } : {}),
+					...(hasVoice ? { voice: { token: v.token!, endpoint: v.endpoint!, sessionId: v.sessionId!, channelId: channelId! } } : {}),
 				});
 
 				this.client.logger.info(
