@@ -3,6 +3,7 @@ import { Event, type Lavamusic } from '../../structures/index';
 import { sendLog } from '../../utils/BotLog';
 import { sessionMap, updateSession, voiceChannelMap } from '../..';
 import { TextBasedChannel, VoiceBasedChannel } from 'discord.js';
+import { SESSION_RESUME_TIMEOUT_S } from './Raw';
 
 export default class Connect extends Event {
 	// Track resume per node to avoid cross-node interference
@@ -15,6 +16,9 @@ export default class Connect extends Event {
 			name: 'connect',
 		});
 
+		// The 'resumed' listener is registered here, outside the loader's tracked handlers, so a
+		// hot reload would otherwise stack a second (stale) copy on top of the previous one.
+		client.manager.nodeManager.removeAllListeners('resumed');
 		this.resume();
 	}
 
@@ -22,7 +26,8 @@ export default class Connect extends Event {
 		this.client.logger.success(`Node ${node.id} is ready!`);
 
 		const interval = setInterval(async () => {
-			await node.updateSession(true, 15 * 60e3); // 15 minutes
+			// Raw.ts already enables resuming on 'ready'; this re-applies it in case that call failed.
+			await node.updateSession(true, SESSION_RESUME_TIMEOUT_S);
 		}, 10 * 60e3);
 
 		updateSession.set(`${node.id}-${this.client.childEnv.clientId}`, interval);
@@ -132,7 +137,9 @@ export default class Connect extends Event {
 
 	private scheduleResumeFallback(node: LavalinkNode): void {
 		setTimeout(async () => {
-			if (!this.resumedNodes.has(node.id!)) {
+			// Consume the flag: it describes this connect only, so a later non-resumed
+			// reconnect of the same node still gets the fallback.
+			if (!this.resumedNodes.delete(node.id!)) {
 				this.client.logger.warn(`[RESUME FALLBACK] Resume event did not fire for node ${node.id}, handling manually.`);
 				await this.handleResumeFallback(node);
 			}
@@ -149,6 +156,22 @@ export default class Connect extends Event {
 
 			// create players:
 			for (const fetchedPlayer of (fetchedPlayers as LavalinkPlayer[])) {
+				// In-process reconnect: the bot never lost this player and Lavalink kept streaming,
+				// so only resync live state. Re-running connect()/queue sync below would renegotiate
+				// voice and briefly cut the audio. Requiring the in-memory current track to match the
+				// streaming one keeps cold boots (where 247 logic may have just created an empty player)
+				// and voice-disconnected players on the full path.
+				const livePlayer = this.client.manager.getPlayer(fetchedPlayer.guildId);
+				if (livePlayer && fetchedPlayer.state.connected && fetchedPlayer.track &&
+					livePlayer.queue.current?.encoded === fetchedPlayer.track.encoded) {
+					livePlayer.paused = fetchedPlayer.paused;
+					livePlayer.playing = !!fetchedPlayer.track && !fetchedPlayer.paused;
+					livePlayer.ping.lavalink = fetchedPlayer.state.ping;
+					livePlayer.lastPosition = fetchedPlayer.state.position;
+					livePlayer.lastPositionChange = Date.now();
+					continue;
+				}
+
 				// fetchedPlayer is the live data from lavalink
 				const savedPlayerData = this.client.playerSaver?.getPlayer(fetchedPlayer.guildId);
 				const is247 = await this.client.db.get_247(this.client.childEnv.clientId, fetchedPlayer.guildId);
