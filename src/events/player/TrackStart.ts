@@ -22,11 +22,9 @@ import type { Requester } from '../../types';
 import { trackStart } from '../../utils/SetupSystem';
 import { VoiceStateHelper } from '../../utils/VoiceStateHelper';
 import { dashboardSocket } from '../../api/websocket/DashboardSocket';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../database/prisma';
 import { PeriodicMessageSystem } from '../../utils/PeriodicMessageSystem';
 import { isTrackLoopReplay } from '../../utils/TrackLoop';
-
-const prisma = new PrismaClient();
 
 export default class TrackStart extends Event {
 	constructor(client: Lavamusic, file: string) {
