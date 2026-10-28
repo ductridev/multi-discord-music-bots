@@ -1,5 +1,6 @@
 import { activeBots } from '../../index';
 import Logger from '../../structures/Logger';
+import { T } from '../../structures/I18n';
 import type { PlayerControlDTO } from '../types';
 
 const logger = new Logger('PlayerController');
@@ -170,10 +171,50 @@ export class PlayerController {
 					logger.info(`Skipped track in guild ${guildId}`);
 					break;
 
-				case 'stop':
-					await player.destroy();
+				case 'stop': {
+					// Mirror the embed STOP button (SetupButtons.ts): stop playback and
+					// clear the queue but stay in the voice channel. destroy() would leave.
+					// Capture the now-playing message before clearing messageId so we can
+					// refresh it to the stopped state (QueueEnd skips it once messageId is null).
+					const messageId = player.get('messageId') as string | undefined;
+					const textChannelId = player.textChannelId;
+
+					player.set('messageId', undefined);
+					await player.stopPlaying(true, false);
+
+					if (messageId && textChannelId) {
+						try {
+							const locale = await targetBot.db.getLanguage(guildId);
+							const channel = targetBot.channels.cache.get(textChannelId);
+							const message = channel?.isTextBased?.()
+								? await channel.messages.fetch(messageId).catch(() => null)
+								: null;
+							if (message?.editable) {
+								const embed = targetBot
+									.embed()
+									.setColor(targetBot.color.main)
+									.setAuthor({
+										name: targetBot.user?.username ?? 'Music',
+										iconURL: targetBot.user?.displayAvatarURL({ extension: 'png' }),
+									})
+									.setDescription(T(locale, 'event.setupButton.nothing_playing'))
+									.setImage(targetBot.config.links.img)
+									.setFooter({
+										text:
+											T(locale, 'event.setupButton.stopped_footer', { displayName: 'Dashboard' }) +
+											' • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️',
+										iconURL: targetBot.user?.displayAvatarURL({ extension: 'png' }),
+									});
+								await message.edit({ embeds: [embed] });
+							}
+						} catch (err) {
+							logger.error(`Failed to update setup message after stop in guild ${guildId}:`, err);
+						}
+					}
+
 					logger.info(`Stopped player in guild ${guildId}`);
 					break;
+				}
 
 				case 'volume':
 					if (control.volume !== undefined) {

@@ -40,19 +40,23 @@ export class QueueStore implements QueueStoreManager {
 		return this.store.ensureLoaded();
 	}
 
-	public get = (guildId: string): string | undefined => this.store.get(guildId);
+	public get(guildId: string): string | undefined {
+		return this.store.get(guildId);
+	}
 
-	public set = async (guildId: string, value: StoredQueue | string): Promise<void> => {
+	public async set(guildId: string, value: StoredQueue | string): Promise<void> {
 		await this.store.set(guildId, typeof value === "string" ? value : JSON.stringify(value));
-	};
+	}
 
-	public delete = async (guildId: string): Promise<void> => {
+	public async delete(guildId: string): Promise<void> {
 		await this.store.delete(guildId);
-	};
+	}
 
-	public stringify = (value: StoredQueue | string): string =>
-		typeof value === "string" ? value : JSON.stringify(value);
+	public stringify(value: StoredQueue | string): string {
+		return typeof value === "string" ? value : JSON.stringify(value);
+	}
 
-	public parse = (value: StoredQueue | string): Partial<StoredQueue> =>
-		typeof value === "string" ? JSON.parse(value) : value;
+	public parse(value: StoredQueue | string): Partial<StoredQueue> {
+		return typeof value === "string" ? JSON.parse(value) : value;
+	}
 }

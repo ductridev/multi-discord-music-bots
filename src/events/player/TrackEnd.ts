@@ -4,10 +4,8 @@ import { Event, type Lavamusic } from '../../structures/index';
 import { updateSetup } from '../../utils/SetupSystem';
 import { T } from '../../structures/I18n';
 import { dashboardSocket } from '../../api/websocket/DashboardSocket';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../database/prisma';
 import { isTrackLoopReplay } from '../../utils/TrackLoop';
-
-const prisma = new PrismaClient();
 
 export default class TrackEnd extends Event {
 	constructor(client: Lavamusic, file: string) {

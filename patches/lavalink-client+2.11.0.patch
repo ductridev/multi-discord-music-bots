@@ -1,26 +1,26 @@
 diff --git a/node_modules/lavalink-client/dist/index.d.cts b/node_modules/lavalink-client/dist/index.d.cts
-index 8325371..b77f777 100644
+index 50558c8..fb30992 100644
 --- a/node_modules/lavalink-client/dist/index.d.cts
 +++ b/node_modules/lavalink-client/dist/index.d.cts
-@@ -198,6 +198,8 @@ interface PlayerJson {
-     nodeSessionId?: string;
-     /** The stored queue */
-     queue?: StoredQueue;
-+    /** Custom data for the player */
-+    data?: anyObject;
+@@ -216,6 +216,8 @@ interface PlayerJson {
+   nodeSessionId?: string;
+   /** The stored queue */
+   queue?: StoredQueue;
++  /** Custom data for the player */
++  data?: anyObject;
  }
  type RepeatMode = "queue" | "track" | "off";
  interface PlayerOptions {
 diff --git a/node_modules/lavalink-client/dist/index.d.ts b/node_modules/lavalink-client/dist/index.d.ts
-index 8325371..b77f777 100644
+index 50558c8..fb30992 100644
 --- a/node_modules/lavalink-client/dist/index.d.ts
 +++ b/node_modules/lavalink-client/dist/index.d.ts
-@@ -198,6 +198,8 @@ interface PlayerJson {
-     nodeSessionId?: string;
-     /** The stored queue */
-     queue?: StoredQueue;
-+    /** Custom data for the player */
-+    data?: anyObject;
+@@ -216,6 +216,8 @@ interface PlayerJson {
+   nodeSessionId?: string;
+   /** The stored queue */
+   queue?: StoredQueue;
++  /** Custom data for the player */
++  data?: anyObject;
  }
  type RepeatMode = "queue" | "track" | "off";
  interface PlayerOptions {

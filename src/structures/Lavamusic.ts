@@ -99,20 +99,23 @@ export default class Lavamusic extends Client {
     this.lavaSrcConfigService = new LavaSrcConfigService(this.manager);
     this.youTubeConfigService = new YouTubeConfigService(this.manager);
     const nm = this.manager.nodeManager;
-    nm.on("connect",      n => console.log("[NM] connect", n.id));
-    nm.on("disconnect",   (n,p) => console.log("[NM] disconnect", n.id, p));
-    nm.on("reconnectinprogress", n => console.log("[NM] pending", n.id, n.reconnectionState));
-    nm.on("reconnecting", n => console.log("[NM] reconnecting", n.id, "att=", n.reconnectionAttemptCount));
-    nm.on("error",        (n,e) => console.log("[NM] error", n.id, e?.message));
-    nm.on("destroy",      (n,r) => console.log("[NM] destroy", n.id, r));
+    if (process.env.LAVALINK_DEBUG === "true") {
+        nm.on("connect",      n => console.log("[NM] connect", n.id));
+        nm.on("disconnect",   (n,p) => console.log("[NM] disconnect", n.id, p));
+        nm.on("reconnectinprogress", n => console.log("[NM] pending", n.id, n.reconnectionState));
+        nm.on("reconnecting", n => console.log("[NM] reconnecting", n.id, "att=", n.reconnectionAttemptCount));
+        nm.on("error",        (n,e) => console.log("[NM] error", n.id, e?.message));
+        nm.on("destroy",      (n,r) => console.log("[NM] destroy", n.id, r));
+    }
     // Node-layer diagnostics, minus the once-a-minute heartbeat. HeartBeatTriggered
     // fires every 60s per node per bot and only confirms the node is alive — its
     // absence is the interesting signal, not its presence. Keeping it would bury
     // everything else in a multi-bot fleet.
-    this.manager.on("debug", (ev, p) =>
-        p?.functionLayer?.includes("LavalinkNode") &&
-        ev !== "HeartBeatTriggered" &&
-        console.log("[DBG]", ev, p.state, p.message));
+    if (process.env.LAVALINK_DEBUG === "true")
+        this.manager.on("debug", (ev, p) =>
+            p?.functionLayer?.includes("LavalinkNode") &&
+            ev !== "HeartBeatTriggered" &&
+            console.log("[DBG]", ev, p.state, p.message));
     this.liveLyricsService = new LiveLyricsService(this);
     await this.loadCommands();
     this.logger.info("Successfully loaded commands!");

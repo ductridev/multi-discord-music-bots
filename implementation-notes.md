@@ -1,5 +1,46 @@
 # Implementation Notes
 
+## 2026-09-11 — Stale player resurrection after restart
+
+### Report
+Clients report the bot, after a restart, (a) auto-resumes a player they stopped
+long ago instead of the latest session, and (b) stays in VC with 247 still on
+for guilds that abandoned it.
+
+Both reports are one bug: **stale-player resurrection on restart.** The 247
+disable-on-leave/disconnect logic is correct and unchanged (`/leave`,
+`PlayerDisconnect`, `VoiceStateUpdate.leave` all `delete_247`); the "bot still
+has 247 / stays in VC" symptom is the resurrection making an abandoned session
+look active, not a stale `stay` row (`get_247` has no cache — hits Prisma each
+call).
+
+### Root cause
+`PlayerSaver` (`playerData-*.json` + Redis `playerdata:`, TTL `PLAYER_SESSION_TTL`)
+is written only on `playerUpdate`/`paused`/`resumed`. Lavalink emits `playerUpdate`
+only while a track streams, so when playback stops **without destroying the
+player** (247, or the 5-min idle grace), events cease and the **last-playing
+snapshot (old `queue.current`) is frozen in Redis** until TTL. It is deleted only
+in `PlayerDestroy` (`delPlayer`), which never runs while the player is kept alive.
+On restart all three resume paths in `Connect.ts` read that stale snapshot and
+rejoin the VC / replay the stopped track.
+
+### Fix
+`QueueEnd` is the shared funnel for every stop/skip/empty-queue path (all callers
+use `stopPlaying(true, false)`). After the existing `queue.utils.save()`, write the
+current player state — `playerSaver.set(guildId, JSON.stringify(player.toJSON()))`
+— so the persisted snapshot mirrors live state (empty queue, `current` null) the
+moment playback goes idle, instead of keeping the last-playing snapshot until TTL.
+The store is not deleted on stop (TTL reaps it); every resume path reads the idle
+snapshot and does not replay: 247 path guard `savedData.queue?.current ||
+tracks.length` is false, fallback/resumed `if (!player.paused && player.queue.current)`
+is false. Active-playback restarts are unaffected: `QueueEnd` has not fired, so the
+snapshot still holds the live track and resumes correctly.
+
+### Not changed / open
+- `PlayerUpdate.shouldSave` compares `oldPlayer.queue !== newPlayerData.queue`
+  (Queue instance vs plain object) → effectively always true; over-saves during
+  playback. Perf only, left as-is.
+
 ## 2026-06-12 — `lavaconfig` bug fixes
 
 ### Bugs reported by user
@@ -441,3 +482,19 @@ in-memory players are ghosts, recovered). `waitForSession` polls `node.sessionId
 (≤5s) first because `fetchAllPlayers` needs it. No-op on first boot / full bot
 restart (no in-memory players). Recovery latency drops from ~7s to one REST
 round-trip after the session handshake.
+
+## Voice payload must include channelId (Lavalink v4 / Discord requirement)
+
+Any `voice` object sent to Lavalink (`player.play({ voice })`, `updatePlayer`,
+`changeNode`) MUST carry `channelId` alongside `token`/`endpoint`/`sessionId`.
+Lavalink v4 `VoiceState` schema requires it — omitting it rejects the request:
+
+```
+HttpMessageNotReadableException: Field 'channelId' is required for type
+'dev.arbjerg.lavalink.protocol.v4.VoiceState', but it was missing at path: $.voice
+```
+
+The ghost-recovery path in `Connect.ts` (`reestablishGhostPlayers`) sent voice
+without `channelId`, so the PATCH 400'd and the player never resumed. Source it
+from `player.voice.channelId`, fall back to `player.voiceChannelId`, and if still
+missing renegotiate via `player.connect()` instead of sending a partial payload.

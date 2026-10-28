@@ -31,6 +31,13 @@ export default class QueueEnd extends Event {
 		// Save player queue
 		await player.queue.utils.save();
 
+		// Persist the now-idle player state. playerUpdate only fires while a track
+		// streams, so without this the last-playing snapshot (old queue.current)
+		// stays frozen in playerData/Redis and a restart resurrects a track the
+		// user already stopped. Writing the idle snapshot keeps the store mirroring
+		// live state; the entry is reaped by TTL, not deleted here.
+		await this.client.playerSaver!.set(player.guildId, JSON.stringify(player.toJSON()));
+
 		const locale = await this.client.db.getLanguage(player.guildId);
 		await updateSetup(this.client, guild, locale);
 
