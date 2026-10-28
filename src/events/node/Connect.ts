@@ -1,6 +1,7 @@
 import type { LavalinkNode, LavalinkPlayer, LavalinkTrack, PlayerJson } from 'lavalink-client';
 import { Event, type Lavamusic } from '../../structures/index';
 import { sendLog } from '../../utils/BotLog';
+import { hasPlayableQueue } from '../../utils/ResumeState';
 import { sessionMap, updateSession, voiceChannelMap } from '../..';
 import { TextBasedChannel, VoiceBasedChannel } from 'discord.js';
 
@@ -360,6 +361,7 @@ export default class Connect extends Event {
 
 		// Ensure player data is fully loaded before fallback resume
 		await this.client.playerSaver?.ensureLoaded();
+		await this.client.manager.queueStore.ensureLoaded();
 
 		// Use playerData (per-bot file) as the primary source — it's more reliable than sessionMap
 		// sessionMap entries may have been overwritten by 247 reconnection with empty players
@@ -398,6 +400,23 @@ export default class Connect extends Event {
 				// Skip if essential channel info is missing
 				if (!playerData.voiceChannelId || !playerData.textChannelId) {
 					this.client.logger.warn(`[RESUME FALLBACK] Missing channel info for guild ${guildId}, skipping`);
+					continue;
+				}
+
+				// A stopped or finished queue has nothing to replay; rejoining would leave the bot
+				// silent in voice. The queue store is saved on every stop/queue end, so prefer it
+				// over the player snapshot. 247 guilds still rejoin.
+				let savedQueue = playerData.queue;
+				try {
+					const stored = await this.client.manager.queueStore.get(guildId);
+					if (stored) savedQueue = this.client.manager.queueStore.parse(stored) as typeof savedQueue;
+				} catch {
+					// Unreadable stored queue: decide from the snapshot; the restore below has its own fallback.
+				}
+				const playable = hasPlayableQueue(savedQueue);
+				if (playable === false && !(await this.client.db.get_247(this.client.childEnv.clientId, guildId))) {
+					this.client.logger.info(`[RESUME FALLBACK] Nothing to resume for guild ${guildId}, skipping`);
+					skippedCount++;
 					continue;
 				}
 
