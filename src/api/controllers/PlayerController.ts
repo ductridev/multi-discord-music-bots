@@ -180,7 +180,7 @@ export class PlayerController {
 					const textChannelId = player.textChannelId;
 
 					player.set('messageId', undefined);
-					player.stopPlaying(true, false);
+					await player.stopPlaying(true, false);
 
 					if (messageId && textChannelId) {
 						try {
