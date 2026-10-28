@@ -38,18 +38,12 @@ export default class QueueEnd extends Event {
 			// await this.client.utils.setVoiceStatus(this.client, player.voiceChannelId, "");
 		}
 
+		// Stop paths clear messageId before stopping, so a missing message must not skip
+		// the idle-disconnect timer below.
 		const messageId = player.get<string | undefined>('messageId');
-		if (!messageId) return;
-
-		const channel = guild.channels.cache.get(player.textChannelId!) as TextChannel;
-		if (!channel) return;
-
-		const message = await channel.messages.fetch(messageId).catch(() => {
-			null;
-		});
-		if (!message) return;
-
-		if (message.editable) {
+		const textChannel = messageId ? (guild.channels.cache.get(player.textChannelId!) as TextChannel | undefined) : undefined;
+		const message = textChannel ? await textChannel.messages.fetch(messageId!).catch(() => null) : null;
+		if (message?.editable) {
 			await message.edit({ components: [] }).catch(() => {
 				null;
 			});
