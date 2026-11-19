@@ -42,7 +42,6 @@ export default class Skip extends Command {
 
 		// If no tracks in queue and autoplay is off, stop the player
 		if (!autoplay && player.queue.tracks.length === 0) {
-			player.set('messageId', undefined);
 			player.stopPlaying(true, false);
 			return await ctx.sendMessage({
 				embeds: [embed.setColor(this.client.color.red).setDescription(ctx.locale('cmd.stop.messages.stopped'))],

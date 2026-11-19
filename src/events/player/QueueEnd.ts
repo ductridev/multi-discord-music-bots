@@ -1,6 +1,7 @@
 import type { TextChannel } from 'discord.js';
 import type { Player, Track, TrackStartEvent } from 'lavalink-client';
 import { Event, type Lavamusic } from '../../structures/index';
+import { deleteNowPlayingMessage } from '../../utils/NowPlayingMessage';
 import { updateSetup } from '../../utils/SetupSystem';
 import { T } from '../../structures/I18n';
 import { PeriodicMessageSystem } from '../../utils/PeriodicMessageSystem';
@@ -45,16 +46,8 @@ export default class QueueEnd extends Event {
 			// await this.client.utils.setVoiceStatus(this.client, player.voiceChannelId, "");
 		}
 
-		// Stop paths clear messageId before stopping, so a missing message must not skip
-		// the idle-disconnect timer below.
-		const messageId = player.get<string | undefined>('messageId');
-		const textChannel = messageId ? (guild.channels.cache.get(player.textChannelId!) as TextChannel | undefined) : undefined;
-		const message = textChannel ? await textChannel.messages.fetch(messageId!).catch(() => null) : null;
-		if (message?.editable) {
-			await message.edit({ components: [] }).catch(() => {
-				null;
-			});
-		}
+		// A missing message (TrackEnd already deleted it) must not skip the idle-disconnect timer below.
+		await deleteNowPlayingMessage(guild, player);
 
 		const is247 = await this.client.db.get_247(this.client.childEnv.clientId, player.guildId);
 

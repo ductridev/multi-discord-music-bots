@@ -43,7 +43,6 @@ export default class Stop extends Command {
 		if (!player) return await ctx.sendMessage(ctx.locale('event.message.no_music_playing'));
 
 		// Execute stop
-		player.set('messageId', undefined);
 		player.stopPlaying(true, false);
 
 		if (ctx.isInteraction) {
