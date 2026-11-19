@@ -1,6 +1,6 @@
-import { test } from "node:test";
+import { mock, test } from "node:test";
 import assert from "node:assert/strict";
-import Raw, { SESSION_RESUME_TIMEOUT_S } from "./Raw";
+import Raw, { patchNodeHeartbeat, SESSION_RESUME_TIMEOUT_S, STATS_WATCHDOG_MS } from "./Raw";
 
 /** Node stand-in: records updateSession calls and the session id they targeted. */
 function fakeNode(opts: { connected?: boolean; sessionId?: string | null; optionsSessionId?: string } = {}) {
@@ -58,4 +58,66 @@ test("loading pins sessions of nodes that are already connected (hot reload)", (
 
     assert.equal(up.options.sessionId, "live-up");
     assert.equal(down.options.sessionId, "boot-down");
+});
+
+/** Node stand-in with lavalink-client's close() on the prototype, like the real class. */
+function heartbeatNode() {
+    const protoCloses: { code: number; reason?: string }[] = [];
+    const socket = { terminated: 0, terminate() { this.terminated++; } };
+    class FakeNode {
+        nodeType = "Lavalink";
+        socket: typeof socket | null = socket;
+        isAlive = true;
+        pingTimeout: ReturnType<typeof setTimeout> | null = null;
+        resetAckTimeouts(_heartbeat = true, ping = true) {
+            if (ping && this.pingTimeout) clearTimeout(this.pingTimeout);
+            if (ping) this.pingTimeout = null;
+        }
+        close(code: number, reason?: string) {
+            protoCloses.push({ code, reason });
+            return Promise.resolve();
+        }
+    }
+    const node = new FakeNode();
+    patchNodeHeartbeat(node as any);
+    return { node: node as any, socket, protoCloses };
+}
+
+test("ping timeout terminates the socket instead of detaching it", async () => {
+    const { node, socket, protoCloses } = heartbeatNode();
+    await node.close(500, "Node-Heartbeat-Timeout");
+    assert.equal(socket.terminated, 1);
+    assert.equal(node.isAlive, false);
+    assert.deepEqual(protoCloses, []);
+});
+
+test("socket close events still run lavalink-client's close", async () => {
+    const { node, socket, protoCloses } = heartbeatNode();
+    await node.close(1006, undefined);
+    assert.equal(socket.terminated, 0);
+    assert.deepEqual(protoCloses, [{ code: 1006, reason: undefined }]);
+});
+
+test("stats watchdog tolerates late stats and terminates only after STATS_WATCHDOG_MS", () => {
+    mock.timers.enable({ apis: ["setTimeout"] });
+    try {
+        const { node, socket } = heartbeatNode();
+        node.heartBeat();
+        mock.timers.tick(65e3 + 5e3); // old lavalink-client limit plus a 5s hiccup
+        assert.equal(socket.terminated, 0);
+        node.heartBeat(); // the late stats arrives and re-arms the watchdog
+        mock.timers.tick(STATS_WATCHDOG_MS - 1);
+        assert.equal(socket.terminated, 0);
+        mock.timers.tick(1);
+        assert.equal(socket.terminated, 1);
+    } finally {
+        mock.timers.reset();
+    }
+});
+
+test("hot reload replaces the overrides instead of stacking them", async () => {
+    const { node, socket } = heartbeatNode();
+    patchNodeHeartbeat(node);
+    await node.close(500, "Node-Heartbeat-Timeout");
+    assert.equal(socket.terminated, 1);
 });
