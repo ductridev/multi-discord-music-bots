@@ -19,6 +19,7 @@ import type { Player, Track, TrackStartEvent } from 'lavalink-client';
 import { T } from '../../structures/I18n';
 import { Event, type Lavamusic } from '../../structures/index';
 import type { Requester } from '../../types';
+import { deleteNowPlayingMessage } from '../../utils/NowPlayingMessage';
 import { trackStart } from '../../utils/SetupSystem';
 import { VoiceStateHelper } from '../../utils/VoiceStateHelper';
 import { dashboardSocket } from '../../api/websocket/DashboardSocket';
@@ -223,18 +224,14 @@ export default class TrackStart extends Event {
 				return;
 			}
 
-			// For queue loop or normal mode: remove buttons from old message and create new one
-			if (previousMessageId) {
-				try {
-					const previousMessage = await channel.messages.fetch(previousMessageId).catch(() => null);
-					if (previousMessage) {
-						// Remove buttons from the old message instead of deleting it
-						await previousMessage.edit({ components: [] }).catch(() => null);
-					}
-				} catch (error) {
-					// Message might already be deleted or not found, continue
-				}
+			// The same track restarting without a trackEnd (re-played on a new Lavalink session
+			// after a node reconnect) keeps its embed rather than posting a duplicate.
+			if (previousMessageId && previousMessageTrack === track.encoded &&
+				await channel.messages.fetch(previousMessageId).catch(() => null)) {
+				return;
 			}
+
+			await deleteNowPlayingMessage(guild, player);
 
 			// The top-of-run isReady() guard can go stale: destroy() may land in
 			// the many awaits above, nulling the token before this send. Catch so a
@@ -375,32 +372,16 @@ function createCollector(
 				}
 				break;
 			case 'stop': {
-				// Clear the messageId before stopping to ensure new messages are created for future tracks
-				player.set('messageId', undefined);
-				player.stopPlaying(true, false);
+				// Keep messageId: TrackEnd/QueueEnd delete this embed once playback stops.
 				await interaction.deferUpdate();
-
-				// Remove all buttons from the message
-				if (message && message.editable) {
-					await message.edit({
-						embeds: [
-							embed.setFooter({
-								text: T(locale, 'cmd.stop.messages.stopped') + " • BuNgo Music Bot 🎵 • Made by Gúp Bu Ngô with ♥️",
-								iconURL: interaction.user.avatarURL({}),
-							}),
-						],
-						components: [], // Remove all buttons
-					});
-				}
+				player.stopPlaying(true, false);
 				break;
 			}
 			case 'skip': {
 				const autoplay = player.get<boolean>('autoplay');
 				if (!autoplay && player.queue.tracks.length === 0) {
-					// Clear the messageId before stopping to ensure new messages are created for future tracks
-					player.set('messageId', undefined);
+					await interaction.deferUpdate();
 					player.stopPlaying(true, false);
-					await editMessage(T(locale, 'cmd.stop.messages.stopped'));
 					break;
 				}
 

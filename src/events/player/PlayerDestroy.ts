@@ -1,6 +1,6 @@
-import type { TextChannel } from 'discord.js';
 import type { Player } from 'lavalink-client';
 import { Event, type Lavamusic } from '../../structures/index';
+import { deleteNowPlayingMessage } from '../../utils/NowPlayingMessage';
 import { updateSetup } from '../../utils/SetupSystem';
 import { VoiceStateHelper } from '../../utils/VoiceStateHelper';
 import { PeriodicMessageSystem } from '../../utils/PeriodicMessageSystem';
@@ -87,22 +87,7 @@ export default class PlayerDestroy extends Event {
 			// await this.client.utils.setVoiceStatus(this.client, player.voiceChannelId, "");
 		}
 
-		const messageId = player.get<string | undefined>('messageId');
-		if (!messageId) return;
-
-		const channel = guild.channels.cache.get(player.textChannelId!) as TextChannel;
-		if (!channel) return;
-
-		const message = await channel.messages.fetch(messageId).catch(() => {
-			null;
-		});
-		if (!message) return;
-
-		if (message.editable) {
-			await message.edit({ components: [] }).catch(() => {
-				null;
-			});
-		}
+		await deleteNowPlayingMessage(guild, player);
 	}
 }
 

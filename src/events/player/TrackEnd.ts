@@ -15,6 +15,15 @@ export default class TrackEnd extends Event {
 	}
 
 	public async run(player: Player, track: Track | null, _payload: TrackStartEvent): Promise<void> {
+		// Track loop replaying the same track: keep the message, trackStart will reuse it.
+		// lavalink-client has already advanced the queue by now, so a skip while looping
+		// leaves a different queue.current and the message is deleted below.
+		const loopReplay = isTrackLoopReplay(player.repeatMode, player.queue.current?.encoded, track?.encoded);
+		// Release the embed before any await: the next trackStart can land during the awaits
+		// below, and with the same track queued twice it would reuse this doomed embed.
+		const messageId = player.get<string | undefined>('messageId');
+		if (!loopReplay) player.set('messageId', undefined);
+
 		// Stop live lyrics session if active
 		if (this.client.liveLyricsService) {
 			this.client.liveLyricsService.handleTrackEnd(player.guildId);
@@ -59,11 +68,7 @@ export default class TrackEnd extends Event {
 			}
 		}
 
-		// Track loop replaying the same track: don't delete the message, trackStart
-		// will reuse it. lavalink-client has already advanced the queue by now, so a
-		// skip while looping leaves a different queue.current and falls through to
-		// the delete path below.
-		if (isTrackLoopReplay(player.repeatMode, player.queue.current?.encoded, track?.encoded)) {
+		if (loopReplay) {
 			// Still save player queue
 			await player.queue.utils.save();
 			return;
@@ -79,7 +84,6 @@ export default class TrackEnd extends Event {
 		await updateSetup(this.client, guild, locale);
 
 		// For queue loop or normal mode, delete the message (new track will have new message)
-		const messageId = player.get<string | undefined>('messageId');
 		if (!messageId) return;
 
 		const channel = guild.channels.cache.get(player.textChannelId!) as TextChannel;
