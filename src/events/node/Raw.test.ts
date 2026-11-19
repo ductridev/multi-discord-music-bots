@@ -126,10 +126,23 @@ test("loading re-arms a stats watchdog armed before the hot reload", () => {
     mock.timers.enable({ apis: ["setTimeout"] });
     try {
         const { node, socket } = heartbeatNode();
-        Object.assign(node, { connected: true, sessionId: "live", options: {} });
+        Object.assign(node, { connected: true, sessionId: "live", options: { enablePingOnStatsCheck: true } });
         node.pingTimeout = setTimeout(() => socket.terminate(), 65e3); // lavalink-client's own watchdog
         new Raw(fakeClient([node]), "Raw.js");
         mock.timers.tick(65e3 + 5e3);
+        assert.equal(socket.terminated, 0);
+    } finally {
+        mock.timers.reset();
+    }
+});
+
+test("loading arms no watchdog when enablePingOnStatsCheck is off", () => {
+    mock.timers.enable({ apis: ["setTimeout"] });
+    try {
+        const { node, socket } = heartbeatNode();
+        Object.assign(node, { connected: true, sessionId: "live", options: { enablePingOnStatsCheck: false } });
+        new Raw(fakeClient([node]), "Raw.js");
+        mock.timers.tick(STATS_WATCHDOG_MS + 1);
         assert.equal(socket.terminated, 0);
     } finally {
         mock.timers.reset();

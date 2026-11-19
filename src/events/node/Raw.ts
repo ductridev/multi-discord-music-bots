@@ -62,8 +62,9 @@ export default class Raw extends Event {
 
 		for (const node of client.manager.nodeManager.nodes.values()) {
 			patchNodeHeartbeat(node);
-			// Replace a 65s stats watchdog armed before this reload with the patched one.
-			if (node.connected) (node as unknown as { heartBeat(): void }).heartBeat();
+			// Replace a 65s stats watchdog armed before this reload with the patched one. Same gate
+			// as lavalink-client: with enablePingOnStatsCheck off nothing re-arms it, so never arm it.
+			if (node.connected && node.options.enablePingOnStatsCheck) (node as unknown as { heartBeat(): void }).heartBeat();
 			// On hot reload, connected nodes already received their 'ready' before this handler
 			// existed, so pin their live session now.
 			if (node.connected && node.sessionId) node.options.sessionId = node.sessionId;
