@@ -17,6 +17,9 @@ export default class QueueEnd extends Event {
 		const guild = this.client.guilds.cache.get(player.guildId);
 		if (!guild) return;
 
+		// Captured before the awaits below: a track queued meanwhile posts its own embed.
+		const nowPlayingId = player.get<string | undefined>('messageId');
+
 		// End periodic message session when queue ends
 		PeriodicMessageSystem.endSession(player.guildId, this.client.childEnv.clientId);
 
@@ -47,7 +50,7 @@ export default class QueueEnd extends Event {
 		}
 
 		// A missing message (TrackEnd already deleted it) must not skip the idle-disconnect timer below.
-		await deleteNowPlayingMessage(guild, player);
+		await deleteNowPlayingMessage(guild, player, nowPlayingId);
 
 		const is247 = await this.client.db.get_247(this.client.childEnv.clientId, player.guildId);
 

@@ -36,6 +36,13 @@ test("an already-deleted message only clears the id", async () => {
     assert.equal(data.get("messageId"), undefined);
 });
 
+test("a captured id deletes only its own embed, keeping a newer one tracked", async () => {
+    const { guild, player, data, deleted } = fakes({ messageId: "m2" });
+    await deleteNowPlayingMessage(guild, player, "m1");
+    assert.deepEqual(deleted, ["m1"]);
+    assert.equal(data.get("messageId"), "m2");
+});
+
 test("no tracked message is a no-op", async () => {
     const { guild, player, deleted } = fakes();
     await deleteNowPlayingMessage(guild, player);

@@ -121,3 +121,17 @@ test("hot reload replaces the overrides instead of stacking them", async () => {
     await node.close(500, "Node-Heartbeat-Timeout");
     assert.equal(socket.terminated, 1);
 });
+
+test("loading re-arms a stats watchdog armed before the hot reload", () => {
+    mock.timers.enable({ apis: ["setTimeout"] });
+    try {
+        const { node, socket } = heartbeatNode();
+        Object.assign(node, { connected: true, sessionId: "live", options: {} });
+        node.pingTimeout = setTimeout(() => socket.terminate(), 65e3); // lavalink-client's own watchdog
+        new Raw(fakeClient([node]), "Raw.js");
+        mock.timers.tick(65e3 + 5e3);
+        assert.equal(socket.terminated, 0);
+    } finally {
+        mock.timers.reset();
+    }
+});
