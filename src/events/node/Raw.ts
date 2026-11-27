@@ -4,7 +4,7 @@ import Event from '../../structures/Event';
 import type Lavamusic from '../../structures/Lavamusic';
 
 /** Lavalink session resume timeout, in seconds (the Lavalink API unit). */
-export const SESSION_RESUME_TIMEOUT_S = 15 * 60e3;
+export const SESSION_RESUME_TIMEOUT_S = 15 * 60;
 
 /**
  * Lavalink sends stats every 60s and lavalink-client terminates the socket if none arrives

@@ -27,6 +27,11 @@ function fakeClient(nodes: unknown[] = []) {
 
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 
+test("resume timeout is 15 minutes expressed in seconds", () => {
+    // Lavalink v4 reads the timeout in seconds; a millisecond value keeps orphaned sessions alive for days.
+    assert.equal(SESSION_RESUME_TIMEOUT_S, 900);
+});
+
 test("ready pins the live session id and enables resuming on that session", async () => {
     const { node, calls } = fakeNode({ sessionId: "stale-boot-id", optionsSessionId: "stale-boot-id" });
     const raw = new Raw(fakeClient(), "Raw.js");
