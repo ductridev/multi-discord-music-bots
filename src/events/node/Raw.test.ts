@@ -18,9 +18,10 @@ function fakeNode(opts: { connected?: boolean; sessionId?: string | null; option
     return { node, calls };
 }
 
-function fakeClient(nodes: unknown[] = []) {
+function fakeClient(nodes: unknown[] = [], saved = new Map<string, string>()) {
     return {
         manager: { nodeManager: { nodes: new Map(nodes.map((n, i) => [String(i), n])) } },
+        nodeSessions: { async set(k: string, v: string) { saved.set(k, v); } },
         logger: { warn() {} },
     } as any;
 }
@@ -43,6 +44,15 @@ test("ready pins the live session id and enables resuming on that session", asyn
     node.sessionId = "live-id"; // what lavalink-client does right after emitting 'raw'
     await tick();
     assert.deepEqual(calls, [{ resuming: true, timeout: SESSION_RESUME_TIMEOUT_S, sessionId: "live-id" }]);
+});
+
+test("ready persists the live session id for the next process start", async () => {
+    const { node } = fakeNode();
+    const saved = new Map<string, string>();
+    const raw = new Raw(fakeClient([], saved), "Raw.js");
+
+    await raw.run(node as any, { op: "ready", sessionId: "live-id" });
+    assert.equal(saved.get("node-a"), "live-id");
 });
 
 test("non-ready payloads are ignored", async () => {
