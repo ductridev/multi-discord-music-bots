@@ -26,6 +26,7 @@ import type { Command } from "./index";
 import { registerBot } from "..";
 import { BotConfig } from "@prisma/client";
 import { PlayerSaver } from "./PlayerSaver";
+import { NodeSessionStore } from "./NodeSessionStore";
 import { ShardStateManager } from "./ShardStateManager";
 import { LavaSrcConfigService } from "../services/LavaSrcConfigService.js";
 import { YouTubeConfigService } from "../services/YouTubeConfigService.js";
@@ -52,6 +53,7 @@ export default class Lavamusic extends Client {
   public manager!: LavalinkClient;
   public rest = new REST().setToken("");
   public playerSaver: PlayerSaver | null = null;
+  public nodeSessions: NodeSessionStore | null = null;
   public timeoutListenersMap: Map<string, NodeJS.Timeout> = new Map();
   public timeoutSongsMap: Map<string, NodeJS.Timeout> = new Map();
   public logger: Logger;
@@ -79,6 +81,8 @@ export default class Lavamusic extends Client {
     this.playerSaver = new PlayerSaver(this.childEnv.name);
     // CRITICAL: Ensure player data is loaded from disk before bot uses it
     await this.playerSaver.ensureLoaded();
+    this.nodeSessions = new NodeSessionStore(this.childEnv.name);
+    await this.nodeSessions.ensureLoaded();
     this.logger.info(`Player session data loaded for ${this.childEnv.name}`);
     
     this.db = new ServerData(this.childEnv);

@@ -1,6 +1,7 @@
 import { MiniMap } from "lavalink-client";
 import { readFileSync } from "node:fs";
-import { writeFile, rename, unlink } from "node:fs/promises";
+import { writeFile, rename, unlink, mkdir } from "node:fs/promises";
+import { dirname } from "node:path";
 import IORedis, { type Redis, type RedisOptions } from "ioredis";
 
 export interface RedisStoreOptions {
@@ -234,7 +235,17 @@ export class JSONStore {
             const v = this.data.get(k);
             records[k] = v === undefined ? null : v;
         }
-        await writeFile(this.filePath, JSON.stringify(records), "utf-8");
+        try {
+            await mkdir(dirname(this.filePath), { recursive: true });
+            await writeFile(this.filePath, JSON.stringify(records), "utf-8");
+        } catch (error) {
+            // The mirror and dirty set still hold the write and replay it on the next
+            // Redis `ready`; a failed file copy must not reject the caller's set/delete.
+            console.warn(
+                `[JSONStore] Fallback file write failed for ${this.filePath}:`,
+                error instanceof Error ? error.message : String(error),
+            );
+        }
     }
 
     /**

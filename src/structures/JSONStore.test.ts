@@ -204,3 +204,33 @@ test("fallback stores only diverged keys, so an expired key isn't resurrected", 
     assert.equal(store.fake.store.get("test:new"), "n", "diverged key replayed");
     assert.ok(!store.fake.store.has("test:keep"), "expired key not resurrected with a fresh TTL");
 });
+
+test("fallback file write failure does not reject set and keeps the write for replay", async () => {
+    nextFake = new FakeRedis();
+    const dir = mkdtempSync(join(tmpdir(), "jsonstore-"));
+    const store = new TestStore(dir, opts()); // a directory: writeFile fails with EISDIR
+    await store.ensureLoaded();
+
+    store.fake.down = true;
+    await store.set("g6", "v6");
+    assert.equal(store.get("g6"), "v6", "mirror committed");
+
+    store.fake.down = false;
+    store.fake.emit("ready");
+    await tick();
+    assert.equal(store.fake.store.get("test:g6"), "v6", "replayed on ready");
+    rmSync(dir, { recursive: true, force: true });
+});
+
+test("fallback file is written into a missing parent directory", async () => {
+    nextFake = new FakeRedis();
+    const root = mkdtempSync(join(tmpdir(), "jsonstore-"));
+    const file = join(root, "data", "queueData.json");
+    const store = new TestStore(file, opts());
+    await store.ensureLoaded();
+
+    store.fake.down = true;
+    await store.set("g7", "v7");
+    assert.deepEqual(JSON.parse(readFileSync(file, "utf-8")), { g7: "v7" });
+    rmSync(root, { recursive: true, force: true });
+});

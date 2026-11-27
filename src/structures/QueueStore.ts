@@ -24,7 +24,7 @@ export class QueueStore implements QueueStoreManager {
 
 	constructor(name: string) {
 		this.store = new JSONStore(
-			`${process.cwd()}/queueData-${name}.json`,
+			`${process.cwd()}/data/queueData-${name}.json`,
 			env.REDIS_URL
 				? {
 					url: env.REDIS_URL,

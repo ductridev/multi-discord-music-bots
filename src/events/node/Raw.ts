@@ -78,6 +78,10 @@ export default class Raw extends Event {
 		// boot), never the live session, so every reconnect opened a new Lavalink session and
 		// orphaned the previous one. Pin the live id so the next reconnect resumes it.
 		node.options.sessionId = payload.sessionId;
+		// Persist it so a restarted process sends this id and resumes the paused session.
+		this.client.nodeSessions?.set(node.id, payload.sessionId).catch((error) => {
+			this.client.logger.warn(`Node ${node.id} session id not saved: ${error?.message ?? error}`);
+		});
 
 		// The node applies the 'ready' payload right after emitting 'raw'; defer so
 		// updateSession targets the new session id. Resumable from the start, not after 10 min.

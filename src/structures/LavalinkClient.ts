@@ -10,10 +10,13 @@ export default class LavalinkClient extends LavalinkManager {
 	constructor(client: Lavamusic) {
 		const queueStore = new QueueStore(client.childEnv.name);
 		super({
-			nodes: (client.env.NODES as LavalinkNodeOptions[]).map(node => {
-				node.sessionId = client.playerSaver!.getAllLastNodeSessions().get(node.id!);
-				return node;
-			}),
+			// Copy per bot: env.NODES is shared by every bot in the process.
+			nodes: (client.env.NODES as LavalinkNodeOptions[]).map(node => ({
+				...node,
+				sessionId:
+					client.nodeSessions?.get(node.id!) ??
+					client.playerSaver!.getAllLastNodeSessions().get(node.id!),
+			})),
 			sendToShard: async (guildId, payload) => (await client.guilds.fetch(guildId)).shard.send(payload),
 			queueOptions: {
 				maxPreviousTracks: 1000,
